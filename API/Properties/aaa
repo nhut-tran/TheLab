@@ -1,0 +1,30 @@
+CREATE OR REPLACE FUNCTION createWorkSheetNo() returns trigger
+	LANGUAGE plpgsql
+	AS $$
+		BEGIN
+			NEW."WorkSheetNo" = 'WSN' || EXTRACT(YEAR FROM CURRENT_DATE)::text
+			|| NEW."WorkSheetSequence"::text;
+			RETURN NEW;
+		END
+		
+	$$
+
+    CREATE TRIGGER createWorkSheetNoTrigger
+ BEFORE INSERT
+ ON "WorkSheet"
+ FOR EACH ROW
+ EXECUTE PROCEDURE createWorkSheetNo();
+
+ Create or replace function returns trigger
+	language plpgsql
+	declare
+		last_ws record;
+	as
+	$$
+		select * from "WorkSheet"
+		order by "WorkSheet"."ReceiveDate"
+		into last_ws;
+		if Extract(Day from NEW."ReceiveDate") <> last_ws."ReceiveDate" then
+			Alter sequence ReceiveNo restart(1);
+		end if;
+	$$

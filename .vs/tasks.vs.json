@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-FoodLab",
+      "appliesTo": "FoodLab.sln",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "task-FoodLab",
+      "appliesTo": "/",
+      "type": "launch"
+    }
+  ]
+}

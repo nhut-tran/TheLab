@@ -1,0 +1,65 @@
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+  margin: 0;
+ 
+}
+:root {
+  --back_color: #37003c;
+}
+
+
+/* .nhutdis {
+  
+  background-color:  #dc3545;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  position: fixed;
+  color: #fff;
+  z-index: 30000;
+  width: 30%;
+  height: 50px;
+  top:0px;
+  right: 0;
+  
+  transform-origin: top;
+  animation-name: moveToRight;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(.13,.82,1,-0.08)
+} */
+
+
+
+
+
+ 
+
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+/* tim: #37003c
+  pink ;#ff2882
+  linear-gradient(
+90deg
+,#963cff,#a64dae)
+#242424
+grey: #76766f
+#212529;
+*/
+
