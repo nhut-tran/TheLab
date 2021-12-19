@@ -95,15 +95,15 @@ namespace API
             });
             services.AddScoped<TokenService>();
             services.AddSingleton<IGetValueToApprove<string, int>, GetStatusValueApprove>();
-            services.AddSingleton<Report>();
-            services.AddSingleton<GenerateWorkSheet>();
+
+
             services.AddScoped<SeedData>();
 
             services.AddValidate();
             // services.AddTransient<IValidator<Method>, MethodValidator>();
             services.AddMediatR(typeof(MethodList.Handler).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
-
+            services.AddWordDocument();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });

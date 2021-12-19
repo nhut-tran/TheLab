@@ -10,6 +10,15 @@ namespace Application.Service.GenerateWorkSheet
 {
     public class GenerateWorkSheet
     {
+        private readonly WorkSheetInfo _wsInfo;
+        private readonly SampleInfo _spInfo;
+        public GenerateWorkSheet(WorkSheetInfo wsInfo, SampleInfo spInfo)
+        {
+            _spInfo = spInfo;
+            _wsInfo = wsInfo;
+        }
+
+
         private Table CreateHeaderTable(WorkSheetDto ws)
         {
 
@@ -37,10 +46,12 @@ namespace Application.Service.GenerateWorkSheet
         }
         private Table CreateGeneralInfoTable(WorkSheetDto ws)
         {
+            _wsInfo.SetInfo(ws);
+            var data = _wsInfo.GetInfo();
+
             var table = new Table();
             var tableProp = new TableProperties();
-
-            var tableStyle = new TableStyle() { Val = "TableForm" };
+            var tableStyle = new TableStyle() { Val = "TableWorkSheetForm" };
             TableWidth tableWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
 
             tableProp.Append(tableStyle, tableWidth);
@@ -48,45 +59,15 @@ namespace Application.Service.GenerateWorkSheet
             TableGrid tg = new TableGrid(new GridColumn(), new GridColumn());
             table.AppendChild(tg);
 
-            TableRow firstRow = new TableRow();
-            TableCell tc0 = new TableCell(new Paragraph(new Run(new Text("ReceiveNo"))));
-            TableCell tc1 = new TableCell(new Paragraph(new Run(new Text(ws.ReceiveNo))));
+            foreach (KeyValuePair<string, string> entry in data)
+            {
+                TableRow r = new TableRow();
+                TableCell c1 = new TableCell(new Paragraph(new Run(new Text(entry.Key))));
+                TableCell c2 = new TableCell(new Paragraph(new Run(new Text(entry.Value))));
+                r.Append(c1, c2);
+                table.Append(r);
+            }
 
-            TableRow secondRow = new TableRow();
-            TableCell tc2 = new TableCell(new Paragraph(new Run(new Text("Number of samples"))));
-            TableCell tc3 = new TableCell(new Paragraph(new Run(new Text(ws.Samples.Count().ToString()))));
-
-            TableRow thirdRow = new TableRow();
-            TableCell tc4 = new TableCell(new Paragraph(new Run(new Text("Testing department"))));
-            TableCell tc5 = new TableCell(new Paragraph(new Run(new Text("Micro"))));
-
-            TableRow fourRow = new TableRow();
-            TableCell tc6 = new TableCell(new Paragraph(new Run(new Text("Receive Date"))));
-            TableCell tc7 = new TableCell(new Paragraph(new Run(new Text(ws.ReceiveDate))));
-
-            TableRow fiveRow = new TableRow();
-            TableCell tc8 = new TableCell(new Paragraph(new Run(new Text("Result Date"))));
-            TableCell tc9 = new TableCell(new Paragraph(new Run(new Text(ws.ResultDate))));
-
-            TableRow sixRow = new TableRow();
-            TableCell tc10 = new TableCell(new Paragraph(new Run(new Text("Report Date"))));
-            TableCell tc11 = new TableCell(new Paragraph(new Run(new Text(ws.ResultDate))));
-
-            TableRow sevenRow = new TableRow();
-            TableCell tc12 = new TableCell(new Paragraph(new Run(new Text("Disposal Time"))));
-            TableCell tc13 = new TableCell(new Paragraph(new Run(new Text(ws.DisposalDate))));
-
-
-
-            firstRow.Append(tc0, tc1);
-            secondRow.Append(tc2, tc3);
-            thirdRow.Append(tc4, tc5);
-            fourRow.Append(tc6, tc7);
-            fiveRow.Append(tc8, tc9);
-            sixRow.Append(tc10, tc11);
-            sevenRow.Append(tc12, tc13);
-
-            table.Append(firstRow, secondRow, thirdRow, fourRow, fiveRow, sixRow, sevenRow);
             return table;
         }
         private Table CreateSampleListTable(List<SampleDto> sampleList)
@@ -97,28 +78,42 @@ namespace Application.Service.GenerateWorkSheet
                 new GridColumn(), new GridColumn(), new GridColumn(), new GridColumn(),
                 new GridColumn(), new GridColumn()
                 );
-            var headerRow = new TableRow();
-            var tc0 = new TableCell(new Paragraph(new Run(new Text("Sample NO"))));
-            var tc1 = new TableCell(new Paragraph(new Run(new Text("End Time"))));
-            var tc2 = new TableCell(new Paragraph(new Run(new Text("Paramaters"))));
-            var tc3 = new TableCell(new Paragraph(new Run(new Text("Method"))));
-            var tc4 = new TableCell(new Paragraph(new Run(new Text("Unit"))));
-            var tc5 = new TableCell(new Paragraph(new Run(new Text("LOD"))));
-            var tc6 = new TableCell(new Paragraph(new Run(new Text("LOQ"))));
-            var tc7 = new TableCell(new Paragraph(new Run(new Text("Result"))));
-            headerRow.Append(tc0, tc1, tc2, tc3, tc4, tc5, tc6, tc7);
+            var tableProp = new TableProperties();
+            var tableStyle = new TableStyle() { Val = "TableWorkSheetForm" };
+            TableWidth tableWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
+            tableProp.Append(tableStyle, tableWidth);
+            table.Append(tableProp);
+            var headerData = _spInfo.Info;
 
+            var headerRow = new TableRow();
+            foreach (KeyValuePair<string, string> entry in headerData)
+            {
+
+
+                TableCell headerCell = new TableCell(new Paragraph(new Run(new Text(entry.Key))));
+                if (entry.Key == "Method" || entry.Key == "Paramaters")
+                {
+                    headerCell.Append(new TableCellProperties() { TableCellWidth = new TableCellWidth() { Width = "800", Type = TableWidthUnitValues.Pct } });
+                }
+                headerRow.Append(headerCell);
+
+
+            }
             table.Append(headerRow);
+
+
             foreach (var sample in sampleList)
             {
 
                 for (var i = 0; i < sample.Paramaters.Count(); i++)
                 {
+
                     var paramater = sample.Paramaters.ToList()[i];
                     var tbPropS = new TableCellProperties()
                     {
                         VerticalMerge = new VerticalMerge() { Val = MergedCellValues.Restart }
                     };
+
                     var tbPropC = new TableCellProperties()
                     {
                         VerticalMerge = new VerticalMerge() { Val = MergedCellValues.Continue }
@@ -126,8 +121,11 @@ namespace Application.Service.GenerateWorkSheet
                     var tableRow = new TableRow();
 
                     var tcs0 = new TableCell(new Paragraph(new Run(new Text(sample.SampleNo.ToString()))));
+                    tcs0.Append(new Paragraph(new Run(new Break() { })));
                     tcs0.Append(new Paragraph(new Run(new Text("SEQ: " + sampleList.IndexOf(sample).ToString()))));
+                    tcs0.Append(new Paragraph(new Run(new Break() { })));
                     tcs0.Append(new Paragraph(new Run(new Text(sample.Description))));
+                    tcs0.Append(new Paragraph(new Run(new Break() { })));
                     tcs0.Append(new Paragraph(new Run(new Text(sample.Weight.ToString()))));
 
                     tcs0.TableCellProperties = tbPropS;
@@ -145,11 +143,11 @@ namespace Application.Service.GenerateWorkSheet
                     tcs4.Append(new Paragraph(new Run(new Text(paramater.Unit))));
                     if (i > 0)
                     {
-                        var c = new TableCell(new Paragraph(new Run(new Text())));
+                        var c = new TableCell(new Paragraph());
                         c.Append(tbPropC);
                         tableRow.Append(c, tcs1, tcs2, tcs3, tcs4, tcs5, tcs6, tcs7);
                     }
-                    else 
+                    else
                     {
 
                         tableRow.Append(tcs0, tcs1, tcs2, tcs3, tcs4, tcs5, tcs6, tcs7);
@@ -164,6 +162,71 @@ namespace Application.Service.GenerateWorkSheet
             return table;
         }
 
+        private Style CreateTableStyle()
+        {
+            var newStyle = new Style()
+            {
+                StyleId = "TableWorkSheetForm",
+                StyleName = new StyleName() { Val = "TableWorkSheetForm" },
+                Type = StyleValues.Table,
+
+                CustomStyle = true
+            };
+            // newStyle.Append(new TableStyleProperties() { Type = TableStyleOverrideValues.FirstRow });
+
+            var styleTabelProp = new StyleTableProperties();
+            TableStyleRowBandSize tableStyleRowBandSize = new TableStyleRowBandSize() { Val = 1 };
+            TableStyleColumnBandSize tableStyleColumnBandSize = new TableStyleColumnBandSize() { Val = 1 };
+            var topBorder = new TopBorder() { Val = BorderValues.Single, Size = 8 };
+            var botBorder = new BottomBorder() { Val = BorderValues.Single, Size = 8 };
+            var leftBorder = new LeftBorder() { Val = BorderValues.Single, Size = 8 };
+            var rightBorder = new RightBorder() { Val = BorderValues.Single, Size = 8 };
+            var horizontalBorder = new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 5 };
+            var verti = new InsideVerticalBorder() { Val = BorderValues.Single, Size = 5 };
+            var tableBorder = new TableBorders()
+            {
+                TopBorder = topBorder,
+                BottomBorder = botBorder,
+                LeftBorder = leftBorder,
+                RightBorder = rightBorder,
+                InsideHorizontalBorder = horizontalBorder,
+                InsideVerticalBorder = verti
+            };
+
+            styleTabelProp.Append(tableBorder, tableStyleRowBandSize, tableStyleColumnBandSize);
+            var tableStyleProp = new TableStyleProperties()
+            {
+                Type = TableStyleOverrideValues.FirstRow,
+            };
+            var runBaseProp = new RunPropertiesBaseStyle() { Bold = new Bold() { Val = true } };
+            tableStyleProp.Append(runBaseProp);
+            var styleTableConditionProp = new TableStyleConditionalFormattingTableProperties();
+
+
+
+            var tableStylePropStrip = new TableStyleProperties()
+            {
+                Type = TableStyleOverrideValues.FirstRow
+            };
+            var styleTableConditionProp2 = new TableStyleConditionalFormattingTableProperties()
+            {
+
+            };
+
+            var styleCellConditionPropStrip = new TableStyleConditionalFormattingTableCellProperties();
+            Shading shading55 = new Shading() { Val = ShadingPatternValues.Clear, Color = "auto", Fill = " #c3e4e8" };
+            styleCellConditionPropStrip.Append(shading55);
+
+            tableStyleProp.Append(styleTableConditionProp);
+            tableStylePropStrip.Append(styleTableConditionProp2, styleCellConditionPropStrip);
+            newStyle.Append(styleTabelProp);
+            newStyle.Append(tableStyleProp, tableStylePropStrip);
+
+            return newStyle;
+
+
+        }
+
         public Stream GenerateWS(WorkSheetDto ws)
         {
             var stream = new MemoryStream();
@@ -174,6 +237,8 @@ namespace Application.Service.GenerateWorkSheet
                 doc.MainDocumentPart.Document.Body = doc.MainDocumentPart.Document.AppendChild(new Body());
                 var stylePart = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
                 stylePart.Styles = new Styles();
+                var tableStyle = CreateTableStyle();
+
                 stylePart.Styles.DocDefaults = new DocDefaults()
                 {
                     RunPropertiesDefault = new RunPropertiesDefault()
@@ -185,10 +250,11 @@ namespace Application.Service.GenerateWorkSheet
                         }
                     }
                 };
-                var headerTable = CreateHeaderTable(ws);
+                stylePart.Styles.Append(tableStyle);
+
                 var inFotable = CreateGeneralInfoTable(ws);
                 var sampleListTable = CreateSampleListTable(ws.Samples.ToList());
-                doc.MainDocumentPart.Document.Body.Append(headerTable);
+
                 doc.MainDocumentPart.Document.Body.Append(new Paragraph());
                 doc.MainDocumentPart.Document.Body.Append(inFotable);
                 doc.MainDocumentPart.Document.Body.Append(new Paragraph());
