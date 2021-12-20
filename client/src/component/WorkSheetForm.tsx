@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { WorkSheet } from "../api/entity";
 import { FormContainer, FormSection } from "../style/Form";
 import { Button, CheckBox, Input, Select } from "../App/structure/FormElement";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useStore } from "../store/appStore";
 
 import AutoSave from "./AutoSave";
@@ -21,7 +21,8 @@ interface Props {
 
 
 const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
-    const { methodStore, customerStore } = useStore();
+    const { methodStore, customerStore, commonStore, sampleStore } = useStore();
+    
     useEffect(() => {
         methodStore.getMethod();
     }, [methodStore.methodList.length, methodStore])
@@ -53,13 +54,14 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
 
                     })
                 }
-                onSubmit={(val, act) => {
-                    handleSubmit(val)
+                onSubmit={(val) => {
+                  
+                  handleSubmit(val)
 
                 }}
             >
                 {({ values, errors }) => {
-
+                    console.log(values)
                     return (
 
                         <Form>
@@ -199,6 +201,8 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                     submitForm()
                                                 }}
                                                 type="button">Save</Button>
+                                           
+                                            
                                         </>
                                     )
                                 }}

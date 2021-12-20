@@ -17,6 +17,7 @@ const ResultInput = () => {
                 <ControllFormButton>
                     {({ submitForm }) => <Button className='form_button' top='60%' left='92%'
                         onClick={() => {
+                            
                             submitForm()
                         }}
                         type="button">Save</Button>}

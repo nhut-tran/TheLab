@@ -12,10 +12,10 @@ const VerifyWorkSheetLab = () => {
 
 
     const { sampleStore } = useStore()
-    // if (!allowModified) return <Redirect to='/login' />
+ 
     return (
         <Wrapper>
-            {<ViewWorkSheet autoSaveName='verifyLab' viewOnly={isStatusLowerOrEqual || !endLimit.isStatusLower} />}
+            {<ViewWorkSheet  viewOnly={isStatusLowerOrEqual || !endLimit.isStatusLower} />}
 
             {isStatusLowerOrEqual && <Button top='50%' left='92%'
                 onClick={() => handleVerify(isStatusEqual ? sampleStore.workSheet.workSheetNo : [sampleStore.workSheet.workSheetNo])}

@@ -1,14 +1,17 @@
 import { FieldArray, Form, Formik } from 'formik'
 import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
 import * as React from 'react'
+import { useParams } from 'react-router'
 import { WorkSheet } from '../api/entity'
 import { Input, Select } from '../App/structure/FormElement'
 import { useStore } from '../store/appStore'
 import { FormContainer, FormContainerGrid, FormSection } from '../style/Form'
 import { Spinner } from '../style/Spinner'
-import { Wrapper, WrapperForForm } from '../style/Wrapper'
+import { WrapperForForm } from '../style/Wrapper'
 import AutoSave from './AutoSave'
+
 interface Prop {
     viewOnly: boolean
     children?: React.ReactNode,
@@ -16,14 +19,16 @@ interface Prop {
 }
 
 
-const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
-    const { sampleStore, methodStore } = useStore()
+const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
+    const { sampleStore, methodStore, commonStore } = useStore()
+    const  {id}= useParams<{id: string}>();
     let [iniital, setInitial] = React.useState({} as WorkSheet)
-    const fistRender = React.useRef(0)
+    // const fistRender = React.useRef(0)
     React.useEffect(() => {
         methodStore.getMethod();
     }, [methodStore.methodList.length, methodStore])
     React.useLayoutEffect(() => {
+        //if autosavename => use for save in localstorage
         if (autoSaveName && !sampleStore.workSheet.workSheetNo) {
 
             let savedSample = localStorage.getItem(autoSaveName);
@@ -33,13 +38,19 @@ const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
                 setInitial(JSON.parse(savedSample))
             } else {
                 setInitial({ ...toJS(sampleStore.workSheet) })
-                fistRender.current += 1
+                // fistRender.current += 1
             }
         } else if (sampleStore.workSheet.workSheetNo) {
-
+          
 
             setInitial({ ...toJS(sampleStore.workSheet) })
 
+        } else {
+           //fetch data if not avaliable
+            commonStore.search({Worksheet: id, WorkSheet_BySample: ""}).then(() => {
+                setInitial({...toJS(sampleStore.workSheet)})  
+            })
+            
         }
         return () => {
 
@@ -111,7 +122,7 @@ const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
 
                                                                                                         <Select className='form_group' label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
 
-                                                                                                            <option disabled key={p.methodID} value={p.methodID}>{p.method}</option>
+                                                                                                            <option disabled key={p.methodID} value={p.methodID}>{methodStore.methodRegistry.get(p.methodID)?.name}</option>
                                                                                                         </Select>
                                                                                                     ))
 
@@ -122,7 +133,7 @@ const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
 
                                                                                                     <Select className='form_group' label={`Unit ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
 
-                                                                                                        <option key={p.methodID} value={p.methodID}>{p.unit}</option>
+                                                                                                        <option key={p.methodID} value={p.methodID}>{methodStore.methodRegistry.get(p.methodID)?.unit}</option>
                                                                                                     </Select>
                                                                                                 ))
                                                                                                 }
@@ -160,7 +171,7 @@ const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
                             />
 
                             {autoSaveName && <AutoSave item={autoSaveName} />}
-                            {!viewOnly && children}
+                            {!viewOnly && children} //add button for other purposes
                         </Form>
                     )
                 }
@@ -172,6 +183,6 @@ const ViewWorkSheet = ({ viewOnly, children, autoSaveName }: Prop) => {
         </WrapperForForm>
 
     )
-}
+})
 
 export default ViewWorkSheet

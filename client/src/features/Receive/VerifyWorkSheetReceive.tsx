@@ -18,16 +18,13 @@ const VerifyWorkSheetReceive = () => {
     return (
         <Wrapper className="wrapper">
 
-            <ViewWorkSheet autoSaveName={'nhut'} viewOnly={true} />
+            <ViewWorkSheet viewOnly={true} />
 
             {isStatusLowerOrEqual && <Button disabled={commonStore.isFetching} top='50%' left='92%'
                 onClick={() => handleVerify(isStatusEqual ? sampleStore.workSheet.workSheetNo : [sampleStore.workSheet.workSheetNo])}
                 type='button'>{isStatusEqual ? "Unverify" : "Verify"}
             </Button>}
-            <Button disabled={commonStore.isFetching} top='70%' left='92%'
-                onClick={() => sampleStore.generayeWSPDF(sampleStore.workSheet.workSheetNo)}
-                type='button'>Print
-            </Button>
+            
         </Wrapper>
     )
 }

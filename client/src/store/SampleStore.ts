@@ -49,8 +49,8 @@ export class SampleStore {
     CreateSample = async (data: WorkSheet) => {
         await agent.worksheet.post(data);
         toastEventRes.emit("fail", "Create succuess");
-        history.push("/");
         this.workSheet = data;
+        history.push(`/${data.workSheetNo}`);
     };
 
     UpdateSample = async (data: WorkSheet) => {
