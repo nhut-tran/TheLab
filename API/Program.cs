@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,9 @@ namespace API
 
                 var context = scope.ServiceProvider.GetRequiredService<DataContext>();
                 var seedData = scope.ServiceProvider.GetRequiredService<SeedData>();
-                context.Database.Migrate();
+
                 seedData.Seed();
+
             }
 
             host.Run();

@@ -8,6 +8,7 @@
 /.pnp
 .pnp.js
 /obj
+/API/appsettings.json
 /API/.local-chromium/
 # testing
 /coverage

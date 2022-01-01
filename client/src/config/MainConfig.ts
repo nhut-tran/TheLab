@@ -24,6 +24,7 @@ import ViewWorkSheet from "../component/ViewWorkSheet";
 import VerifyResultMain from "../component/VerifyResultMain";
 import CreateSample from "../features/Receive/CreateSample";
 import Print from "../features/Receive/Print";
+import SendEmailReceipt from "../features/CustomerService/SendEmailReceipt";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -56,6 +57,12 @@ const mainConfig: MainRouteConfig[] = [
             },
             {
                 requirement: [new DepartmentRequirement(Department.Manager)],
+                component: Main,
+            },
+            {
+                requirement: [
+                    new DepartmentRequirement(Department.CustomerService),
+                ],
                 component: Main,
             },
         ],
@@ -138,6 +145,12 @@ const mainConfig: MainRouteConfig[] = [
                 requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyWorkSheetMain,
             },
+            {
+                requirement: [
+                    new DepartmentRequirement(Department.CustomerService),
+                ],
+                component: VerifyWorkSheetMain,
+            },
         ],
         fallBackComponent: NotFound,
     },
@@ -172,6 +185,12 @@ const mainConfig: MainRouteConfig[] = [
             {
                 requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyResultManager,
+            },
+            {
+                requirement: [
+                    new DepartmentRequirement(Department.CustomerService),
+                ],
+                component: SendEmailReceipt,
             },
         ],
         fallBackComponent: NotFound,

@@ -280,6 +280,11 @@ const agent = {
         del() {
             return request.del<ResponseData<Customer>>("Customer");
         },
+        sendEmail(wsn: string) {
+            return request.get<ResponseData<void>>(
+                `WorkSheet/sendemailreceipt/${wsn}`
+            );
+        },
     },
 
     common: {

@@ -6,10 +6,10 @@ import ViewWorkSheet from '../../component/ViewWorkSheet'
 import { Wrapper } from '../../style/Wrapper'
 
 
-const VerifyWorkSheetReceive = () => {
-    const { isStatusLowerOrEqual, isStatusEqual, handleVerify } = useLimitAccessWSStatus("endLimit")
+const SendEmailReceipt = () => {
+    const { isStatusLowerOrEqual } = useLimitAccessWSStatus("endLimit")
 
-    const { sampleStore, commonStore } = useStore()
+    const { customerStore, commonStore, sampleStore } = useStore()
   
     return (
         <Wrapper className="wrapper">
@@ -17,12 +17,12 @@ const VerifyWorkSheetReceive = () => {
             <ViewWorkSheet viewOnly={true} />
 
             {isStatusLowerOrEqual && <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => handleVerify(isStatusEqual ? sampleStore.workSheet.workSheetNo : [sampleStore.workSheet.workSheetNo])}
-                type='button'>{isStatusEqual ? "Unverify" : "Verify"}
+                onClick={() => {customerStore.sendEmail(sampleStore.workSheet.workSheetNo)}}
+                type='button'>Send Email
             </Button>}
             
         </Wrapper>
     )
 }
 
-export default VerifyWorkSheetReceive
+export default SendEmailReceipt

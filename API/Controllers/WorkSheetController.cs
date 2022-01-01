@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Application.Service;
 using Application.Service.GenerateWorkSheet;
+using Application.Service.EmailService;
 
 namespace API.Controllers
 {
@@ -25,25 +26,45 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class WorkSheetController : BaseController
     {
-        private readonly PrefixOption _options;
         private readonly IWebHostEnvironment _env;
+        private readonly IEmailSender _emailSender;
+        private readonly IOptions<MailServiceSetting> options;
         private readonly ILogger _log;
         private readonly Report _report;
         private readonly GenerateWorkSheet _generateWorkSheet;
 
         public WorkSheetController(
-            IOptions<PrefixOption> options,
+
             ILogger<WorkSheetController> log,
             Report report,
             GenerateWorkSheet generateWorkSheet,
-            IWebHostEnvironment env
+            IWebHostEnvironment env,
+            IEmailSender emailSender
         )
         {
             _log = log;
             _report = report;
             _generateWorkSheet = generateWorkSheet;
-            _options = options.Value;
             _env = env;
+            _emailSender = emailSender;
+        }
+
+        private async Task<Stream> getReportStream(string wsNo)
+        {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            var doc = await Mediator.Send(new WorkSheetDetail.Query { WorkSheetNo = wsNo, Department = depa });
+
+            var reportStream = _generateWorkSheet.GenerateWS(doc.Value);
+            return reportStream;
+        }
+        private async Task sendEmail(string wsn, EmailContentType emailType)
+        {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            var doc = await Mediator.Send(new WorkSheetReport.Query { WorkSheetNo = wsn, Department = depa });
+            var reportStream = _report.GenerateReport(doc.Value);
+            if (depa == "CustomerService") emailType = EmailContentType.SendReceipt;
+            _emailSender.Send("trannhut0717@gmail.com", "nhut",
+            doc.Value, emailType, reportStream);
         }
         // create blank WorkSheet
         [HttpGet("blank/{numSample}")]
@@ -138,8 +159,8 @@ namespace API.Controllers
         {
             var depa = HttpContext.User.FindFirstValue("Department");
             var doc = await Mediator.Send(new WorkSheetReport.Query { WorkSheetNo = wsNo, Department = depa });
-            var path = Path.Combine(_env.WebRootPath, "report.docx");
-            var reportStream = _report.GenerateReport(path, doc.Value);
+
+            var reportStream = _report.GenerateReport(doc.Value);
             if (reportStream.Length > 0)
             {
                 var cd = new ContentDispositionHeaderValue("attachment");
@@ -160,11 +181,8 @@ namespace API.Controllers
         [HttpGet("generateworksheet/{wsno}")]
         public async Task<IActionResult> GenerateWorkSheet(string wsNo)
         {
-            var depa = HttpContext.User.FindFirstValue("Department");
-            var doc = await Mediator.Send(new WorkSheetDetail.Query { WorkSheetNo = wsNo, Department = depa });
+            var reportStream = await getReportStream(wsNo);
 
-            var reportStream = _generateWorkSheet.GenerateWS(doc.Value);
-            _log.LogInformation(doc.Value.WorkSheetNo);
             if (reportStream.Length > 0)
             {
                 var cd = new ContentDispositionHeaderValue("attachment");
@@ -182,13 +200,51 @@ namespace API.Controllers
 
 
         }
+        [Authorize("CustomerService")]
+        [HttpGet("sendemailreceipt/{wsn}")]
+        public async Task<IActionResult> SendEmailReceipt(string wsn)
+        {
+            try
+            {
+                await sendEmail(wsn, EmailContentType.SendReceipt);
+                return Ok();
+            }
 
+            catch (Exception ex)
+            {
 
+                return HandleRequestResult(Result<Domain.WorkSheet>.Fail(
+                new ErrorrType() { Name = "3", Message = "Cannot send email" })
+                );
 
+            }
+        }
+        [Authorize("Report")]
+        [HttpGet("sendemailreport/{wsn}")]
+        public async Task<IActionResult> SendEmailReport(string wsn)
+        {
+            try
+            {
+                await sendEmail(wsn, EmailContentType.SendResult);
+                return Ok();
+            }
+
+            catch (Exception ex)
+            {
+
+                return HandleRequestResult(Result<Domain.WorkSheet>.Fail(
+                new ErrorrType() { Name = "3", Message = "Cannot send email" })
+                );
+
+            }
+        }
 
 
     }
 
 
+
+
 }
+
 

@@ -1,6 +1,5 @@
 import { Form, Formik } from 'formik'
 import { observer } from 'mobx-react-lite'
-import * as Yup from 'yup'
 import { Button, Input } from '../App/structure/FormElement'
 import { useStore } from '../store/appStore'
 import { FormContainer } from '../style/Form'
@@ -39,8 +38,8 @@ const SearchInput = observer(() => {
                     <FormContainer direction='column' className='form_container'>
                         <Input label='WorkSheet' name='Worksheet' className='form_group' />
                         <Input label='Sample' name='WorkSheet_BySample' className='form_group' />
-                        <Button position='relative' type='submit'>Find WorkSheet</Button>
-
+                        {<Button position='relative' type='submit'>Find WorkSheet</Button>} 
+                        {/* <Button onClick={() => agent.customer.sendEmail()} position='relative' type='button'>Send Email</Button> */}
                     </FormContainer>
                 </Form>
             </Formik>

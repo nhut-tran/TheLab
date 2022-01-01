@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using API.DTOs;
 using AutoMapper;
-using AutoMapper.Internal;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Domain;
 
 namespace Application.Core
@@ -56,7 +52,8 @@ namespace Application.Core
             .ForMember(t => t.ReceiveDate, o => o.Ignore())
             .ForMember(t => t.ResultDate, o => o.Ignore())
             .ForMember(t => t.IssueTo, o => o.Ignore())
-            .ForMember(t => t.WorkSheetNo, o => o.Ignore());
+            .ForMember(t => t.WorkSheetNo, o => o.Ignore())
+            .ForMember(t => t.ReceiveNo, o => o.Ignore());
 
             CreateMap<Customer, CustomerDto>();
             CreateMap<Domain.Department, DepartmentDto>();

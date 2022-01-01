@@ -12,7 +12,7 @@ namespace Persistence.Migrations
              ON ""WorkSheet""
             FOR EACH ROW
             EXECUTE PROCEDURE restartreceiveno();";
-            
+
             migrationBuilder.Sql(sql);
         }
 

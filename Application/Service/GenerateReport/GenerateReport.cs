@@ -138,7 +138,7 @@ namespace Application.Service
 
 
         }
-        public Stream GenerateReport(string path, WorkSheetDto ws)
+        public Stream GenerateReport(WorkSheetDto ws)
         {
             var stream = new MemoryStream();
             using (WordprocessingDocument doc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document))

@@ -29,6 +29,7 @@ namespace API.Extension
                  op.AddPolicy("ManagerOperate", policy => policy.Requirements.Add(new DepartmentAndTitleRequirement("Manager", "Header")));
 
                  op.AddPolicy("HeaderLevel", policy => policy.RequireClaim("Title", "Header"));
+                 op.AddPolicy("CustomerService", policy => policy.Requirements.Add(new DepartmentAndTitleRequirement("CustomerService")));
 
              });
             services.AddTransient<IAuthorizationHandler, DepartmentAndTitleRequirementHandler>();

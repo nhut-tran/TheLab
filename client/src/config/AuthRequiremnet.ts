@@ -1,48 +1,40 @@
-import { UserClient } from "../api/entity"
+import { UserClient } from "../api/entity";
 
 export interface AuthRequirement {
-    [re: string]: any,
-    validate: (data: any) => boolean
+    [re: string]: any;
+    validate: (data: any) => boolean;
 }
 
-export const a = 2;
-
 export class LoginRequirement implements AuthRequirement {
-
-
     validate = (user: UserClient) => {
-        return true
-    }
+        return true;
+    };
 }
 
 export class DepartmentRequirement implements AuthRequirement {
-    department: string
+    department: string;
     constructor(department: string) {
-        this.department = department
+        this.department = department;
     }
     validate = (user: UserClient) => {
-        if (user) return this.department === user.department
-        return false
-
-    }
+        if (user) return this.department === user.department;
+        return false;
+    };
 }
 
 export class TitleRequirement implements AuthRequirement {
-    title: string
+    title: string;
     constructor(title: string) {
-        this.title = title
+        this.title = title;
     }
     validate = (user: UserClient) => {
-        return this.title === user.title
-
-    }
+        return this.title === user.title;
+    };
 }
 
 export class NotLoginRequirement implements AuthRequirement {
-
     validate = (user: UserClient) => {
-        console.log(user)
-        return true
-    }
-
+        console.log(user);
+        return true;
+    };
 }

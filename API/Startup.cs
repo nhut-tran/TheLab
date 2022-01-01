@@ -4,10 +4,12 @@ using API.ErrorHandle;
 using API.Extension;
 using API.Options;
 using API.Services;
+
 using Application.Core;
 using Application.Interface;
 using Application.Method;
 using Application.Service;
+using Application.Service.EmailService;
 using Application.Service.GenerateWorkSheet;
 using Domain;
 using Infrastructure.Security;
@@ -104,12 +106,22 @@ namespace API
             services.AddMediatR(typeof(MethodList.Handler).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddWordDocument();
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
 
-            services.Configure<PrefixOption>(Configuration.GetSection("Prefix"));
+            //   
+            services.AddEmailServices(c =>
+            {
+                c.Host = "smtp.gmail.com";
+                c.Password = "nhut@17071707";
+                c.Port = 587;
+                c.Email = "trannhut1707@gmail.com";
+
+            });
 
         }
 

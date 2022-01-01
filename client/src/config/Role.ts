@@ -1,13 +1,12 @@
 export enum Department {
-    Receive = 'Re',
-    MiLab = 'Mi',
-    Report = 'Rp',
-    Manager = 'Ma'
-
+    Receive = "Re",
+    MiLab = "Mi",
+    Report = "Rp",
+    CustomerService = "Cs",
+    Manager = "Ma",
 }
 
 export enum Title {
-    Staff = 'Staff',
-    Header = 'Header'
+    Staff = "Staff",
+    Header = "Header",
 }
-
