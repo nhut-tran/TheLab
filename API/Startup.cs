@@ -2,20 +2,15 @@ using System;
 using System.Text;
 using API.ErrorHandle;
 using API.Extension;
-using API.Options;
 using API.Services;
 
 using Application.Core;
 using Application.Interface;
 using Application.Method;
 using Application.Service;
-using Application.Service.EmailService;
-using Application.Service.GenerateWorkSheet;
 using Domain;
-using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -71,15 +66,6 @@ namespace API
                     ClockSkew = TimeSpan.Zero
 
                 };
-
-                // op.Events = new JwtBearerEvents()
-                // {
-                //   OnAuthenticationFailed = context =>
-                //     {
-                //       context.Principal
-                //         return Task.CompletedTask;
-                //     }
-                // };
             });
             services.AddPolicyAuth();
             services.AddCors(options =>
@@ -98,7 +84,15 @@ namespace API
             services.AddScoped<TokenService>();
             services.AddSingleton<IGetValueToApprove<string, int>, GetStatusValueApprove>();
 
+            services.AddEmailServices(c =>
+                      {
+                          var conf = Configuration.GetSection("MailServiceSetting");
+                          c.Host = conf.GetValue<string>("Host");
+                          c.Password = conf.GetValue<string>("Password");
+                          c.Port = conf.GetValue<int>("Port");
+                          c.Email = conf.GetValue<string>("Email");
 
+                      });
             services.AddScoped<SeedData>();
 
             services.AddValidate();
@@ -114,14 +108,7 @@ namespace API
             });
 
             //   
-            services.AddEmailServices(c =>
-            {
-                c.Host = "smtp.gmail.com";
-                c.Password = "nhut@17071707";
-                c.Port = 587;
-                c.Email = "trannhut1707@gmail.com";
 
-            });
 
         }
 
@@ -135,8 +122,6 @@ namespace API
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
-
-
             }
 
             app.UseHttpsRedirection();

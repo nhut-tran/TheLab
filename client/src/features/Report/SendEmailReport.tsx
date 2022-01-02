@@ -4,16 +4,18 @@ import { useStore } from "../../store/appStore";
 import { Wrapper } from "../../style/Wrapper";
 import { useAccessWorkSheetByStatusVerify } from "../../utils/useLimitAccessWSStatus";
 
-const SendEmailReceipt = () => {
-    const startLimit = useAccessWorkSheetByStatusVerify('startLimit');
+const SendEmailReport = () => {
+   
     const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
-    const { sampleStore, commonStore, customerStore } = useStore()
+    const { customerStore, commonStore, sampleStore } = useStore()
     return ( 
         <Wrapper>
             <ViewWorkSheet viewOnly={true} />
-            {(startLimit ) && <Button disabled={commonStore.isFetching} top='50%' left='92%' onClick={() => customerStore.sendEmail(sampleStore.workSheet.workSheetNo, 'receipt')} type='button'>Send Email Receipt</Button>}
+            {(endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+            onClick={() => customerStore.sendEmail(sampleStore.workSheet.workSheetNo, 'report')} type='button'>Send Email Report</Button>
+            }
         </Wrapper>
     )
 }
 
-export default SendEmailReceipt
+export default SendEmailReport

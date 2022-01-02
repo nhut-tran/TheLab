@@ -6,7 +6,6 @@ using Application.Interface;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Persistence;
 
 namespace Application.WorkSheet
@@ -26,19 +25,11 @@ namespace Application.WorkSheet
             private readonly DataContext _db;
             private readonly IMapper _mapper;
             private readonly IGetValueToApprove<string, int> _getStatus;
-
-            public IConfiguration Config { get; }
-
-
-
             public Handler(DataContext db, IMapper mapper, IGetValueToApprove<string, int> getStatus)
             {
-
-
                 _mapper = mapper;
                 _getStatus = getStatus;
                 _db = db;
-
             }
 
             public async Task<Result<WorkSheetDto>> Handle(Query request, CancellationToken cancellationToken)
@@ -57,13 +48,10 @@ namespace Application.WorkSheet
                 }
                 else
                 {
-                    workSheet = await query
-                    .FirstOrDefaultAsync(ws => ws.Samples.Any(s => s.SampleID == request.SampleID)
+                    workSheet = await query.FirstOrDefaultAsync(ws => ws.Samples.Any(s => s.SampleID == request.SampleID)
                 , cancellationToken: cancellationToken);
                 }
-                
 
-              
                 if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(workSheet);
 

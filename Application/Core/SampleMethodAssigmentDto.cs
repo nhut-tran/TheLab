@@ -1,6 +1,4 @@
 using System;
-using Application.Core;
-using Domain;
 
 namespace API.DTOs
 {

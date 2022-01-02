@@ -8,7 +8,7 @@ const NavLinkLab = () => {
 
         <>
 
-            <Link to={'/verify'} className="nav_link" children='Verify WorkSheet' />
+           
             <Link to={'/verifyresult'} className="nav_link" children='Verify Result' />
             <Link to={'/result'} className="nav_link" children='Result' />
         </>

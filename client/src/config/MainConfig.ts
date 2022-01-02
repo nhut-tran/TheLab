@@ -5,7 +5,6 @@ import NotFound from "../component/NotFound";
 import Login from "../features/Identity/Login";
 import SignUp from "../features/Identity/SignUp";
 
-import VerifyWorkSheetLab from "../features/Lab/VerifyWorkSheetLab";
 import VerifyWorkSheetReceive from "../features/Receive/VerifyWorkSheetReceive";
 import Main from "../component/Main";
 import {
@@ -15,7 +14,7 @@ import {
     TitleRequirement,
 } from "./AuthRequiremnet";
 import { Department, Title } from "./Role";
-import ReviewReport from "../features/Report/ReviewReport";
+import ExportReport from "../features/Report/ExportReport";
 import LabResult from "../features/Lab/LabResult";
 import ResultInput from "../features/Lab/ResutlInput";
 import VerifyResultLab from "../features/Lab/VerifyResultLab";
@@ -25,6 +24,8 @@ import VerifyResultMain from "../component/VerifyResultMain";
 import CreateSample from "../features/Receive/CreateSample";
 import Print from "../features/Receive/Print";
 import SendEmailReceipt from "../features/CustomerService/SendEmailReceipt";
+import SendEmail from "../component/SendEmail";
+import SendEmailReport from "../features/Report/SendEmailReport";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -113,7 +114,7 @@ const mainConfig: MainRouteConfig[] = [
         componentList: [
             {
                 requirement: [new DepartmentRequirement(Department.Report)],
-                component: ReviewReport,
+                component: ExportReport,
             },
             {
                 requirement: [new DepartmentRequirement(Department.Receive)],
@@ -145,12 +146,6 @@ const mainConfig: MainRouteConfig[] = [
                 requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyWorkSheetMain,
             },
-            {
-                requirement: [
-                    new DepartmentRequirement(Department.CustomerService),
-                ],
-                component: VerifyWorkSheetMain,
-            },
         ],
         fallBackComponent: NotFound,
     },
@@ -171,16 +166,12 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
-                component: VerifyWorkSheetLab,
-            },
-            {
                 requirement: [new DepartmentRequirement(Department.Receive)],
                 component: VerifyWorkSheetReceive,
             },
             {
                 requirement: [new DepartmentRequirement(Department.Report)],
-                component: ReviewReport,
+                component: ExportReport,
             },
             {
                 requirement: [new DepartmentRequirement(Department.Manager)],
@@ -229,6 +220,40 @@ const mainConfig: MainRouteConfig[] = [
             {
                 requirement: [new DepartmentRequirement(Department.MiLab)],
                 component: VerifyResultLab,
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/sendemail",
+        exact: true,
+        componentList: [
+            {
+                requirement: [new DepartmentRequirement(Department.Report)],
+                component: SendEmail,
+            },
+            {
+                requirement: [
+                    new DepartmentRequirement(Department.CustomerService),
+                ],
+                component: SendEmail,
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/sendemail/:id",
+        exact: true,
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(Department.CustomerService),
+                ],
+                component: SendEmailReceipt,
+            },
+            {
+                requirement: [new DepartmentRequirement(Department.Report)],
+                component: SendEmailReport,
             },
         ],
         fallBackComponent: NotFound,

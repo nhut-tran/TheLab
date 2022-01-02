@@ -60,16 +60,18 @@ export class SampleStore {
     };
 
     verifyWorkSheet = async (data: string[]) => {
-        await agent.worksheet.verify(data);
+        var res = await agent.worksheet.verify(data);
 
-        data.forEach((wsn) => {
-            appStore.commonStore.searchData =
-                appStore.commonStore.searchData.filter(
-                    (ws) => ws.workSheetNo !== wsn
-                );
-        });
+        if (res.isSuccess) {
+            data.forEach((wsn) => {
+                appStore.commonStore.searchData =
+                    appStore.commonStore.searchData.filter(
+                        (ws) => ws.workSheetNo !== wsn
+                    );
+            });
 
-        history.push("/verify");
+            history.push("/verify");
+        }
     };
     unVerifyWorkSheet = async (wsn: string) => {
         await agent.worksheet.unverify(wsn);

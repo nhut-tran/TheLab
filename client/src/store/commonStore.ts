@@ -58,7 +58,12 @@ class CommonStore {
             this.setSearchData(res.data.value);
             return;
         }
-        const res = await agent.common.getUnapproveWorksheet(page);
+        const res = await agent.common.getUnapprovedWorksheet(page);
+        this.metadata = res.data.metadata;
+        this.setSearchData(res.data.value);
+    };
+    getApprovedWorkSheet = async (page = "1") => {
+        const res = await agent.common.getApprovedWorksheet(page);
         this.metadata = res.data.metadata;
         this.setSearchData(res.data.value);
     };

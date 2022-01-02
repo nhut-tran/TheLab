@@ -47,13 +47,13 @@ namespace Application.WorkSheet
                .ThenInclude(p => p.Method)
                .Include(w => w.IssueTo)
                .AsSplitQuery()
-               .Where(w => w.Status >= _getStatus.Accept[request.Department])
+               .Where(w => w.Status == _getStatus.Accept[request.Department])
                 .FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
+                if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
+
                 workSheet.SetStatus();
                 await _db.SaveChangesAsync(cancellationToken);
 
-
-                if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(workSheet);
 
                 return Result<WorkSheetDto>.Success(mapWorkSheet);

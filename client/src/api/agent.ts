@@ -48,7 +48,7 @@ const request = {
             .get<ResponseData>(`/${entity}`)
             .then<ResponseData>((res) => res.data),
     post: <ResponseData>(entity: string, data: {}) => {
-        axios
+        return axios
             .post<ResponseData>(`/${entity}`, data)
             .then<ResponseData>((res) => res.data);
     },
@@ -280,9 +280,9 @@ const agent = {
         del() {
             return request.del<ResponseData<Customer>>("Customer");
         },
-        sendEmail(wsn: string) {
+        sendEmail(wsn: string, emailType: "receipt" | "report") {
             return request.get<ResponseData<void>>(
-                `WorkSheet/sendemailreceipt/${wsn}`
+                `WorkSheet/sendemail${emailType}/${wsn}`
             );
         },
     },
@@ -291,9 +291,14 @@ const agent = {
         search(entity: string, key: string) {
             return axios.get<ResponseDataSingle<any>>(`${entity}/${key}`);
         },
-        getUnapproveWorksheet(page: string) {
+        getUnapprovedWorksheet(page: string) {
             return axios.get<ResponseData<WorkSheet>>(
-                `WorkSheet/Unapprove/${page}`
+                `WorkSheet/Unapproved/${page}`
+            );
+        },
+        getApprovedWorksheet(page: string) {
+            return axios.get<ResponseData<WorkSheet>>(
+                `WorkSheet/Approved/${page}`
             );
         },
         getUnVerifyWorkSheetWithResult() {

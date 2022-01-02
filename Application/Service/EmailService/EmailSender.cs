@@ -18,11 +18,11 @@ namespace Application.Service.EmailService
         }
 
 
-        public void Send(string email, string name, WorkSheetDto ws, EmailContentType sendPurpose, Stream stream)
+        public void Send(CustomerDto customer, WorkSheetDto ws, EmailContentType sendPurpose, Stream stream)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("The Lab", "TheLab@email.com"));
-            message.To.Add(new MailboxAddress("Customer", email));
+            message.To.Add(new MailboxAddress("Customer", customer.Email));
             var multipart = new Multipart();
 
             if (EmailContentType.SendReceipt == sendPurpose)
@@ -40,7 +40,7 @@ namespace Application.Service.EmailService
                         <p>The Lab</p>
                         <p>Phone number: 30932829
                         Email: receive@email.com</p>
-                    </div>", name, ws.ReceiveNo, ws.ResultDate);
+                    </div>", customer.Name, ws.ReceiveNo, ws.ResultDate);
                 multipart.Add(new TextPart(TextFormat.Html) { Text = text });
             }
             else
@@ -60,26 +60,21 @@ namespace Application.Service.EmailService
                         <p>The Lab</p>
                         <p>Phone number: 30932829
                         Email: receive@email.com</p>
-                <p>", name, ws.ReceiveNo);
+                <p>", customer.Name, ws.ReceiveNo);
                 multipart.Add(new TextPart(TextFormat.Html) { Text = text });
+                var attachmentPart = new MimePart(MediaTypeNames.Application.Octet)
+                {
+                    Content = new MimeContent(stream),
+                    ContentTransferEncoding = ContentEncoding.Base64,
+                    FileName = $"{ws.ReceiveNo}-report.docx"
+                };
+                multipart.Add(attachmentPart);
             }
-
-            var attachmentPart = new MimePart(MediaTypeNames.Application.Octet)
-            {
-                Content = new MimeContent(stream),
-
-                ContentTransferEncoding = ContentEncoding.Base64,
-                FileName = $"{ws.ReceiveNo}-report.docx"
-            };
-            multipart.Add(attachmentPart);
             message.Body = multipart;
             using (var client = new SmtpClient())
             {
                 client.Connect(Configure.Host, Configure.Port, false);
-
-
                 client.Authenticate(Configure.Email, Configure.Password);
-
                 client.Send(message);
                 client.Disconnect(true);
             }

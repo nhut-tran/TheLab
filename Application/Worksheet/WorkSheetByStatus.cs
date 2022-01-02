@@ -36,7 +36,6 @@ namespace Application.Worksheet
             {
                 _mapper = mapper;
                 _getStatus = getStatus;
-
                 _db = db;
             }
 

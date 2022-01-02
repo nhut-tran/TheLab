@@ -28,7 +28,7 @@ namespace API.Controllers
                 {
                     return NotFound(result);
                 }
-                if (result.Error.Name == "UNKNONW")
+                if (result.Error.Name == "UNKNOWN")
                 {
                     return BadRequest(result);
                 }

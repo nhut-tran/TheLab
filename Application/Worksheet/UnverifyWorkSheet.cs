@@ -39,7 +39,7 @@ namespace Application.Worksheet
 
                 var workSheet = await _db.WorkSheet.FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
 
-                if (workSheet.Status > _getStatus.Verify[request.Department] + 1)
+                if (workSheet.Status != _getStatus.Verify[request.Department])
                     return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = "WorkSheet access is denied" });
 
                 workSheet.ResetStatus();

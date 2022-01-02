@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using API.Options;
 using Application.Core;
 using Application.Worksheet;
 using Application.WorkSheet;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Application.Service;
 using Application.Service.GenerateWorkSheet;
@@ -28,7 +26,6 @@ namespace API.Controllers
     {
         private readonly IWebHostEnvironment _env;
         private readonly IEmailSender _emailSender;
-        private readonly IOptions<MailServiceSetting> options;
         private readonly ILogger _log;
         private readonly Report _report;
         private readonly GenerateWorkSheet _generateWorkSheet;
@@ -49,22 +46,13 @@ namespace API.Controllers
             _emailSender = emailSender;
         }
 
-        private async Task<Stream> getReportStream(string wsNo)
+        private async Task<Stream> getWordDocumentStream(string wsNo)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
             var doc = await Mediator.Send(new WorkSheetDetail.Query { WorkSheetNo = wsNo, Department = depa });
 
             var reportStream = _generateWorkSheet.GenerateWS(doc.Value);
             return reportStream;
-        }
-        private async Task sendEmail(string wsn, EmailContentType emailType)
-        {
-            var depa = HttpContext.User.FindFirstValue("Department");
-            var doc = await Mediator.Send(new WorkSheetReport.Query { WorkSheetNo = wsn, Department = depa });
-            var reportStream = _report.GenerateReport(doc.Value);
-            if (depa == "CustomerService") emailType = EmailContentType.SendReceipt;
-            _emailSender.Send("trannhut0717@gmail.com", "nhut",
-            doc.Value, emailType, reportStream);
         }
         // create blank WorkSheet
         [HttpGet("blank/{numSample}")]
@@ -119,24 +107,32 @@ namespace API.Controllers
             return HandleRequestResult(await Mediator.Send(new WorkSheetResult.Command() { WorkSheet = workSheet }));
         }
 
-        //get list of worksheet to verify or accept of base on deparment+worksheet status
+        //get list of worksheet to approved base on deparment+worksheet status
         [Authorize("HeaderLevel")]
-        [HttpGet("UnApprove/{page}")]
+        [HttpGet("UnApproved/{page}")]
         public async Task<IActionResult> GetWorkSheets(int page)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
             return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page }));
         }
-        //verify result
+        //get list of worksheet to approved by deparment
+        [Authorize("HeaderLevel")]
+        [HttpGet("Approved/{page}")]
+        public async Task<IActionResult> GetWorkSheetSendEmail(int page)
+        {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, AcceptOrVerify = true }));
+        }
+        //approved result
         [Authorize("HeaderLevel")]
         [HttpGet("UnApproveWithResult")]
         public async Task<IActionResult> GetWorkSheetsWithResult()
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, AcceptOrVerify = true }));
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa }));
         }
 
-        //unverify or accept worksheet by increase worksheet status
+        //unverify worksheet
         [Authorize("HeaderLevel")]
         [HttpGet("Unverify/{wsn}")]
         public async Task<IActionResult> UnverifyWorkSheet(string wsn)
@@ -144,12 +140,12 @@ namespace API.Controllers
             var depa = HttpContext.User.FindFirstValue("Department");
             return HandleRequestResult(await Mediator.Send(new UnverifyWorkSheet.Request() { Department = depa, WorkSheetNo = wsn }));
         }
-        //verify or accept worksheet by increase worksheet status
+        //approved worksheet by increase worksheet status
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyWorkSheet(List<string> workSheetList)
         {
-            //var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new VerifyWorkSheet.Request() { WorkSheetList = workSheetList }));
+            var depa = HttpContext.User.FindFirstValue("Department");
+            return HandleRequestResult(await Mediator.Send(new VerifyWorkSheet.Request() { WorkSheetList = workSheetList, Department = depa }));
         }
 
         //generate report
@@ -178,65 +174,42 @@ namespace API.Controllers
 
 
         }
+        //generate worksheet
+        [Authorize("SampleReceive")]
         [HttpGet("generateworksheet/{wsno}")]
         public async Task<IActionResult> GenerateWorkSheet(string wsNo)
         {
-            var reportStream = await getReportStream(wsNo);
+            var reportStream = await getWordDocumentStream(wsNo);
 
             if (reportStream.Length > 0)
             {
                 var cd = new ContentDispositionHeaderValue("attachment");
                 cd.FileName = "WS.docx";
                 Response.Headers[HeaderNames.ContentDisposition] = cd.ToString();
-                return new FileStreamResult(reportStream, new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
-                {
-
-                };
+                return new FileStreamResult(reportStream, new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
             }
 
             return HandleRequestResult(Result<Domain.WorkSheet>.Fail(
-                new ErrorrType() { Name = "3", Message = "Cannot export report" })
-                );
-
-
+                new ErrorrType() { Name = "3", Message = "Cannot export report" }));
         }
+
         [Authorize("CustomerService")]
         [HttpGet("sendemailreceipt/{wsn}")]
         public async Task<IActionResult> SendEmailReceipt(string wsn)
         {
-            try
-            {
-                await sendEmail(wsn, EmailContentType.SendReceipt);
-                return Ok();
-            }
 
-            catch (Exception ex)
-            {
-
-                return HandleRequestResult(Result<Domain.WorkSheet>.Fail(
-                new ErrorrType() { Name = "3", Message = "Cannot send email" })
-                );
-
-            }
+            var depa = HttpContext.User.FindFirstValue("Department");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetEmail.Command { WorkSheetNo = wsn, Department = depa }));
         }
+
         [Authorize("Report")]
         [HttpGet("sendemailreport/{wsn}")]
         public async Task<IActionResult> SendEmailReport(string wsn)
         {
-            try
-            {
-                await sendEmail(wsn, EmailContentType.SendResult);
-                return Ok();
-            }
 
-            catch (Exception ex)
-            {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetEmail.Command { WorkSheetNo = wsn, Department = depa }));
 
-                return HandleRequestResult(Result<Domain.WorkSheet>.Fail(
-                new ErrorrType() { Name = "3", Message = "Cannot send email" })
-                );
-
-            }
         }
 
 

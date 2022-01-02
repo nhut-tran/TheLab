@@ -38,6 +38,10 @@ namespace Application.Worksheet
                 foreach (var wsn in request.WorkSheetList)
                 {
                     var workSheets = await _db.WorkSheet.FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
+                    if (workSheets.Status != _getStatus.Accept[request.Department])
+                    {
+                        return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = "WorkSheet access is denied" });
+                    }
                     workSheets.SetStatus();
 
                 }

@@ -9,7 +9,7 @@ const NavLinkRp = () => {
         <>
             <Link to={'/new'} className="nav_link" children='Export Report' />
 
-            <Link to={'/verify'} className="nav_link" children='Verify' />
+            <Link to={'/sendemail'} className="nav_link" children='Send Email' />
         </>
     )
 }

@@ -53,6 +53,8 @@ namespace Application.Worksheet
 
                 await _db.SaveChangesAsync(cancellationToken);
                 var savedBlank = (Domain.WorkSheet)_db.Entry(blankWorkSheet).GetDatabaseValues().ToObject();
+                //worksheetNo is create by trigger in DB only exist when ws is saved in BD.
+                //blankWorkSheet need to get data from saved one
                 blankWorkSheet.WorkSheetNo = savedBlank.WorkSheetNo;
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(blankWorkSheet);
                 if (res) return Result<WorkSheetDto>.Success(mapWorkSheet);

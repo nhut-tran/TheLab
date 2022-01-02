@@ -21,7 +21,7 @@ export class CustomerStore {
             });
         });
     };
-    sendEmail = async (wsn: string) => {
-        await agent.customer.sendEmail(wsn);
+    sendEmail = async (wsn: string, emailType: "receipt" | "report") => {
+        await agent.customer.sendEmail(wsn, emailType);
     };
 }

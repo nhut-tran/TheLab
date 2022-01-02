@@ -4,14 +4,16 @@ import ViewWorkSheet from '../../component/ViewWorkSheet'
 
 import { useStore } from '../../store/appStore'
 import { Wrapper } from '../../style/Wrapper'
-import { useLimitAccessWSStatus } from '../../utils/useLimitAccessWSStatus'
+import { useAccessWorkSheetByStatusVerify, useLimitAccessWSStatus } from '../../utils/useLimitAccessWSStatus'
 
 
 
 const VerifyResultLab = () => {
-    const { isStatusLowerOrEqual, isStatusEqual, handleVerify } = useLimitAccessWSStatus("endLimit")
-
-    const { sampleStore } = useStore()
+   
+    const { sampleStore, commonStore } = useStore();
+   
+    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
+    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
     //check workseheet has result =>  if not => not render handle verify button
     const hasResult = sampleStore.workSheet.samples.every(s => s.paramaters.every(p => p.result !== null))
     return (
@@ -19,10 +21,11 @@ const VerifyResultLab = () => {
 
             <ViewWorkSheet viewOnly={true} />
 
-            {(isStatusLowerOrEqual && hasResult) && <Button top='50%' left='92%'
-                onClick={() => handleVerify(isStatusEqual ? sampleStore.workSheet.workSheetNo : [sampleStore.workSheet.workSheetNo])}
-                type='button'>{isStatusEqual ? "Unverify" : "Verify"}
-            </Button>}
+           { (hasResult && (endlimit || startLimit)) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+                onClick={() => startLimit ? 
+                    sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) : 
+                    sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
+                type='button'>{startLimit ? "Verify" : "UnVerify"}</Button>}
 
         </Wrapper>
     )

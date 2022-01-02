@@ -1,26 +1,28 @@
 import * as React from 'react'
 import { Button } from '../../App/structure/FormElement'
 import { useStore } from '../../store/appStore'
-import { useLimitAccessWSStatus } from '../../utils/useLimitAccessWSStatus'
+import { useAccessWorkSheetByStatusVerify, useLimitAccessWSStatus } from '../../utils/useLimitAccessWSStatus'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 import { Wrapper } from '../../style/Wrapper'
 
 
 const VerifyWorkSheetReceive = () => {
-    const { isStatusLowerOrEqual, isStatusEqual, handleVerify } = useLimitAccessWSStatus("endLimit")
-
-    const { sampleStore, commonStore } = useStore()
+   
+    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
+    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const { sampleStore, commonStore } = useStore();
   
     return (
         <Wrapper className="wrapper">
 
             <ViewWorkSheet viewOnly={true} />
-
-            {isStatusLowerOrEqual && <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => handleVerify(isStatusEqual ? sampleStore.workSheet.workSheetNo : [sampleStore.workSheet.workSheetNo])}
-                type='button'>{isStatusEqual ? "Unverify" : "Verify"}
+            //if not in range of allow status not display control button
+           {(startLimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+                onClick={() => startLimit ? 
+                    sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) : 
+                    sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
+                type='button'>{startLimit ? "Verify" : "UnVerify"}
             </Button>}
-            
         </Wrapper>
     )
 }
