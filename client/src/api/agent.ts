@@ -68,6 +68,7 @@ const RaiseError = (err: AxiosError, defaultMessage?: string) => {
     let message: string = "";
     if (err.response?.data.error && err.response.data.error.message)
         message = err.response.data.error.message;
+
     toastEventRes.emit(
         "fail",
         message ? err.response?.data.error.message : defaultMessage

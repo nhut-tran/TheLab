@@ -41,7 +41,7 @@ namespace API.Services
                 new Claim("Department", user.Department.Name)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Super Super Key Super Super Key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWTKey").GetValue<string>("Key")));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor

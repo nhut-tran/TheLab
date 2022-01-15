@@ -3,7 +3,7 @@ import { WorkSheet } from '../api/entity'
 import { useStore } from '../store/appStore'
 import { StyleLink } from '../style/List'
 import { WrapperForList } from '../style/Wrapper'
-import { WorkSheetStatusLimitAccess, WorkSheetStatusLimitAccess2 } from '../config/WorkSheetStatus'
+import { WorkSheetStatusLimitAccess } from '../config/WorkSheetStatus'
 import ListItemWithCheck from './ListItemWithCheck'
 import PageGination from './Pagination'
 
@@ -34,7 +34,7 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                                 handleCheck={handleCheck}
                                 handleClick={handleClick}
                                 link={link}
-                                status={!(userStore.user && v.status <= WorkSheetStatusLimitAccess2[userStore.user.department][1])}
+                                status={!(userStore.user && v.status <= WorkSheetStatusLimitAccess[userStore.user.department][1])}
                             />
                         )
                     } else {

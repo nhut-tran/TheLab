@@ -48,7 +48,7 @@ export class SampleStore {
 
     CreateSample = async (data: WorkSheet) => {
         await agent.worksheet.post(data);
-        toastEventRes.emit("fail", "Create succuess");
+        toastEventRes.emit("success", "Create succuess");
         this.workSheet = data;
         history.push(`/${data.workSheetNo}`);
     };
@@ -61,7 +61,6 @@ export class SampleStore {
 
     verifyWorkSheet = async (data: string[]) => {
         var res = await agent.worksheet.verify(data);
-
         if (res.isSuccess) {
             data.forEach((wsn) => {
                 appStore.commonStore.searchData =
@@ -69,7 +68,7 @@ export class SampleStore {
                         (ws) => ws.workSheetNo !== wsn
                     );
             });
-
+            toastEventRes.emit("success", "Verify succuess");
             history.push("/verify");
         }
     };

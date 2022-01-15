@@ -48,15 +48,17 @@ namespace API
 
             .AddSignInManager<SignInManager<AppUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Super Super Key Super Super Key"));
+
             services.AddAuthentication(op =>
             {
+
                 op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 op.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(op =>
             {
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("JWTKey").GetValue<string>("Key")));
                 op.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
@@ -96,7 +98,7 @@ namespace API
             services.AddScoped<SeedData>();
 
             services.AddValidate();
-            // services.AddTransient<IValidator<Method>, MethodValidator>();
+
             services.AddMediatR(typeof(MethodList.Handler).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddWordDocument();

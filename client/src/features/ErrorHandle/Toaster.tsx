@@ -6,11 +6,11 @@ interface Prop {
     position: string,
     className: string,
     children: ReactNode,
-
+    type: "success" | "fail",
     ind: number
 }
 
-const ErrorToasterC = ({ className, children, position }: Prop) => {
+const ToasterC = ({ className, children}: Prop) => {
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
 
@@ -21,14 +21,14 @@ const ErrorToasterC = ({ className, children, position }: Prop) => {
         }
     }, [])
 
-
     return (
         children ? <div ref={ref} className={className}>{children}</div> : null
     )
 }
 
 
-const ErrorToaster = styled(ErrorToasterC)`
+
+const Toaster = styled(ToasterC)`
 
 
 @keyframes moveToTop {
@@ -61,7 +61,7 @@ const ErrorToaster = styled(ErrorToasterC)`
     align-items: center;
     border-radius: 3px;
     position: fixed;
-    background-color:  #dc3545;
+    background-color:  ${props => props.type == "fail" ? "#dc3545" : "#34c03b"};
     color: #fff;
     z-index: 30000;
     width: 30%;
@@ -74,4 +74,4 @@ const ErrorToaster = styled(ErrorToasterC)`
     animation-timing-function: cubic-bezier(.13,.82,1,-0.08)
 `
 
-export default ErrorToaster
+export default Toaster

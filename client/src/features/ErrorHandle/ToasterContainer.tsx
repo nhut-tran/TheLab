@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { useToast } from '../../utils/toaster/useToast'
 
-import ErrorToaster from './ErrorToaster'
+import Toaster from './Toaster'
 
 
 const ToasterContainer = () => {
@@ -13,8 +13,8 @@ const ToasterContainer = () => {
             <>
                 {
                     message.map((el, ind) => {
-
-                        return <ErrorToaster key={ind} ind={ind} className='nhut' position={((ind + 1) * 10).toString() + '%'}>{el}</ErrorToaster>
+                   
+                        return <Toaster type={el.type} key={ind} ind={ind} className='toaster' position={((ind + 1) * 10).toString() + '%'}>{el.message}</Toaster>
                     })
                 }
             </>

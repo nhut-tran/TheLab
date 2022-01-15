@@ -1,24 +1,33 @@
+import { type } from "os"
 
+type event = "fail" | "success"
 
-interface Listener {
-    [key: string]: [(arg: string) => void]
+type Listener= {
+    [key in event] : ((arg: string) => void) []
+}
+
+export type Message = {
+    type: event,
+    message: string
 }
 
 interface Toast {
-    messageQueue: string[],
-
+    messageQueue: Message[],
     listener: Listener
-    on: (type: string, listener: (arg: string) => void) => void
-    emit: (type: string, m: string) => void
-    unRegister: () => void
+    on: (type: event, listener: (arg: string) => void) => void
+    emit: (type: event, m: string) => void
+    unRegister: () => void,
+   
 }
 
 
 const toastEventRes: Toast = {
     messageQueue: [],
-
-    listener: {},
-    on: function (type: string, listener: (arg: string) => void) {
+    listener: {
+        fail: [],
+        success: []
+    },
+    on: function (type: event, listener: (arg: string) => void) {
         if (this.listener[type]) {
             this.listener[type].push(listener)
         } else {
@@ -26,22 +35,22 @@ const toastEventRes: Toast = {
         }
 
     },
-    emit: function (type: string, m: string) {
+    emit: function (type: event, m: string) {
         if (this.listener[type]) {
             this.listener[type].forEach((lis) => {
                 lis(m)
             })
-        } else {
-            console.log('un')
-        }
-
-
+        } 
     },
 
     unRegister: function () {
-        this.listener = {}
+        this.listener = {
+            fail: [],
+            success: []
+        }
 
-    }
+    },
+    
 }
 
 
