@@ -17,6 +17,7 @@ namespace Application.WorkSheet
             public string WorkSheetNo { get; set; }
             public int SampleID { get; set; }
             public string Department { get; set; }
+            public string DepartmentID { get; set; }
 
         }
 
@@ -38,9 +39,19 @@ namespace Application.WorkSheet
                 Domain.WorkSheet workSheet;
                 var query = _db.WorkSheet
                 .Include(w => w.Samples)
-                .ThenInclude(w => w.Paramaters)
+                .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
                 .ThenInclude(p => p.Method)
-                .Include(w => w.IssueTo);
+                .Include(w => w.IssueTo)
+                 .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0);
+                if (request.DepartmentID == "Re")
+                {
+
+                    query = _db.WorkSheet
+                    .Include(w => w.Samples)
+                    .ThenInclude(w => w.Paramaters)
+                    .ThenInclude(p => p.Method)
+                    .Include(w => w.IssueTo);
+                }
 
                 if (!(request.SampleID > 0))
                 {

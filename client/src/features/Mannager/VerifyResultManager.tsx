@@ -12,17 +12,16 @@ import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSSt
 const VerifyResultManager = () => {
   
     const { sampleStore, commonStore } = useStore()
-    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const {startlimit, endlimit} = useAccessWorkSheetByStatusVerify()
     return (
         <Wrapper>
             {<ViewWorkSheet viewOnly={true} />}
 
-            {(startLimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => startLimit ? 
+            {(startlimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+                onClick={() => startlimit ? 
                     sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) : 
                     sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
-                type='button'>{startLimit ? "Verify" : "UnVerify"}
+                type='button'>{startlimit ? "Verify" : "UnVerify"}
             </Button>
            }
             

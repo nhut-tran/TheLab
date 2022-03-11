@@ -49,7 +49,8 @@ namespace API.Controllers
         private async Task<Stream> getWordDocumentStream(string wsNo)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            var doc = await Mediator.Send(new WorkSheetDetail.Query { WorkSheetNo = wsNo, Department = depa });
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            var doc = await Mediator.Send(new WorkSheetDetail.Query { WorkSheetNo = wsNo, Department = depa, DepartmentID = depaID });
 
             var reportStream = _generateWorkSheet.GenerateWS(doc.Value);
             return reportStream;
@@ -74,15 +75,17 @@ namespace API.Controllers
         public async Task<IActionResult> GetOneWorkSheet(string id)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetDetail.Query() { WorkSheetNo = id, Department = depa }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetDetail.Query() { WorkSheetNo = id, Department = depa, DepartmentID = depaID }));
         }
         [Authorize]
         [HttpGet("BySample/{id}")]
         public async Task<IActionResult> GetOneWorkSheetBySample(int id)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
 
-            return HandleRequestResult(await Mediator.Send(new WorkSheetDetail.Query() { SampleID = id, Department = depa }));
+            return HandleRequestResult(await Mediator.Send(new WorkSheetDetail.Query() { SampleID = id, Department = depa, DepartmentID = depaID }));
         }
 
         [HttpDelete("{id}")]
@@ -103,8 +106,8 @@ namespace API.Controllers
         [HttpPut("Result")]
         public async Task<IActionResult> EnterResult(WorkSheetDto workSheet)
         {
-
-            return HandleRequestResult(await Mediator.Send(new WorkSheetResult.Command() { WorkSheet = workSheet }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetResult.Command() { WorkSheet = workSheet, DepartmentID = depaID }));
         }
 
         //get list of worksheet to approved base on deparment+worksheet status
@@ -113,7 +116,8 @@ namespace API.Controllers
         public async Task<IActionResult> GetWorkSheets(int page)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, DepartmentID = depaID }));
         }
         //get list of worksheet to approved by deparment
         [Authorize("HeaderLevel")]
@@ -121,7 +125,8 @@ namespace API.Controllers
         public async Task<IActionResult> GetWorkSheetSendEmail(int page)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, AcceptOrVerify = true }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, Verify = true, DepartmentID = depaID }));
         }
         //approved result
         [Authorize("HeaderLevel")]
@@ -129,7 +134,8 @@ namespace API.Controllers
         public async Task<IActionResult> GetWorkSheetsWithResult()
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Verify = true, DepartmentID = depaID }));
         }
 
         //unverify worksheet
@@ -138,14 +144,23 @@ namespace API.Controllers
         public async Task<IActionResult> UnverifyWorkSheet(string wsn)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new UnverifyWorkSheet.Request() { Department = depa, WorkSheetNo = wsn }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new UnverifyWorkSheet.Request() { Department = depa, WorkSheetNo = wsn, DepartmentID = depaID }));
         }
         //approved worksheet by increase worksheet status
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyWorkSheet(List<string> workSheetList)
         {
             var depa = HttpContext.User.FindFirstValue("Department");
-            return HandleRequestResult(await Mediator.Send(new VerifyWorkSheet.Request() { WorkSheetList = workSheetList, Department = depa }));
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new VerifyWorkSheet.Request() { WorkSheetList = workSheetList, Department = depa, DepartmentID = depaID }));
+        }
+        [HttpPost("verifyresult")]
+        public async Task<IActionResult> VerifyWorkSheetResult(List<string> workSheetList)
+        {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetVerifyResult.Request() { WorkSheetList = workSheetList, Department = depa, DepartmentID = depaID }));
         }
 
         //generate report

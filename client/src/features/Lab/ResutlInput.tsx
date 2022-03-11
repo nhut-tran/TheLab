@@ -9,13 +9,12 @@ import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSSt
 
 
 const ResultInput = () => {
-    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
-  
+    const {process} = useAccessWorkSheetByStatusVerify();
     return (
         <Wrapper>
-            <ViewWorkSheet autoSaveName="result" viewOnly={!startLimit}>
-                {(startLimit || endlimit) && <ControllFormButton>
+            //allow for input if only in proccess status
+            <ViewWorkSheet autoSaveName="result" viewOnly={!process}>
+                {process && <ControllFormButton>
                     {({ submitForm }) => <Button className='form_button' top='60%' left='92%'
                         onClick={() => {
                             

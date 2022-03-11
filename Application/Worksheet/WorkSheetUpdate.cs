@@ -31,7 +31,6 @@ namespace Application.WorkSheetUpdate
             {
                 var WorkSheet = await _db.WorkSheet
                 .Include(w => w.Samples)
-
                 .ThenInclude(w => w.Paramaters)
                 .ThenInclude(p => p.Method)
                 .Include(w => w.IssueTo)

@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211215115233_Adddisposaltime")]
-    partial class Adddisposaltime
+    [Migration("20220203054000_CreateResultDateFuncTrigger")]
+    partial class CreateResultDateFuncTrigger
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

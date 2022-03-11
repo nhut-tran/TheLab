@@ -196,11 +196,6 @@ namespace Persistence.Migrations
                     b.Property<string>("SealNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
                     b.Property<bool>("Urgent")
                         .HasColumnType("boolean");
 
@@ -230,6 +225,11 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("ResultDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.HasKey("SampleID", "MethodID");
 
@@ -281,11 +281,6 @@ namespace Persistence.Migrations
 
                     b.Property<string>("ReceiveNo")
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
 
                     b.Property<string>("WorkSheetNo")
                         .HasColumnType("text");

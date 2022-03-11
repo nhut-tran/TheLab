@@ -58,6 +58,11 @@ export class SampleStore {
         history.push("/");
         this.workSheet = data;
     };
+    ResultInput = async (data: WorkSheet) => {
+        await agent.worksheet.resultInput(data);
+        history.push("/");
+        this.workSheet = data;
+    };
 
     verifyWorkSheet = async (data: string[]) => {
         var res = await agent.worksheet.verify(data);
@@ -70,6 +75,20 @@ export class SampleStore {
             });
             toastEventRes.emit("success", "Verify succuess");
             history.push("/verify");
+        }
+    };
+
+    verifyWorkSheetResult = async (data: string[]) => {
+        var res = await agent.worksheet.verifyResult(data);
+        if (res.isSuccess) {
+            data.forEach((wsn) => {
+                appStore.commonStore.searchData =
+                    appStore.commonStore.searchData.filter(
+                        (ws) => ws.workSheetNo !== wsn
+                    );
+            });
+            toastEventRes.emit("success", "Verify succuess");
+            history.push("/verifyresult");
         }
     };
     unVerifyWorkSheet = async (wsn: string) => {

@@ -19,7 +19,27 @@ namespace Domain
         public bool Urgent { get; set; }
         public string SealNumber { get; set; }
 
-        public int Status { get; set; }
+
+        public int Status
+        {
+            get
+            {
+
+                return Paramaters.Min(p => p.Status);
+
+
+            }
+
+
+        }
+        public void SetStatus()
+        {
+            Paramaters.ToList().ForEach(p => p.SetStatus());
+        }
+        public void ResetStatus()
+        {
+            Paramaters.ToList().ForEach(p => p.ResetStatus());
+        }
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
         [NotMapped]
@@ -43,14 +63,7 @@ namespace Domain
 
             return Paramaters.Max(t => t.ResultDate);
         }
-        public void CalStatus()
-        {
-            if (Status < 6)
-            {
-                Status += 1;
-            }
 
-        }
         public bool Sampling { get; set; }
         public ICollection<SampleMethodAssigment> Paramaters { get; set; } = new List<SampleMethodAssigment>();
 

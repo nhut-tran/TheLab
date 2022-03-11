@@ -7,17 +7,26 @@ namespace Application.Service
     {
         public Dictionary<string, int> Accept { get; set; } = new Dictionary<string, int>(){
            { "SampleReceive", 0}, //create worksheet
-           {"Microbiology", 2}, // lab accept
-            { "CustomerService", 1}, //send receipt
-            {"Manager", 3}, // manager verify result
+           {"MicrobiologyLab", 1}, // lab accept
+            {"InorganicLab", 1}, // lab accept
+             {"OrganicLab", 1}, // lab accept
+            {"ManagerLab", 3}, // manager verify result
            {"Report", 4} //
         };
+        public Dictionary<string, int> Process { get; set; } = new Dictionary<string, int>(){
+
+           {"MicrobiologyLab", 2}, // lab process
+            {"InorganicLab", 2}, // lab process
+             {"OrganicLab", 2}, // lab process
+           
+        };
         public Dictionary<string, int> Verify { get; set; } = new Dictionary<string, int>(){
-            { "SampleReceive", 0}, // header verify worksheet
-            { "CustomerService", 1},  // send email receipt
-           {"Microbiology", 3}, // lab sup verify result
-            {"Manager", 4},
-              {"Report", 5} // send email => 6
+            { "SampleReceive", 1}, // header verify worksheet
+            {"MicrobiologyLab", 3}, // lab sup verify result
+              {"InorganicLab", 3},
+             {"OrganicLab", 3},
+            {"ManagerLab", 4},
+              {"Report", 5}
         };
 
         public int GetStatusToApprove(string department)

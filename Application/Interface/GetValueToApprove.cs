@@ -7,6 +7,7 @@ namespace Application.Interface
 
 
         Dictionary<Tkey, Tvalue> Accept { get; set; }
+        Dictionary<Tkey, Tvalue> Process { get; set; }
         Dictionary<Tkey, Tvalue> Verify { get; set; }
 
         Tvalue GetStatusToApprove(Tkey department);

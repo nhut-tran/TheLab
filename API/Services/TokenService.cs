@@ -38,7 +38,8 @@ namespace API.Services
                 new Claim(ClaimTypes.Role, user.Role),
 
                 new Claim("Title", user.Title),
-                new Claim("Department", user.Department.Name)
+                new Claim("Department", user.Department.Name),
+                 new Claim("DepartmentID", user.Department.DepartmentID)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWTKey").GetValue<string>("Key")));

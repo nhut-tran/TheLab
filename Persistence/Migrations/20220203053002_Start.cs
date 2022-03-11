@@ -89,6 +89,7 @@ namespace Persistence.Migrations
                     WorkSheetNo = table.Column<string>(type: "text", nullable: true),
                     CustomerId = table.Column<string>(type: "text", nullable: true),
                     ReceiveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DisposalTime = table.Column<int>(type: "integer", nullable: false),
                     Note = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
                 },
@@ -172,6 +173,7 @@ namespace Persistence.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Weight = table.Column<float>(type: "real", nullable: false),
                     Note = table.Column<string>(type: "text", nullable: true),
+                    Urgent = table.Column<bool>(type: "boolean", nullable: false),
                     SealNumber = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
                     Sampling = table.Column<bool>(type: "boolean", nullable: false)

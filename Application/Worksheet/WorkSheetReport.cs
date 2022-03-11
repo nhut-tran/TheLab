@@ -42,12 +42,10 @@ namespace Application.WorkSheet
             public async Task<Result<WorkSheetDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 Domain.WorkSheet workSheet = await _db.WorkSheet
-               .Include(w => w.Samples)
-               .ThenInclude(w => w.Paramaters)
-               .ThenInclude(p => p.Method)
-               .Include(w => w.IssueTo)
-               .AsSplitQuery()
-               .Where(w => w.Status == _getStatus.Accept[request.Department])
+                .Include(w => w.Samples)
+                .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
+                .ThenInclude(p => p.Method)
+                .Include(w => w.IssueTo)
                 .FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
                 if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
 

@@ -99,6 +99,26 @@ namespace Persistence
         private void SeeMedthod()
         {
             var blankMethod = _db.Method.FirstOrDefault(m => m.MethodID == default && m.Name == "blank" && m.Description == "blank" && m.Unit == "blank");
+            var dept = _db.Department.FirstOrDefault(m => m.DepartmentID == "Re");
+            if (dept == null)
+            {
+
+
+                var sqlDep = @"
+                INSERT INTO ""Department"" (
+                            ""DepartmentID"",
+                            ""Name"",
+                            ""HeaderName""
+                            )
+                        VALUES(
+                            'Re',
+                            'Receive',
+                            'AAA'
+                        );
+                ";
+
+                _db.Database.ExecuteSqlRaw(sqlDep);
+            }
             if (blankMethod == null)
             {
                 var sql = @"
@@ -116,7 +136,7 @@ namespace Persistence
                             'blank',
                             'blank',
                             0,
-                            'Mi'
+                            'Re'
                         );
                 ";
 

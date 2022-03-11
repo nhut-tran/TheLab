@@ -47,29 +47,26 @@ namespace Application.Worksheet
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                int allowStatus;
-                allowStatus = request.Department == "Report" ? _getStatus.Verify[request.Department] : _getStatus.Accept[request.Department];
+
 
                 Domain.WorkSheet workSheet = await _db.WorkSheet
                .Include(w => w.Samples)
-               .ThenInclude(w => w.Paramaters)
+               .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Verify[request.Department]))
                .ThenInclude(p => p.Method)
                .Include(w => w.IssueTo)
-               .AsSplitQuery()
-               .Where(w => w.Status == allowStatus)
-                .FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
+               .FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
                 if (workSheet == null) return Result<Unit>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
 
-                await _db.SaveChangesAsync(cancellationToken);
+
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(workSheet);
                 var mapCustomer = _mapper.Map<CustomerDto>(workSheet.IssueTo);
                 var reportStream = _report.GenerateReport(mapWorkSheet);
-                EmailContentType emailContentType = EmailContentType.SendResult;
-                if (request.Department == "CustomerService") emailContentType = EmailContentType.SendReceipt;
+
                 try
                 {
-                    _emailSender.Send(mapCustomer, mapWorkSheet, emailContentType, reportStream);
+                    _emailSender.Send(mapCustomer, mapWorkSheet, EmailContentType.SendResult, reportStream);
                     workSheet.SetStatus();
+                    await _db.SaveChangesAsync(cancellationToken);
                     return Result<Unit>.Success();
                 }
                 catch (System.Exception)

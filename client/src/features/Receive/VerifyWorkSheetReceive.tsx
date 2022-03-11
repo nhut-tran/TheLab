@@ -8,8 +8,7 @@ import { Wrapper } from '../../style/Wrapper'
 
 const VerifyWorkSheetReceive = () => {
    
-    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const {startlimit, endlimit} = useAccessWorkSheetByStatusVerify()
     const { sampleStore, commonStore } = useStore();
   
     return (
@@ -17,11 +16,11 @@ const VerifyWorkSheetReceive = () => {
 
             <ViewWorkSheet viewOnly={true} />
             //if not in range of allow status not display control button
-           {(startLimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => startLimit ? 
+           {(startlimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+                onClick={() => startlimit ? 
                     sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) : 
                     sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
-                type='button'>{startLimit ? "Verify" : "UnVerify"}
+                type='button'>{startlimit ? "Verify" : "UnVerify"}
             </Button>}
         </Wrapper>
     )

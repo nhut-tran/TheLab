@@ -6,7 +6,7 @@ import { useAccessWorkSheetByStatusVerify } from "../../utils/useLimitAccessWSSt
 
 const SendEmailReport = () => {
    
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const {endlimit} = useAccessWorkSheetByStatusVerify();
     const { customerStore, commonStore, sampleStore } = useStore()
     return ( 
         <Wrapper>

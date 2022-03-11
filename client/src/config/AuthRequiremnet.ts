@@ -12,12 +12,12 @@ export class LoginRequirement implements AuthRequirement {
 }
 
 export class DepartmentRequirement implements AuthRequirement {
-    department: string;
-    constructor(department: string) {
+    department: string[];
+    constructor(...department: string[]) {
         this.department = department;
     }
     validate = (user: UserClient) => {
-        if (user) return this.department === user.department;
+        if (user) return this.department.includes(user.department);
         return false;
     };
 }

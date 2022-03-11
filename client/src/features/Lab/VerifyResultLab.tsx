@@ -12,20 +12,20 @@ const VerifyResultLab = () => {
    
     const { sampleStore, commonStore } = useStore();
    
-    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const {process, endlimit} = useAccessWorkSheetByStatusVerify();
     //check workseheet has result =>  if not => not render handle verify button
     const hasResult = sampleStore.workSheet.samples.every(s => s.paramaters.every(p => p.result !== null))
     return (
         <Wrapper>
 
             <ViewWorkSheet viewOnly={true} />
-
-           { (hasResult && (endlimit || startLimit)) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => startLimit ? 
-                    sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) : 
+            //if not in range of allow status not display control button
+            //process means already having results waiting for verify, endlimit means already verify
+           { (hasResult && (process || endlimit)) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+                onClick={() => process ? 
+                    sampleStore.verifyWorkSheetResult([sampleStore.workSheet.workSheetNo]) : 
                     sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
-                type='button'>{startLimit ? "Verify" : "UnVerify"}</Button>}
+                type='button'>{process ? "Verify" : "UnVerify"}</Button>}
 
         </Wrapper>
     )

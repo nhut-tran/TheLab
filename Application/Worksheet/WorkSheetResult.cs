@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
+using System.Linq;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace Application.Worksheet
         public class Command : IRequest<Result<Unit>>
         {
             public WorkSheetDto WorkSheet { get; set; }
+            public string DepartmentID { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -31,23 +33,26 @@ namespace Application.Worksheet
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var WorkSheet = await _db.WorkSheet
-                 .Include(w => w.Samples)
-                 .ThenInclude(w => w.Paramaters)
-                 .ThenInclude(p => p.Method)
-                 .Include(w => w.IssueTo)
-                 .AsSplitQuery()
-                 .FirstAsync(w => w.WorkSheetID == request.WorkSheet.WorkSheetID, cancellationToken: cancellationToken);
+                var workSheet = await _db.WorkSheet
+                .Include(w => w.Samples)
+                .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                .ThenInclude(p => p.Method)
+                .Include(w => w.IssueTo)
+                .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
+                .FirstOrDefaultAsync(w => w.WorkSheetID == request.WorkSheet.WorkSheetID);
 
-                if (WorkSheet == null) Result<Unit>.Fail(new ErrorrType() { Name = "1", Message = "WorkSheet Not Found" });
+                if (workSheet == null) Result<Unit>.Fail(new ErrorrType() { Name = "1", Message = "WorkSheet Not Found" });
 
-                _mapper.Map(request.WorkSheet, WorkSheet);
-                foreach (var sample in WorkSheet.Samples)
+                var mapWorkSheet = _mapper.Map<Domain.WorkSheet>(request.WorkSheet);
+                foreach (var sample in mapWorkSheet.Samples)
                 {
-                    sample.CalStatus();
-                }
 
-                _db.WorkSheet.Update(WorkSheet);
+                    foreach (var p in sample.Paramaters)
+                    {
+                        workSheet.Samples.FirstOrDefault(s => s.SampleID == sample.SampleID).Paramaters.FirstOrDefault(pa => pa.MethodID == p.MethodID).Result = p.Result;
+
+                    }
+                }
 
                 var res = await _db.SaveChangesAsync(cancellationToken) > 0;
 

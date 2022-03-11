@@ -11,7 +11,7 @@ namespace Persistence.Migrations
              ON ""WorkSheet""
             FOR EACH ROW
 			EXECUTE PROCEDURE createWorkSheetNo();";
-            
+
             migrationBuilder.Sql(sql);
         }
 

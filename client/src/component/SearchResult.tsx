@@ -34,7 +34,7 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                                 handleCheck={handleCheck}
                                 handleClick={handleClick}
                                 link={link}
-                                status={!(userStore.user && v.status <= WorkSheetStatusLimitAccess[userStore.user.department][1])}
+                                status={!(userStore.user && (WorkSheetStatusLimitAccess[userStore.user.department].startlimit <= v.status && v.status <= WorkSheetStatusLimitAccess[userStore.user.department].endlimit))}
                             />
                         )
                     } else {

@@ -17,7 +17,8 @@ namespace Application.Worksheet
         public class Request : IRequest<ResultList<WorkSheetDto>>
         {
             public string Department { get; set; }
-            public bool AcceptOrVerify { get; set; } // true if get worksheet with result
+            public string DepartmentID { get; set; }
+            public bool Verify { get; set; } // true if get worksheet with result
             public int Page { get; set; }
         }
 
@@ -41,25 +42,93 @@ namespace Application.Worksheet
 
             public async Task<ResultList<WorkSheetDto>> Handle(Request request, CancellationToken cancellationToken)
             {
-                var query = _db.WorkSheet
-                .Include(w => w.Samples)
-                .ThenInclude(w => w.Paramaters)
-                .ThenInclude(p => p.Method)
-                .Include(w => w.IssueTo);
-
 
                 List<Domain.WorkSheet> workSheets;
-                if (!request.AcceptOrVerify)
+                //workSheet without result and for lab
+                if (!request.Verify && request.Department.Contains("Lab"))
                 {
-                    workSheets = await query.Where(w => w.Status == _getStatus.Accept[request.Department])
-                    .OrderByDescending(w => w.ReceiveDate).ToListAsync(cancellationToken: cancellationToken);
+                    if (request.DepartmentID == "Ma")
+                    {
+                        //if dept is manager lab get worksheet with paramaters already verified by lab
+                        workSheets = await _db.WorkSheet
+                        .Include(w => w.Samples)
+                        .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
+                        .ThenInclude(p => p.Method)
+                        .Include(w => w.IssueTo)
+                        .OrderByDescending(w => w.ReceiveDate)
+                        .ToListAsync(cancellationToken: cancellationToken);
+                        workSheets = workSheets.Where(w => w.Samples.All(s => s.Paramaters.Count() > 0)).ToList();
+                    }
+                    else
+                    {
+                        workSheets = await _db.WorkSheet
+                                           .Include(w => w.Samples)
+                                           .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                                           .ThenInclude(p => p.Method)
+                                           .Include(w => w.IssueTo)
+                                           .Where(w => w.Samples.Where(s => s.Paramaters.Count() > 0).Count() > 0)
+                                           .OrderByDescending(w => w.ReceiveDate).ToListAsync(cancellationToken: cancellationToken);
+
+                        workSheets = workSheets.Where(w => w.Status == _getStatus.Accept[request.Department]).ToList();
+                    }
+
+
+                }
+                else if (!request.Verify && !request.Department.Contains("Lab"))
+                {
+                    if (request.DepartmentID == "Rp")
+                    {
+                        //if dept is manager lab get worksheet with paramaters already verified by lab
+                        workSheets = await _db.WorkSheet
+                        .Include(w => w.Samples)
+                        .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
+                        .ThenInclude(p => p.Method)
+                        .Include(w => w.IssueTo)
+                        .OrderByDescending(w => w.ReceiveDate)
+                        .ToListAsync(cancellationToken: cancellationToken);
+                        workSheets = workSheets.Where(w => w.Samples.All(s => s.Paramaters.Count() > 0)).ToList();
+                    }
+                    else
+                    {
+                        workSheets = await _db.WorkSheet
+                                                                 .Include(w => w.Samples)
+                                                                 .ThenInclude(w => w.Paramaters)
+                                                                 .ThenInclude(p => p.Method)
+                                                                 .Include(w => w.IssueTo)
+                                                                 .ToListAsync();
+                        workSheets = workSheets.Where(w => w.Status == _getStatus.Accept[request.Department]).ToList();
+                    }
+
                 }
                 else
                 {
-                    workSheets = await query.Where(w => w.Status == _getStatus.Verify[request.Department])
-                    .Where(ws => ws.Samples.All(s => s.Paramaters.All(p => p.Result != null)))
+                    if (request.DepartmentID == "Rp")
+                    {
+
+                        workSheets = await _db.WorkSheet
+                        .Include(w => w.Samples)
+                        .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Verify[request.Department]))
+                        .ThenInclude(p => p.Method)
+                        .Include(w => w.IssueTo)
+                        .OrderByDescending(w => w.ReceiveDate)
+                        .ToListAsync(cancellationToken: cancellationToken);
+                        workSheets = workSheets.Where(w => w.Samples.All(s => s.Paramaters.Count() > 0)).ToList();
+                    }
+                    else
+                    {
+                        workSheets = await _db.WorkSheet
+                    .Include(w => w.Samples)
+                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                    .ThenInclude(p => p.Method)
+                    .Include(w => w.IssueTo)
+                    .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
                     .OrderByDescending(w => w.ReceiveDate)
                     .ToListAsync(cancellationToken: cancellationToken);
+                        workSheets = workSheets.Where(ws => ws.Samples.All(s => s.Paramaters.All(p => p.Result != null)))
+                        .Where(w => w.Status == _getStatus.Process[request.Department]).ToList();
+
+                    }
+
                 }
 
                 var mapWorkSheet = _mapper.Map<List<WorkSheetDto>>(workSheets);

@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211202153114_CreateResultDateTrigger")]
-    partial class CreateResultDateTrigger
+    [Migration("20220203124343_AddStatusToParamater")]
+    partial class AddStatusToParamater
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -198,10 +198,8 @@ namespace Persistence.Migrations
                     b.Property<string>("SealNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                    b.Property<bool>("Urgent")
+                        .HasColumnType("boolean");
 
                     b.Property<float>("Weight")
                         .HasColumnType("real");
@@ -229,6 +227,11 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("ResultDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.HasKey("SampleID", "MethodID");
 
@@ -269,6 +272,9 @@ namespace Persistence.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
 
+                    b.Property<int>("DisposalTime")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
@@ -277,11 +283,6 @@ namespace Persistence.Migrations
 
                     b.Property<string>("ReceiveNo")
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
 
                     b.Property<string>("WorkSheetNo")
                         .HasColumnType("text");

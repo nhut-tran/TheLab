@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211203141613_UrgentColToSampleTable")]
-    partial class UrgentColToSampleTable
+    [Migration("20220203053638_CreateRestartReceiveNoTrigger")]
+    partial class CreateRestartReceiveNoTrigger
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -271,6 +271,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
+
+                    b.Property<int>("DisposalTime")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");

@@ -70,7 +70,7 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
 
                 onSubmit={(val) => {
 
-                    sampleStore.UpdateSample(val)
+                    sampleStore.ResultInput(val)
 
                 }}
             >

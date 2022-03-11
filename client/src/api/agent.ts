@@ -216,8 +216,18 @@ const agent = {
         del() {
             return request.del<ResponseData<WorkSheet>>("WorkSheet");
         },
+
         verify(data: string[]) {
             return request.post<ResponseDataVoid>("WorkSheet/verify", data);
+        },
+        resultInput(data = {}) {
+            return request.put<ResponseDataVoid>("WorkSheet/Result", data);
+        },
+        verifyResult(data: string[]) {
+            return request.post<ResponseDataVoid>(
+                "WorkSheet/verifyresult",
+                data
+            );
         },
         unverify(wsn: string) {
             return request.get<ResponseDataVoid>(`WorkSheet/Unverify/${wsn}`);

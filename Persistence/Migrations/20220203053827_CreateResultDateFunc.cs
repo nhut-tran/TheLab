@@ -2,11 +2,11 @@
 
 namespace Persistence.Migrations
 {
-    public partial class CreateResultDateFuc : Migration
+    public partial class CreateResultDateFunc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var sql =@"
+            var sql = @"
             CREATE OR REPLACE FUNCTION createresultdate() returns trigger
 	    LANGUAGE plpgsql
 	    AS $$
@@ -26,6 +26,7 @@ namespace Persistence.Migrations
 			end if;
 			return NEW;
 		end; $$";
+            migrationBuilder.Sql(sql);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -2,15 +2,17 @@
 
 namespace Persistence.Migrations
 {
-    public partial class CreateResultDateTrigger : Migration
+    public partial class CreateRestartReceiveNoTrigger : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var sql = @"CREATE TRIGGER createresultdateTrigger
+            var sql = @"
+            CREATE TRIGGER restartreceivenoTrigger
              BEFORE INSERT
-             ON ""SampleMethodAssigment""
+             ON ""WorkSheet""
             FOR EACH ROW
-            EXECUTE PROCEDURE createresultdate();";
+            EXECUTE PROCEDURE restartreceiveno();";
+
             migrationBuilder.Sql(sql);
         }
 

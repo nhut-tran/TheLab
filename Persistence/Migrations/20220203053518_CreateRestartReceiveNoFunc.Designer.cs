@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211202152516_RestartReceiveNoTrigger")]
-    partial class RestartReceiveNoTrigger
+    [Migration("20220203053518_CreateRestartReceiveNoFunc")]
+    partial class CreateRestartReceiveNoFunc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -203,6 +203,9 @@ namespace Persistence.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
+                    b.Property<bool>("Urgent")
+                        .HasColumnType("boolean");
+
                     b.Property<float>("Weight")
                         .HasColumnType("real");
 
@@ -268,6 +271,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
+
+                    b.Property<int>("DisposalTime")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");

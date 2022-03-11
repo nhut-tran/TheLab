@@ -17,6 +17,7 @@ namespace Application.Worksheet
         {
             public List<string> WorkSheetList { get; set; }
             public string Department { get; set; }
+            public string DepartmentID { get; set; }
 
         }
 
@@ -35,14 +36,54 @@ namespace Application.Worksheet
 
             public async Task<Result<Unit>> Handle(Request request, CancellationToken cancellationToken)
             {
+
+
                 foreach (var wsn in request.WorkSheetList)
                 {
-                    var workSheets = await _db.WorkSheet.FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
-                    if (workSheets.Status != _getStatus.Accept[request.Department])
+                    Domain.WorkSheet workSheet;
+
+                    if (request.Department.Contains("Lab"))
+                    {
+                        if (request.DepartmentID == "Ma")
+                        {
+                            //if dept is manager lab get worksheet with paramaters already verified by lab
+                            workSheet = await _db.WorkSheet
+                            .Include(w => w.Samples)
+                            .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
+                            .ThenInclude(p => p.Method)
+                            .Include(w => w.IssueTo)
+                            .OrderByDescending(w => w.ReceiveDate)
+                            .Where(w => w.Samples.Where(s => s.Paramaters.Count() > 0).Count() > 0)
+                            .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                        }
+                        else
+                        {
+                            workSheet = await _db.WorkSheet
+                                                                    .Include(w => w.Samples)
+                                                                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                                                                    .ThenInclude(p => p.Method)
+                                                                    .Include(w => w.IssueTo)
+                                                                    .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
+                                                                    .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+
+                        }
+
+                    }
+                    else
+                    {
+                        workSheet = await _db.WorkSheet
+                                        .Include(w => w.Samples)
+                                        .ThenInclude(w => w.Paramaters)
+                                        .ThenInclude(p => p.Method)
+                                        .Include(w => w.IssueTo)
+                                        .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                    }
+
+                    if (workSheet.Status != _getStatus.Accept[request.Department])
                     {
                         return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = "WorkSheet access is denied" });
                     }
-                    workSheets.SetStatus();
+                    workSheet.SetStatus();
 
                 }
                 var res = await _db.SaveChangesAsync(cancellationToken) > 0;

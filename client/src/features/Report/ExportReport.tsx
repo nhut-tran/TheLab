@@ -8,13 +8,12 @@ import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSSt
 
 const ExportReport = () => {
    
-    const startLimit = useAccessWorkSheetByStatusVerify("startLimit");
-    const endlimit = useAccessWorkSheetByStatusVerify('endLimit');
+    const {startlimit, endlimit} = useAccessWorkSheetByStatusVerify()
     const { sampleStore, commonStore } = useStore()
     return (
         <Wrapper>
             <ViewWorkSheet viewOnly={true} />
-            {(startLimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%' onClick={() => sampleStore.generateReport(sampleStore.workSheet.workSheetNo)} type='button'>Export Report</Button>
+            {(startlimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%' onClick={() => sampleStore.generateReport(sampleStore.workSheet.workSheetNo)} type='button'>Export Report</Button>
             }
         </Wrapper>
     )

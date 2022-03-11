@@ -25,9 +25,8 @@ const SendEmail = observer(() => {
                 <Button position='relative'
                     disabled={commonStore.isFetching}
                     onClick={() => {
-                       userStore.user?.department == "report" ? 
-                       commonStore.getApprovedWorkSheet() :
-                       commonStore.getUnApproveWorkSheet(false);
+                   
+                       commonStore.getApprovedWorkSheet();
                     }}
                     type='button'>Get WorkSheet Send Email</Button>
             </GridCenter>

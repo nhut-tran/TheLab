@@ -2,7 +2,7 @@
 
 namespace Persistence.Migrations
 {
-    public partial class FixRestartReceiveNoFunc : Migration
+    public partial class CreateRestartReceiveNoFunc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

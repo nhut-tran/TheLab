@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
@@ -17,7 +16,7 @@ namespace Persistence.Migrations
             END;
             $$
             ";
-            
+
             migrationBuilder.Sql(sql);
         }
 

@@ -16,6 +16,16 @@ namespace Domain
         public Method Method { get; set; }
 
         public string Result { get; set; }
+        public int Status { get; set; }
+        public void SetStatus()
+        {
+            Status += 1;
+        }
+        public void ResetStatus()
+        {
+            Status -= 1;
+        }
+
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
         public DateTime ResultDate { get; set; }

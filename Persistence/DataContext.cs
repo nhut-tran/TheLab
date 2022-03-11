@@ -61,8 +61,8 @@ namespace Persistence
             builder.Entity<Sample>()
                .Property(o => o.SampleNo)
                .HasDefaultValueSql("nextval('\"SampleNO\"')");
-            builder.Entity<Sample>().Property(s => s.Status).HasDefaultValue(0);
-            builder.Entity<WorkSheet>().Property(s => s.Status).HasDefaultValue(0);
+            builder.Entity<SampleMethodAssigment>().Property(s => s.Status).HasDefaultValue(0);
+            // builder.Entity<WorkSheet>().Property(s => s.Status).HasDefaultValue(0);
             builder.Entity<SampleMethodAssigment>()
             .HasOne(a => a.Sample)
             .WithMany(m => m.Paramaters)

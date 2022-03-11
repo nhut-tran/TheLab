@@ -23,7 +23,7 @@ import ViewWorkSheet from "../component/ViewWorkSheet";
 import VerifyResultMain from "../component/VerifyResultMain";
 import CreateSample from "../features/Receive/CreateSample";
 import Print from "../features/Receive/Print";
-import SendEmailReceipt from "../features/CustomerService/SendEmailReceipt";
+
 import SendEmail from "../component/SendEmail";
 import SendEmailReport from "../features/Report/SendEmailReport";
 
@@ -45,24 +45,15 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.Receive)],
-                component: Main,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
-                component: Main,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.Report)],
-                component: Main,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.Manager)],
-                component: Main,
-            },
-            {
                 requirement: [
-                    new DepartmentRequirement(Department.CustomerService),
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab,
+                        Department.Receive,
+                        Department.Report,
+                        Department.Manager
+                    ),
                 ],
                 component: Main,
             },
@@ -128,22 +119,17 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.Receive)],
-                component: VerifyWorkSheetMain,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
-                component: VerifyWorkSheetMain,
-            },
-            {
                 requirement: [
-                    new DepartmentRequirement(Department.Report),
+                    new DepartmentRequirement(
+                        Department.OgLab,
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.Receive,
+                        Department.Manager,
+                        Department.Report
+                    ),
                     new TitleRequirement(Title.Header),
                 ],
-                component: VerifyWorkSheetMain,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyWorkSheetMain,
             },
         ],
@@ -154,7 +140,13 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
                 component: LabResult,
             },
         ],
@@ -166,7 +158,14 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.Receive)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.Receive,
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
                 component: VerifyWorkSheetReceive,
             },
             {
@@ -177,12 +176,6 @@ const mainConfig: MainRouteConfig[] = [
                 requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyResultManager,
             },
-            {
-                requirement: [
-                    new DepartmentRequirement(Department.CustomerService),
-                ],
-                component: SendEmailReceipt,
-            },
         ],
         fallBackComponent: NotFound,
     },
@@ -192,7 +185,13 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
                 component: ResultInput,
             },
         ],
@@ -203,11 +202,14 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
-                component: VerifyResultMain,
-            },
-            {
-                requirement: [new DepartmentRequirement(Department.Manager)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab,
+                        Department.Manager
+                    ),
+                ],
                 component: VerifyResultMain,
             },
         ],
@@ -218,7 +220,13 @@ const mainConfig: MainRouteConfig[] = [
         exact: true,
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
                 component: VerifyResultLab,
             },
         ],
@@ -232,12 +240,6 @@ const mainConfig: MainRouteConfig[] = [
                 requirement: [new DepartmentRequirement(Department.Report)],
                 component: SendEmail,
             },
-            {
-                requirement: [
-                    new DepartmentRequirement(Department.CustomerService),
-                ],
-                component: SendEmail,
-            },
         ],
         fallBackComponent: NotFound,
     },
@@ -245,12 +247,6 @@ const mainConfig: MainRouteConfig[] = [
         path: "/sendemail/:id",
         exact: true,
         componentList: [
-            {
-                requirement: [
-                    new DepartmentRequirement(Department.CustomerService),
-                ],
-                component: SendEmailReceipt,
-            },
             {
                 requirement: [new DepartmentRequirement(Department.Report)],
                 component: SendEmailReport,
@@ -265,7 +261,13 @@ const mainConfig: MainRouteConfig[] = [
 
         componentList: [
             {
-                requirement: [new DepartmentRequirement(Department.MiLab)],
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
                 component: ViewWorkSheet,
             },
             {

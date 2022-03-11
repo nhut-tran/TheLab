@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211231135323_FixRestartReceiveNoFunc")]
-    partial class FixRestartReceiveNoFunc
+    [Migration("20220203131722_RemoveNotMappedStatusinWorkSheet")]
+    partial class RemoveNotMappedStatusinWorkSheet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -198,11 +198,6 @@ namespace Persistence.Migrations
                     b.Property<string>("SealNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
                     b.Property<bool>("Urgent")
                         .HasColumnType("boolean");
 
@@ -232,6 +227,11 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("ResultDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.HasKey("SampleID", "MethodID");
 
@@ -283,11 +283,6 @@ namespace Persistence.Migrations
 
                     b.Property<string>("ReceiveNo")
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
 
                     b.Property<string>("WorkSheetNo")
                         .HasColumnType("text");

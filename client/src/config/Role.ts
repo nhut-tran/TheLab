@@ -1,8 +1,9 @@
 export enum Department {
     Receive = "Re",
+    IgLab = "Ig",
+    OgLab = "Og",
     MiLab = "Mi",
     Report = "Rp",
-    CustomerService = "Cs",
     Manager = "Ma",
 }
 
