@@ -38,8 +38,7 @@ namespace Application.Worksheet
                 .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
                 .ThenInclude(p => p.Method)
                 .Include(w => w.IssueTo)
-                .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
-                .FirstOrDefaultAsync(w => w.WorkSheetID == request.WorkSheet.WorkSheetID);
+                .FirstOrDefaultAsync(w => w.WorkSheetID == request.WorkSheet.WorkSheetID, cancellationToken: cancellationToken);
 
                 if (workSheet == null) Result<Unit>.Fail(new ErrorrType() { Name = "1", Message = "WorkSheet Not Found" });
 

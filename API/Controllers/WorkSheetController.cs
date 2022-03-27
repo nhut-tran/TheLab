@@ -126,7 +126,7 @@ namespace API.Controllers
         {
             var depa = HttpContext.User.FindFirstValue("Department");
             var depaID = HttpContext.User.FindFirstValue("DepartmentID");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, Verify = true, DepartmentID = depaID }));
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Page = page, WithResult = true, DepartmentID = depaID }));
         }
         //approved result
         [Authorize("HeaderLevel")]
@@ -135,7 +135,7 @@ namespace API.Controllers
         {
             var depa = HttpContext.User.FindFirstValue("Department");
             var depaID = HttpContext.User.FindFirstValue("DepartmentID");
-            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, Verify = true, DepartmentID = depaID }));
+            return HandleRequestResult(await Mediator.Send(new WorkSheetByStatus.Request() { Department = depa, WithResult = true, DepartmentID = depaID }));
         }
 
         //unverify worksheet

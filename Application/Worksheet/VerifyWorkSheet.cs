@@ -53,18 +53,17 @@ namespace Application.Worksheet
                             .ThenInclude(p => p.Method)
                             .Include(w => w.IssueTo)
                             .OrderByDescending(w => w.ReceiveDate)
-                            .Where(w => w.Samples.Where(s => s.Paramaters.Count() > 0).Count() > 0)
-                            .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                            .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
                         }
                         else
                         {
                             workSheet = await _db.WorkSheet
-                                                                    .Include(w => w.Samples)
-                                                                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
-                                                                    .ThenInclude(p => p.Method)
-                                                                    .Include(w => w.IssueTo)
-                                                                    .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
-                                                                    .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                            .Include(w => w.Samples)
+                            .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                            .ThenInclude(p => p.Method)
+                            .Include(w => w.IssueTo)
+                            .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
+
 
                         }
 
@@ -72,13 +71,13 @@ namespace Application.Worksheet
                     else
                     {
                         workSheet = await _db.WorkSheet
-                                        .Include(w => w.Samples)
-                                        .ThenInclude(w => w.Paramaters)
-                                        .ThenInclude(p => p.Method)
-                                        .Include(w => w.IssueTo)
-                                        .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                    .Include(w => w.Samples)
+                    .ThenInclude(w => w.Paramaters)
+                    .ThenInclude(p => p.Method)
+                    .Include(w => w.IssueTo)
+                    .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
                     }
-
+                    // workSheet.Samples = workSheet.Samples.Where(s => s.Paramaters.Count > 0).ToList();
                     if (workSheet.Status != _getStatus.Accept[request.Department])
                     {
                         return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = "WorkSheet access is denied" });

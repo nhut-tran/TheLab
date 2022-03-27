@@ -1,0 +1,27 @@
+//other dept query worksheets without result
+                else if (!request.WithResult && !request.Department.Contains("Lab"))
+                {
+                    //if dept is report get worksheet with paramaters already verified by lab
+                    if (request.DepartmentID == "Rp")
+                    {
+
+                        workSheets = await _db.WorkSheet
+                        .Include(w => w.Samples)
+                        .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
+                        .ThenInclude(p => p.Method)
+                        .Include(w => w.IssueTo)
+                        .OrderByDescending(w => w.ReceiveDate)
+                        .ToListAsync(cancellationToken: cancellationToken);
+
+                    }
+                    else
+                    {
+                        workSheets = await _db.WorkSheet
+                        .Include(w => w.Samples)
+                        .ThenInclude(w => w.Paramaters)
+                        .ThenInclude(p => p.Method)
+                        .Include(w => w.IssueTo)
+                        .ToListAsync(cancellationToken: cancellationToken);
+
+                        workSheets = workSheets.Where(w => w.Status == _getStatus.Accept[request.Department]).ToList();
+                    }

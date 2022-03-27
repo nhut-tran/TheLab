@@ -21,20 +21,21 @@ namespace Application.Worksheet
         public class Handler : IRequestHandler<Command, Result<WorkSheetDto>>
         {
             private readonly DataContext _db;
-            private readonly IValidator<Domain.WorkSheet> _validator;
+
             private readonly IMapper _mapper;
 
             public Handler(DataContext db, IValidator<Domain.WorkSheet> validator, IMapper mapper)
             {
                 _mapper = mapper;
-                _validator = validator;
                 _db = db;
             }
 
             public async Task<Result<WorkSheetDto>> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (request.NumberOfSample < 1) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "2", Message = "Number of is at least 1" });
 
                 var blankWorkSheet = new Domain.WorkSheet();
+
                 for (int i = 0; i < request.NumberOfSample; i++)
                 {
                     var sample = new Sample();

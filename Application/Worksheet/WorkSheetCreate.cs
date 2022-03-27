@@ -39,7 +39,6 @@ namespace Application.WorkSheetCreate
                 .Include(w => w.Samples)
                 .ThenInclude(w => w.Paramaters)
                 .ThenInclude(p => p.Method)
-                .AsSplitQuery()
                 .FirstOrDefault(t => t.WorkSheetID == request.WorkSheet.WorkSheetID);
 
                 var customer = _db.Customer.FirstOrDefault(t => t.CustomerId == request.WorkSheet.IssueTo);

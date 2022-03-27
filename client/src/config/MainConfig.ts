@@ -19,13 +19,13 @@ import LabResult from "../features/Lab/LabResult";
 import ResultInput from "../features/Lab/ResutlInput";
 import VerifyResultLab from "../features/Lab/VerifyResultLab";
 import VerifyResultManager from "../features/Mannager/VerifyResultManager";
-import ViewWorkSheet from "../component/ViewWorkSheet";
 import VerifyResultMain from "../component/VerifyResultMain";
 import CreateSample from "../features/Receive/CreateSample";
 import Print from "../features/Receive/Print";
 
 import SendEmail from "../component/SendEmail";
 import SendEmailReport from "../features/Report/SendEmailReport";
+import ReviewWorkSheet from "../component/ReviewWorkSheet";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -268,7 +268,7 @@ const mainConfig: MainRouteConfig[] = [
                         Department.OgLab
                     ),
                 ],
-                component: ViewWorkSheet,
+                component: ReviewWorkSheet,
             },
             {
                 requirement: [new DepartmentRequirement(Department.Receive)],

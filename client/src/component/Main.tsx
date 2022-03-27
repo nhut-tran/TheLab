@@ -14,6 +14,7 @@ const Main = observer(() => {
         return <Login />
     }
     const { url } = useRouteMatch()
+
     return (
         <Wrapper>
             <Search />

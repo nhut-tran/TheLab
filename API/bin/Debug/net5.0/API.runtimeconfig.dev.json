@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/home/nhut/.dotnet/store/|arch|/|tfm|",
-      "/home/nhut/.nuget/packages"
+      "C:\\Users\\Inspiron\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Inspiron\\.nuget\\packages"
     ]
   }
 }

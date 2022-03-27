@@ -29,12 +29,31 @@ namespace Domain
         {
             get
             {
-                return Samples.Min(s => s.Status);
+                //if (!Samples.Any()) return -1;
+                var s = Samples.Select(s => s.Status).ToList();
+                s.RemoveAll(n => n == -1);
+                if (!s.Any()) return -1;
+                var f = s.First();
+                return s.All(n => n == f) ? f : -2;
             }
 
         }
+
+        /*
+            filter samples with empty Paramater
+            samples with empty Paramater happen when query
+            worksheet by department
+            ***Warning**
+            Only use when read data, not use when modified and save
+        */
+        public void RemoveSampleEmpty()
+        {
+
+            Samples = Samples.Where(s => s.Paramaters.Any()).ToList();
+        }
         public void SetStatus()
         {
+
             Samples.ToList().ForEach(s => s.SetStatus());
         }
         public void ResetStatus()
@@ -79,11 +98,3 @@ namespace Domain
 
     }
 }
-
-// 0: receive
-// 1: approve receive
-// 2: lab approve receive
-// 3 enter result
-// 4: lab approve result
-//5: ma app
-//6: report

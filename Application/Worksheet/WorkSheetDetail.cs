@@ -37,33 +37,35 @@ namespace Application.WorkSheet
             {
 
                 Domain.WorkSheet workSheet;
+
                 var query = _db.WorkSheet
                 .Include(w => w.Samples)
                 .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
                 .ThenInclude(p => p.Method)
-                .Include(w => w.IssueTo)
-                 .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0);
-                if (request.DepartmentID == "Re")
-                {
+                .Include(w => w.IssueTo);
 
+                if (request.DepartmentID == "Re" | request.DepartmentID == "Rp" | request.DepartmentID == "Ma")
+                {
                     query = _db.WorkSheet
                     .Include(w => w.Samples)
                     .ThenInclude(w => w.Paramaters)
                     .ThenInclude(p => p.Method)
                     .Include(w => w.IssueTo);
                 }
-
-                if (!(request.SampleID > 0))
+                //search by SampleID or WorkSheet Number
+                if (request.SampleID > 0)
                 {
-                    workSheet = await query.FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
+                    workSheet = await query.FirstOrDefaultAsync(ws => ws.Samples.Any(s => s.SampleID == request.SampleID), cancellationToken: cancellationToken);
                 }
                 else
                 {
-                    workSheet = await query.FirstOrDefaultAsync(ws => ws.Samples.Any(s => s.SampleID == request.SampleID)
-                , cancellationToken: cancellationToken);
+                    workSheet = await query.FirstOrDefaultAsync(w => w.WorkSheetNo == request.WorkSheetNo, cancellationToken: cancellationToken);
                 }
 
                 if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
+
+                workSheet.RemoveSampleEmpty();
+
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(workSheet);
 
                 return Result<WorkSheetDto>.Success(mapWorkSheet);

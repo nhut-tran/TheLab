@@ -42,14 +42,12 @@ namespace Application.Worksheet
                 foreach (var wsn in request.WorkSheetList)
                 {
 
-
                     var workSheet = await _db.WorkSheet
-                                    .Include(w => w.Samples)
-                                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
-                                    .ThenInclude(p => p.Method)
-                                    .Include(w => w.IssueTo)
-                                    .Where(w => w.Samples.Where(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID).Count() > 0).Count() > 0)
-                                    .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn);
+                    .Include(w => w.Samples)
+                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                    .ThenInclude(p => p.Method)
+                    .Include(w => w.IssueTo)
+                    .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
 
                     if (workSheet.Status != _getStatus.Process[request.Department])
                     {

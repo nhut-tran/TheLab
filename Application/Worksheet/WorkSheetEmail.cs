@@ -69,7 +69,7 @@ namespace Application.Worksheet
                     await _db.SaveChangesAsync(cancellationToken);
                     return Result<Unit>.Success();
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
 
                     return Result<Unit>.Fail(new ErrorrType() { Name = "3", Message = "Cannot send email" });

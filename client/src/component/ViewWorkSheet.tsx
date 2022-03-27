@@ -21,7 +21,7 @@ interface Prop {
 
 const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
     const { sampleStore, methodStore, commonStore } = useStore()
-    const  {id}= useParams<{id: string}>();
+    const { id } = useParams<{ id: string }>();
     let [iniital, setInitial] = React.useState({} as WorkSheet)
     // const fistRender = React.useRef(0)
     React.useEffect(() => {
@@ -41,16 +41,16 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
                 // fistRender.current += 1
             }
         } else if (sampleStore.workSheet.workSheetNo) {
-          
+
 
             setInitial({ ...toJS(sampleStore.workSheet) })
 
         } else {
-           //fetch data if not avaliable
-            commonStore.search({Worksheet: id, WorkSheet_BySample: ""}).then(() => {
-                setInitial({...toJS(sampleStore.workSheet)})  
+            //fetch data if not avaliable
+            commonStore.search({ Worksheet: id, WorkSheet_BySample: "" }).then(() => {
+                setInitial({ ...toJS(sampleStore.workSheet) })
             })
-            
+
         }
         return () => {
 
@@ -171,7 +171,7 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
                             />
 
                             {autoSaveName && <AutoSave item={autoSaveName} />}
-                            {!viewOnly && children} //add button for other purposes
+                            {!viewOnly && children}
                         </Form>
                     )
                 }

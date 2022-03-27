@@ -24,9 +24,14 @@ namespace Domain
         {
             get
             {
+                // if (!Paramaters.Any()) return -1;
+                // return Paramaters.Max(p => p.Status);
 
-                return Paramaters.Min(p => p.Status);
-
+                var s = Paramaters.Select(s => s.Status).ToList();
+                s.RemoveAll(n => n == -1);
+                if (!s.Any()) return -1;
+                var f = s.First();
+                return s.All(n => n == f) ? f : -2;
 
             }
 
@@ -60,7 +65,7 @@ namespace Domain
         private DateTime CalResultDate()
         {
 
-
+            if (!Paramaters.Any()) return DateTime.Now;
             return Paramaters.Max(t => t.ResultDate);
         }
 
