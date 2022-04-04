@@ -50,6 +50,7 @@ namespace Application.WorkSheet
                 if (workSheet == null) return Result<WorkSheetDto>.Fail(new ErrorrType() { Name = "1", Message = "Not found" });
 
                 workSheet.SetStatus();
+                
                 await _db.SaveChangesAsync(cancellationToken);
 
                 var mapWorkSheet = _mapper.Map<WorkSheetDto>(workSheet);

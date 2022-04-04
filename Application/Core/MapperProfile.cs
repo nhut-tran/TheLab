@@ -25,6 +25,7 @@ namespace Application.Core
 
             CreateMap<Sample, Sample>();
             CreateMap<SampleMethodAssigment, SampleMethodAssigmentDto>()
+             .ForMember(t => t.Department, o => o.MapFrom(s => s.Method.DepartmentID))
             .ForMember(t => t.Method, o => o.MapFrom(s => s.Method.Name))
              .ForMember(t => t.MethodID, o => o.MapFrom(s => s.MethodID))
              .ForMember(t => t.Tartget, o => o.MapFrom(s => s.Method.Target))

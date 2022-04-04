@@ -44,7 +44,7 @@ namespace Application.Worksheet
 
                     var workSheet = await _db.WorkSheet
                     .Include(w => w.Samples)
-                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
+                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result)))
                     .ThenInclude(p => p.Method)
                     .Include(w => w.IssueTo)
                     .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);

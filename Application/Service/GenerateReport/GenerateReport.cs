@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using API.DTOs;
 using Application.Core;
 using Application.Interface;
 using Application.Service.GenerateReport;
@@ -14,7 +15,7 @@ namespace Application.Service
     public class Report : IGenerateReport<Table, Style, Paragraph>
 
     {
-        public Table CreateTable(SampleDto samples)
+        public Table CreateTable(SampleDto samples, List<SampleMethodAssigmentDto> filterParam)
         {
             var table = new Table();
             var tableProp = new TableProperties();
@@ -35,10 +36,11 @@ namespace Application.Service
 
             headerRow.Append(tc0, tc1, tc2, tc3, tc4);
             table.Append(headerRow);
-            foreach (var param in samples.Paramaters)
+          
+            foreach (var param in filterParam)
             {
                 TableRow tr = new TableRow();
-                TableCell tc5 = new TableCell(new Paragraph(new Run(new Text((samples.Paramaters.ToList().IndexOf(param) + 1).ToString()))));
+                TableCell tc5 = new TableCell(new Paragraph(new Run(new Text((filterParam.IndexOf(param) + 1).ToString()))));
                 TableCell tc6 = new TableCell(new Paragraph(new Run(new Text(param.Tartget))));
                 TableCell tc7 = new TableCell(new Paragraph(new Run(new Text(param.Method))));
                 TableCell tc8 = new TableCell(new Paragraph(new Run(new Text(param.Unit))));
@@ -82,10 +84,6 @@ namespace Application.Service
             {
                 TopBorder = topBorder,
                 BottomBorder = botBorder,
-                // LeftBorder = leftBorder,
-                // RightBorder = rightBorder,
-                // InsideHorizontalBorder = horizontalBorder,
-                // InsideVerticalBorder = verti
             };
 
             styleTabelProp.Append(tableBorder, tableStyleRowBandSize, tableStyleColumnBandSize);
@@ -166,17 +164,26 @@ namespace Application.Service
                 var descriptionStyle = KeySampleDescription.CreateDescriptionStyle();
                 stylePart.Styles.Append(newStyle, titleStyle, descriptionStyle);
 
+                List<string> depList = ws.Samples.SelectMany(s => s.Paramaters.Select(p => p.Department)).Distinct().ToList();
 
-
-                foreach (var sample in ws.Samples)
+                depList.ForEach(d =>
                 {
-                    var table = CreateTable(sample);
-                    doc.MainDocumentPart.Document.Body.Append(CreateGeneralInfo(ws.IssueTo, ws.ReceiveDate, sample));
-                    doc.MainDocumentPart.Document.Body.Append(table);
-                    if (ws.Samples.ToList().IndexOf(sample) + 1 != ws.Samples.Count)
-                        doc.MainDocumentPart.Document.Body.Append(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
-                }
+                    foreach (var sample in ws.Samples)
+                    {
 
+                        var filterParam = sample.Paramaters.ToList().FindAll(p => p.Department == d);
+                        if(filterParam.Count > 0)
+                        {           
+                            var table = CreateTable(sample, filterParam);
+                            doc.MainDocumentPart.Document.Body.Append(CreateGeneralInfo(ws.IssueTo, ws.ReceiveDate, sample));
+                            doc.MainDocumentPart.Document.Body.Append(table);
+                            doc.MainDocumentPart.Document.Body.Append(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+                           
+                             
+                        }
+                   
+                    }
+                });
             }
             stream.Seek(0, SeekOrigin.Begin);
             return stream;

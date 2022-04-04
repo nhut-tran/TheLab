@@ -48,7 +48,8 @@ namespace Application.Worksheet
 
                     foreach (var p in sample.Paramaters)
                     {
-                        workSheet.Samples.FirstOrDefault(s => s.SampleID == sample.SampleID).Paramaters.FirstOrDefault(pa => pa.MethodID == p.MethodID).Result = p.Result;
+                        if(!string.IsNullOrEmpty(p.Result))
+                            workSheet.Samples.FirstOrDefault(s => s.SampleID == sample.SampleID).Paramaters.FirstOrDefault(pa => pa.MethodID == p.MethodID).Result = p.Result;
 
                     }
                 }

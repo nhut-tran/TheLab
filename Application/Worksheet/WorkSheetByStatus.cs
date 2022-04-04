@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interface;
 using AutoMapper;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -40,52 +43,43 @@ namespace Application.Worksheet
             {
 
                 List<Domain.WorkSheet> workSheets;
-                //workSheet without result and for lab
-                if (!request.WithResult)
+                
+                Expression<Func<Sample, IEnumerable<SampleMethodAssigment>>> filterByStatus = s => s.Paramaters.Where(p => p.Status == (request.WithResult ? _getStatus.Verify[request.Department] :_getStatus.Accept[request.Department]));
+                Expression<Func<Sample, IEnumerable<SampleMethodAssigment>>> filterByDept = request.WithResult ? s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result)) : s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID);
+                Func<Domain.WorkSheet, bool> filterbyWorkSheetStatus = w => w.Status == _getStatus.Accept[request.Department];
+
+                var firstFilter = filterByDept;
+                var secondFilter = filterbyWorkSheetStatus;
+
+               
+                if (request.DepartmentID == "Ma" | request.DepartmentID == "Re" | request.DepartmentID == "Rp")
                 {
-                    //if dept is manager lab or report get worksheet with paramaters already verified by lab
-                    if (request.DepartmentID == "Ma" | request.DepartmentID == "Re")
-                    {
-                        //
-                        workSheets = await _db.WorkSheet
-                        .Include(w => w.Samples)
-                        .ThenInclude(w => w.Paramaters.Where(p => p.Status == _getStatus.Accept[request.Department]))
-                        .ThenInclude(p => p.Method)
-                        .Include(w => w.IssueTo)
-                        .OrderByDescending(w => w.ReceiveDate)
-                        .ToListAsync(cancellationToken: cancellationToken);
-                        workSheets = workSheets.Where(w => w.Status == _getStatus.Accept[request.Department]).ToList();
-                    }
-                    //if dept is other labs get worksheet with paramaters belong to this lab
-                    //& status of worksheet not verify yet
-                    else
-                    {
-                        workSheets = await _db.WorkSheet
-                        .Include(w => w.Samples)
-                        .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
-                        .ThenInclude(p => p.Method)
-                        .Include(w => w.IssueTo)
-                        .OrderByDescending(w => w.ReceiveDate)
-                        .ToListAsync(cancellationToken: cancellationToken);
-                        workSheets = workSheets.Where(w => w.Status == _getStatus.Accept[request.Department]).ToList();
-                    }
-
-
+                    firstFilter = filterByStatus;
                 }
 
-                else
+                workSheets = await _db.WorkSheet
+                .Include(w => w.Samples)
+                .ThenInclude(firstFilter)
+                .ThenInclude(p => p.Method)
+                .Include(w => w.IssueTo)
+                .OrderByDescending(w => w.ReceiveDate)
+                .ToListAsync(cancellationToken: cancellationToken);
+
+                if (!request.WithResult)
                 {
-
-                    workSheets = await _db.WorkSheet
-                    .Include(w => w.Samples)
-                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
-                    .ThenInclude(p => p.Method)
-                    .Include(w => w.IssueTo)
-                    .OrderByDescending(w => w.ReceiveDate)
-                    .ToListAsync(cancellationToken: cancellationToken);
-                    workSheets = workSheets.Where(ws => ws.Samples.All(s => s.Paramaters.All(p => p.Result != null)))
-                    .Where(w => w.Status == _getStatus.Process[request.Department]).ToList();
-
+                    workSheets = workSheets.Where(secondFilter).ToList();
+                } else
+                {
+                    if(request.Department.Contains("Lab"))
+                    {
+                        workSheets = workSheets
+                       .Where(w => w.Status == _getStatus.Process[request.Department]).ToList();
+                    } else
+                    {
+                        workSheets = workSheets
+                      .Where(w => w.Status == _getStatus.Verify[request.Department]).ToList();
+                    }
+                    
                 }
 
                 workSheets.ForEach(w => w.RemoveSampleEmpty());

@@ -175,7 +175,7 @@ namespace API.Controllers
             if (reportStream.Length > 0)
             {
                 var cd = new ContentDispositionHeaderValue("attachment");
-                cd.FileName = "Report.docx";
+                cd.FileName = $"{doc.Value.ReceiveNo}.docx";
                 Response.Headers[HeaderNames.ContentDisposition] = cd.ToString();
                 return new FileStreamResult(reportStream, new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
                 {
