@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interface;
 using AutoMapper;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Worksheet
 {
-    internal class WorkSheetSelectEnterResult
+    public class WorkSheetSelectEnterResult
     {
         public class Request : IRequest<ResultList<WorkSheetDto>>
         {
@@ -45,7 +43,7 @@ namespace Application.Worksheet
 
                 workSheets = await _db.WorkSheet
                 .Include(w => w.Samples)
-                .ThenInclude(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result)))
+                .ThenInclude(s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID))
                 .ThenInclude(p => p.Method)
                 .Include(w => w.IssueTo)
                 .OrderByDescending(w => w.ReceiveDate)
@@ -53,7 +51,7 @@ namespace Application.Worksheet
 
 
                 workSheets = workSheets
-              .Where(w => w.Status == _getStatus.Verify[request.Department]).ToList();
+              .Where(w => w.Status == _getStatus.Process[request.Department] && w.ResultDate.Date <= DateTime.Now.Date).ToList();
 
 
                 workSheets.ForEach(w => w.RemoveSampleEmpty());

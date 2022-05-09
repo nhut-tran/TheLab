@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useParams } from 'react-router'
 import { WorkSheet } from '../api/entity'
-import { Input, Select } from '../App/structure/FormElement'
+import { Button, Input, Select } from '../App/structure/FormElement'
+import { WorkSheetStatusLimitAccess } from '../config/WorkSheetStatus'
 import { useStore } from '../store/appStore'
 import { FormContainer, FormContainerGrid, FormSection } from '../style/Form'
 import { Spinner } from '../style/Spinner'
@@ -13,16 +14,23 @@ import { WrapperForForm } from '../style/Wrapper'
 import AutoSave from './AutoSave'
 
 interface Prop {
-    viewOnly: boolean
+    viewOnly?: boolean
     children?: React.ReactNode,
-    autoSaveName?: string
+    autoSaveName?: string,
+    limit?: number
 }
 
 
-const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
-    const { sampleStore, methodStore, commonStore } = useStore()
+const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Prop) => {
+
+    const { sampleStore, methodStore, commonStore, userStore } = useStore()
     const { id } = useParams<{ id: string }>();
     let [iniital, setInitial] = React.useState({} as WorkSheet)
+    const ref = React.useRef(WorkSheetStatusLimitAccess[userStore.user?.department || ''].startlimit)
+    const checkStatus = (status: number | undefined, limit: number) => {
+        if (limit && status) return status > limit;
+        return false;
+    }
     // const fistRender = React.useRef(0)
     React.useEffect(() => {
         methodStore.getMethod();
@@ -67,7 +75,7 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
         <WrapperForForm width='100%'>
             <Formik
                 initialValues={iniital}
-
+                enableReinitialize
                 onSubmit={(val) => {
 
                     sampleStore.ResultInput(val)
@@ -120,18 +128,20 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
                                                                                                 {
                                                                                                     s.paramaters.map((p, indP) => (
 
-                                                                                                        <Select className='form_group' label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
+                                                                                                        <Select className='form_group' remark={checkStatus(p.status, ref.current)} label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
 
                                                                                                             <option disabled key={p.methodID} value={p.methodID}>{methodStore.methodRegistry.get(p.methodID)?.name}</option>
                                                                                                         </Select>
                                                                                                     ))
 
-                                                                                                }                                                                                                                        </FormContainer>
+                                                                                                }
+                                                                                            </FormContainer>
                                                                                             <FormContainer className='form_group' direction='column' >
 
                                                                                                 {s.paramaters.map((p, indP) => (
 
-                                                                                                    <Select className='form_group' label={`Unit ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
+
+                                                                                                    <Select className='form_group' remark={checkStatus(p.status, ref.current)} label={`Unit ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
 
                                                                                                         <option key={p.methodID} value={p.methodID}>{methodStore.methodRegistry.get(p.methodID)?.unit}</option>
                                                                                                     </Select>
@@ -141,7 +151,10 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName }: Prop) => {
                                                                                             <FormContainer className='form_group' direction='column'>
                                                                                                 {s.paramaters.map((p, indP) => (
 
-                                                                                                    <Input type='text' className='form_group' disabled={viewOnly} label='Result' name={`samples.${ind}.paramaters.${indP}.result`} />))
+                                                                                                    <Input remark={checkStatus(p.status, ref.current)} type='text' className='form_group' disabled={
+                                                                                                        viewOnly !== undefined ? viewOnly :
+                                                                                                            p.status && limit ? p.status >= limit : viewOnly
+                                                                                                    } label='Result' name={`samples.${ind}.paramaters.${indP}.result`} />))
                                                                                                 }
 
                                                                                             </FormContainer>

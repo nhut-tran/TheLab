@@ -30,6 +30,7 @@ namespace Application.Core
              .ForMember(t => t.MethodID, o => o.MapFrom(s => s.MethodID))
              .ForMember(t => t.Tartget, o => o.MapFrom(s => s.Method.Target))
               .ForMember(t => t.Result, o => o.MapFrom(s => s.Result))
+              .ForMember(t => t.Status, o => o.MapFrom(s => s.Status))
                .ForMember(t => t.ResultDate, o => o.MapFrom(s => s.ResultDate.ToString("dd-MM-yyyy")))
                .ForMember(t => t.Unit, o => o.MapFrom(s => s.Method.Unit));
 

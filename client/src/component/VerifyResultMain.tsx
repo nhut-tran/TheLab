@@ -21,7 +21,7 @@ const VerifyResultMain = observer(() => {
         setApproveList({ value: value, type: addorsub })
 
     }
-
+    console.log(commonStore.searchData)
     useEffect(() => {
         return () => {
             commonStore.resetSearchValue()

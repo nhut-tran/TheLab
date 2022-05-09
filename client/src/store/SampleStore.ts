@@ -16,6 +16,11 @@ export class SampleStore {
     get SampleList() {
         return Array.from(this.SampleRegistry.values());
     }
+    setWorkSheetValue = (val: WorkSheet) => {
+        runInAction(() => {
+            this.workSheet = val;
+        })
+    }
 
     getSample = async () => {
         const data = await agent.sample.get();

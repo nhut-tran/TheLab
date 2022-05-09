@@ -32,7 +32,9 @@ export interface MethodSampleAss {
     methodID: string,
     method: string,
     result: string,
+    status?: number,
     unit: string,
+
 
 }
 

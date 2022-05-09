@@ -22,7 +22,7 @@ interface Props {
 
 const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
     const { methodStore, customerStore, commonStore, sampleStore } = useStore();
-    
+
     useEffect(() => {
         methodStore.getMethod();
     }, [methodStore.methodList.length, methodStore])
@@ -55,8 +55,8 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                     })
                 }
                 onSubmit={(val) => {
-                  
-                  handleSubmit(val)
+
+                    handleSubmit(val)
 
                 }}
             >
@@ -76,8 +76,8 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                         {customerStore.customerList.map((cus) => {
                                             return (
                                                 <option key={cus.customerId} value={cus.customerId}>{cus.name}</option>
-                                                )
-                                            })}
+                                            )
+                                        })}
 
                                     </Select>
                                     <Input type='text' className='form_group' label='Note' name={`note`} />
@@ -186,6 +186,7 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                             unit: "",
                                                             methodID: "",
                                                             method: "",
+
                                                         }
                                                     ]
                                                 })
@@ -201,8 +202,8 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                     submitForm()
                                                 }}
                                                 type="button">Save</Button>
-                                           
-                                            
+
+
                                         </>
                                     )
                                 }}

@@ -77,7 +77,6 @@ namespace Application.Worksheet
                     .Include(w => w.IssueTo)
                     .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);
                     }
-                    // workSheet.Samples = workSheet.Samples.Where(s => s.Paramaters.Count > 0).ToList();
                     if (workSheet.Status != _getStatus.Accept[request.Department])
                     {
                         return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = "WorkSheet access is denied" });

@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import agent from "../api/agent";
 import { WorkSheet } from "../api/entity";
 import { appStore } from "./appStore";
@@ -49,7 +49,8 @@ class CommonStore {
             ser[1]
         );
         this.setSearchData([res.data.value]);
-        appStore.sampleStore.workSheet = res.data.value;
+
+        appStore.sampleStore.setWorkSheetValue(res.data.value);
     };
 
     getUnApproveWorkSheet = async (withResult: boolean, page = "1") => {
@@ -67,9 +68,15 @@ class CommonStore {
         this.metadata = res.data.metadata;
         this.setSearchData(res.data.value);
     };
+    getWorkSheetForResult = async (page = "1") => {
+        const res = await agent.common.getWorkSheetForResult(page);
+        this.metadata = res.data.metadata;
+        this.setSearchData(res.data.value);
+    };
 
     getSearchValue = (WSN: string) => {
         const val = this.searchData.find((w) => w.workSheetNo === WSN);
+        console.log(toJS(val))
         if (val) appStore.sampleStore.workSheet = val;
     };
 

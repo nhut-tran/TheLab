@@ -79,6 +79,14 @@ namespace API.Controllers
             return HandleRequestResult(await Mediator.Send(new WorkSheetDetail.Query() { WorkSheetNo = id, Department = depa, DepartmentID = depaID }));
         }
         [Authorize]
+        [HttpGet("WorkSheetForResult/{page}")]
+        public async Task<IActionResult> GetWorkSheetToEnterResult(int page)
+        {
+            var depa = HttpContext.User.FindFirstValue("Department");
+            var depaID = HttpContext.User.FindFirstValue("DepartmentID");
+            return HandleRequestResult(await Mediator.Send(new WorkSheetSelectEnterResult.Request { Department = depa, DepartmentID = depaID, Page = page}));
+        }
+        [Authorize]
         [HttpGet("BySample/{id}")]
         public async Task<IActionResult> GetOneWorkSheetBySample(int id)
         {

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interface;
 using AutoMapper;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -44,7 +46,7 @@ namespace Application.Worksheet
 
                     var workSheet = await _db.WorkSheet
                     .Include(w => w.Samples)
-                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result)))
+                    .ThenInclude(w => w.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result) && p.ResultDate.Date <= DateTime.Now.Date && p.Status == _getStatus.Process[request.Department]))
                     .ThenInclude(p => p.Method)
                     .Include(w => w.IssueTo)
                     .FirstOrDefaultAsync(w => w.WorkSheetNo == wsn, cancellationToken: cancellationToken);

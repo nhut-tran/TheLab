@@ -34,7 +34,7 @@ namespace Domain
                 s.RemoveAll(n => n == -1);
                 if (!s.Any()) return -1;
                 var f = s.First();
-                return s.All(n => n == f) ? f : -2;
+                return s.All(n => n == f) ? f : s.Min(n => n);
             }
 
         }
@@ -78,7 +78,7 @@ namespace Domain
 
                 return Samples.Max(t => t.ResultDate);
             }
-            return DateTime.Now;
+            return DateTime.MinValue;
 
         }
         public List<Sample> GetSamples(string department)

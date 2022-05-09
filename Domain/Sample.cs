@@ -31,7 +31,7 @@ namespace Domain
                 s.RemoveAll(n => n == -1);
                 if (!s.Any()) return -1;
                 var f = s.First();
-                return s.All(n => n == f) ? f : -2;
+                return s.All(n => n == f) ? f : s.Min(n => n);
 
             }
 
@@ -65,7 +65,7 @@ namespace Domain
         private DateTime CalResultDate()
         {
 
-            if (!Paramaters.Any()) return DateTime.Now;
+            if (!Paramaters.Any()) return DateTime.MinValue;
             return Paramaters.Max(t => t.ResultDate);
         }
 

@@ -93,7 +93,7 @@ axios.interceptors.response.use(
             err.response?.status === 401 &&
             err.config.url === "/Account/refresh"
         ) {
-            return Promise.reject(err).finally(() => {});
+            return Promise.reject(err).finally(() => { });
         } else if (
             err.response?.status === 401 &&
             err.config.url === "/Account/login"
@@ -310,6 +310,11 @@ const agent = {
         getApprovedWorksheet(page: string) {
             return axios.get<ResponseData<WorkSheet>>(
                 `WorkSheet/Approved/${page}`
+            );
+        },
+        getWorkSheetForResult(page: string) {
+            return axios.get<ResponseData<WorkSheet>>(
+                `WorkSheet/WorkSheetForResult/${page}`
             );
         },
         getUnVerifyWorkSheetWithResult() {

@@ -45,7 +45,7 @@ namespace Application.Worksheet
                 List<Domain.WorkSheet> workSheets;
                 
                 Expression<Func<Sample, IEnumerable<SampleMethodAssigment>>> filterByStatus = s => s.Paramaters.Where(p => p.Status == (request.WithResult ? _getStatus.Verify[request.Department] :_getStatus.Accept[request.Department]));
-                Expression<Func<Sample, IEnumerable<SampleMethodAssigment>>> filterByDept = request.WithResult ? s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result)) : s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID);
+                Expression<Func<Sample, IEnumerable<SampleMethodAssigment>>> filterByDept = request.WithResult ? s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID && !string.IsNullOrEmpty(p.Result) && p.ResultDate.Date <= DateTime.Now.Date) : s => s.Paramaters.Where(p => p.Method.DepartmentID == request.DepartmentID);
                 Func<Domain.WorkSheet, bool> filterbyWorkSheetStatus = w => w.Status == _getStatus.Accept[request.Department];
 
                 var firstFilter = filterByDept;

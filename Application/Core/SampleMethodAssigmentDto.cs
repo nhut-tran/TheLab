@@ -10,6 +10,7 @@ namespace API.DTOs
         public string Method { get; set; }
         public string Department { get; set; }
         public string Tartget { get; set; }
+        public int Status { get; set; }
         public string Unit { get; set; }
         public string Result { get; set; }
 

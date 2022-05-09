@@ -22,18 +22,5 @@ export const useSearchResultHanlde = () => {
         }
     }
 
-    // const handleApproveList = (value: string, addorsub: boolean) => {
-    //     setApproveList((prevSate) => {
-    //         let newstate;
-    //         if (addorsub) {
-    //             newstate = [...prevSate, value]
-    //         } else {
-    //             newstate = [...prevSate].filter(i => i !== value)
-    //         }
-
-    //         return newstate
-    //     })
-
-    // }
     return useReducer(reducer, initialList)
 }

@@ -26,6 +26,7 @@ import Print from "../features/Receive/Print";
 import SendEmail from "../component/SendEmail";
 import SendEmailReport from "../features/Report/SendEmailReport";
 import ReviewWorkSheet from "../component/ReviewWorkSheet";
+import WorkSheetForResult from "../component/WorkSheetForResult";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -175,6 +176,40 @@ const mainConfig: MainRouteConfig[] = [
             {
                 requirement: [new DepartmentRequirement(Department.Manager)],
                 component: VerifyResultManager,
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/workSheetForResult",
+        exact: true,
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
+                component: WorkSheetForResult,
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/workSheetForResult/:id",
+        exact: true,
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
+                component: ResultInput,
             },
         ],
         fallBackComponent: NotFound,

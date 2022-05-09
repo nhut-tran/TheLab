@@ -15,14 +15,17 @@ const Style = (comp: any, display?: string) => {
     ${!display && 'justify-content: center;'}
     ${display && 'align-items: center;'}
     padding-bottom: 1rem;
+    
     & label {
-        color: #963cff;
+        
+        color: ${props => props.remark ? '#FF0000' : "#963cff"};
     }
     & input {
        // height: 10rem;
         display: inline-block;
         padding: 0.7rem 0.9rem;
         border: 1.2px solid #719ECE;
+        color: ${props => props.remark ? '#FF0000' : ""};
         &:focus {
         outline: none;
          border-color: #719ECE;
@@ -38,6 +41,8 @@ const Style = (comp: any, display?: string) => {
         border-radius: 4px;
         margin-right: 0.5rem;
         width: 25rem;
+        color: ${props => props.remark ? '#FF0000' : ""};
+    
         &:focus {
          border-color: #719ECE;
          box-shadow: 0 0 0.5rem #719ECE;
@@ -61,6 +66,7 @@ interface InputProp {
     name: string,
     className?: string,
     disabled?: boolean,
+    remark?: boolean,
     handleChange: (e: React.ChangeEvent<any>) => void,
     children?: React.ReactNode
 }
