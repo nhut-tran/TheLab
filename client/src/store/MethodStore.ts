@@ -15,17 +15,22 @@ export class MethodStore {
     }
 
     getMethod = async () => {
-       const data = await agent.method.get();
+        const data = await agent.method.get();
         data.value.forEach(method => {
             runInAction(() => {
                 this.methodRegistry.set(method.methodID, method);
             })
         });
-        
+
     }
 
     methodDetail = (id: string) => {
         this.selectedMethod = this.methodRegistry.get(id);
+    }
+
+    sortMethodByDept = (deptID: string) => {
+        if (!deptID) return this.methodList;
+        return this.methodList.filter((med) => med.departmentID === deptID);
     }
 }
 

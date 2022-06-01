@@ -119,14 +119,19 @@ namespace Application.Service.GenerateWorkSheet
                         VerticalMerge = new VerticalMerge() { Val = MergedCellValues.Continue }
                     };
                     var tableRow = new TableRow();
-
-                    var tcs0 = new TableCell(new Paragraph(new Run(new Text(sample.SampleNo.ToString()))));
-                    tcs0.Append(new Paragraph(new Run(new Break() { })));
-                    tcs0.Append(new Paragraph(new Run(new Text("SEQ: " + sampleList.IndexOf(sample).ToString()))));
-                    tcs0.Append(new Paragraph(new Run(new Break() { })));
-                    tcs0.Append(new Paragraph(new Run(new Text(sample.Description))));
-                    tcs0.Append(new Paragraph(new Run(new Break() { })));
-                    tcs0.Append(new Paragraph(new Run(new Text(sample.Weight.ToString()))));
+                    
+                    var run = new Run();
+                    run.AppendChild(new Text("Code: " + sample.SampleNo.ToString()));
+                    run.AppendChild(new Break() { });
+                    run.AppendChild(new Text("SEQ: " + sampleList.IndexOf(sample).ToString()));
+                    run.AppendChild(new Break() { });
+                    run.AppendChild(new Text("Description: " + sample.Description));
+                    run.AppendChild(new Break() { });
+                    run.AppendChild(new Text("Weight: " + sample.Weight.ToString()));
+                    var tcs0 = new TableCell(new Paragraph(run));
+               
+                   
+                   
 
                     tcs0.TableCellProperties = tbPropS;
                     var tcs1 = new TableCell(new Paragraph(new Run(new Text(sample.ResultDate))));

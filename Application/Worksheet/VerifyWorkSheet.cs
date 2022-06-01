@@ -70,7 +70,7 @@ namespace Application.Worksheet
                     }
                     else
                     {
-                        workSheet = await _db.WorkSheet
+                     workSheet = await _db.WorkSheet
                     .Include(w => w.Samples)
                     .ThenInclude(w => w.Paramaters)
                     .ThenInclude(p => p.Method)

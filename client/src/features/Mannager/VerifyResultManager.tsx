@@ -1,5 +1,5 @@
-import { } from 'mobx'
 import { useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Button } from '../../App/structure/FormElement'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 
@@ -10,17 +10,18 @@ import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSSt
 
 
 const VerifyResultManager = () => {
-
+    const { id } = useParams<{ id: string }>();
     const { sampleStore, commonStore } = useStore();
     const { startlimit, endlimit } = useAccessWorkSheetByStatusVerify();
     const [buttonToggle, setButtonToggle] = useState(false);
+    const [checkDataButtonToggle, setCheckDataButtonToggle] = useState(true);
     const ref = useRef({ ...sampleStore.workSheet })
 
     return (
         <Wrapper>
             {<ViewWorkSheet viewOnly={true} />}
 
-            {(startlimit || endlimit) && <Button disabled={commonStore.isFetching} top='50%' left='92%'
+            {(startlimit || endlimit) && <Button disabled={commonStore.isFetching || checkDataButtonToggle} top='50%' left='92%'
                 onClick={() => startlimit ?
                     sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) :
                     sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
@@ -39,6 +40,22 @@ const VerifyResultManager = () => {
                 }}
                 type='button'> {!buttonToggle ? "All parameters" : "Hide verified parameter"}
             </Button>
+            {checkDataButtonToggle && <Button disabled={commonStore.isFetching} top='80%' left='92%'
+                onClick={() => {
+
+                    commonStore.getUnApproveWorkSheet(false).then(() => {
+                        const ws = commonStore.searchData.find(e => e.workSheetNo == id);
+                        if (ws)
+                            sampleStore.setWorkSheetValue(ws);
+                        setCheckDataButtonToggle(false);
+                        //if five second after update data not verify => have to check again
+                        setTimeout(() => {
+                            setCheckDataButtonToggle(true);
+                        }, 5000);
+                    })
+                }}
+                type='button'>Check new data
+            </Button>}
         </Wrapper>
     )
 

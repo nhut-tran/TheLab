@@ -18,7 +18,7 @@ export interface Sample {
     weight: number;
     note: string | null;
     status: number;
-    resultDate?: Date;
+    resultDate?: string;
     sealNumber: string;
     sampling: boolean;
     urgent: boolean;
@@ -34,7 +34,7 @@ export interface MethodSampleAss {
     result: string,
     status?: number,
     unit: string,
-
+    resultDate: string
 
 }
 
@@ -63,7 +63,7 @@ export interface WorkSheet {
     issueTo: string,
     status: number,
     receiveDate: string,
-    resultDate?: Date,
+    resultDate?: string,
     samples: Sample[]
 }
 

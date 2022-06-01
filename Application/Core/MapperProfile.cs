@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using API.DTOs;
 using AutoMapper;
@@ -38,7 +39,9 @@ namespace Application.Core
              .ForMember(t => t.Method, o => o.Ignore())
              .ForMember(t => t.MethodID, o => o.MapFrom(s => s.MethodID))
               .ForMember(t => t.Result, o => o.MapFrom(s => s.Result))
-               .ForMember(t => t.ResultDate, o => o.Ignore());
+              .ForMember(t => t.ResultDate, o => o.Ignore());
+                
+              
 
             CreateMap<Domain.WorkSheet, WorkSheetDto>()
             .ForMember(t => t.ResultDate, o => o.MapFrom(s => s.ResultDate.ToString("dd-MM-yyyy")))

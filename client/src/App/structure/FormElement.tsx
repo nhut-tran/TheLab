@@ -67,7 +67,7 @@ interface InputProp {
     className?: string,
     disabled?: boolean,
     remark?: boolean,
-    handleChange: (e: React.ChangeEvent<any>) => void,
+    handleChange?: (e: React.ChangeEvent<any>) => void,
     children?: React.ReactNode
 }
 
@@ -109,13 +109,15 @@ export const CheckBox = Style(({ label, className, ...props }: InputProp) => {
     )
 }, 'row')
 
-export const Select = Style(({ label, className, ...props }: InputProp) => {
+export const Select = Style(({ label, className, handleChange, ...props }: InputProp) => {
     const [field, meta] = useField(props)
-
+    //overide onChange
+    if (handleChange)
+        field.onChange = handleChange;
     return (
         <div className={className}>
             <label htmlFor={label}>{label}</label>
-            <select {...props} {...field} ></select>
+            <select{...props} {...field} ></select>
             {meta.touched && meta.error && <div className={`${className}_error`}>{meta.error}</div>}
         </div>
     )

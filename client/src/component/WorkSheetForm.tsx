@@ -2,9 +2,9 @@ import { FieldArray, Form, Formik, getIn } from "formik"
 import { WrapperForForm } from "../style/Wrapper"
 import * as Yup from 'yup';
 import { WorkSheet } from "../api/entity";
-import { FormContainer, FormSection } from "../style/Form";
+import { FormContainer, FormContainerGrid, FormSection } from "../style/Form";
 import { Button, CheckBox, Input, Select } from "../App/structure/FormElement";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useStore } from "../store/appStore";
 
 import AutoSave from "./AutoSave";
@@ -21,8 +21,9 @@ interface Props {
 
 
 const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
-    const { methodStore, customerStore, commonStore, sampleStore } = useStore();
+    const { methodStore, customerStore, departmentStore } = useStore();
 
+    const [dept, setDept] = useState<string>("");
     useEffect(() => {
         methodStore.getMethod();
     }, [methodStore.methodList.length, methodStore])
@@ -30,6 +31,10 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
     useEffect(() => {
         customerStore.getCustomer()
     }, [customerStore.customerList.length, customerStore])
+    useEffect(() => {
+        departmentStore.getDepartment();
+    }, [])
+
 
     return (
 
@@ -61,7 +66,7 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                 }}
             >
                 {({ values, errors }) => {
-                    console.log(values)
+
                     return (
 
                         <Form>
@@ -76,6 +81,16 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                         {customerStore.customerList.map((cus) => {
                                             return (
                                                 <option key={cus.customerId} value={cus.customerId}>{cus.name}</option>
+                                            )
+                                        })}
+
+                                    </Select>
+                                    <Select className='form_group' label='Department' key={`Department`} handleChange={(e: React.ChangeEvent<any>) => setDept(e.target.value)} name={`selectedDept`} >
+                                        <option value="all">---Select Department----</option>
+                                        {departmentStore.departmentList.filter(e => (e.name.includes('Lab') && !e.name.includes('Manager'))).map((dep) => {
+
+                                            return (
+                                                <option key={dep.departmentID} value={dep.departmentID}>{dep.name}</option>
                                             )
                                         })}
 
@@ -96,24 +111,23 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                                 {
                                                                     values.samples.map((s, ind) => (
                                                                         <div className='form_container_sub' style={{ width: '100%' }} key={s.sampleID}>
-
-                                                                            <h4>Sample {ind + 1} {s.description ? s.description : ''}</h4>
-
-                                                                            <FormContainer className='form_container' >
-                                                                                <Input type='text' className='form_group' disabled={true} label='SampleNO' name={`samples.${ind}.sampleNo`} />
-                                                                                <Input type='text' className='form_group' label='Description' name={`samples.${ind}.description`} />
-                                                                                <Input className='form_group' label='Weight' name={`samples.${ind}.weight`} />
-                                                                                <Input className='form_group' label='Note' name={`samples.${ind}.note`} />
-                                                                                <Input className='form_group' label='Seal Numer' name={`samples.${ind}.sealNumber`} />
+                                                                            <FormContainer className='form_container' direction='row'>
+                                                                                <h4>Sample {ind + 1} {s.description ? s.description : ''}</h4>
                                                                                 <CheckBox className='form_group' label='Sampling' name={`samples.${ind}.sampling`} type='checkbox' display='' />
                                                                                 <CheckBox className='form_group' label='Urgent' name={`samples.${ind}.urgent`} type='checkbox' display='' />
+                                                                                <Input className='form_group' label='Note' name={`samples.${ind}.note`} />
                                                                             </FormContainer>
-                                                                            <FormContainer className='form_container' direction='column'>
+                                                                            <FormContainerGrid className="aaa">
+                                                                                {/* <Input type='text' className='form_group' value={s.sampleNo === 0 ? "Unknown" : s.sampleNo} disabled={true} label='SampleNO' name={`samples.${ind}.sampleNo`} /> */}
+                                                                                <Input type='text' className='form_group' label='Description' name={`samples.${ind}.description`} />
+                                                                                <Input className='form_group' label='Weight' name={`samples.${ind}.weight`} />
+
+                                                                                <Input className='form_group' label='Seal Numer' name={`samples.${ind}.sealNumber`} />
                                                                                 <FieldArray name={`samples.${ind}.paramaters`}
                                                                                     render={
                                                                                         (helperPara) => (
                                                                                             <>
-                                                                                                <FormContainer className='form_container'>
+                                                                                                <FormContainer className='form_container' direction="colunm">
                                                                                                     {
                                                                                                         values.samples[ind].paramaters.map((p, indP) => {
 
@@ -121,28 +135,32 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                                                                                 <div key={p.methodID + indP}>
                                                                                                                     {typeof getIn(errors, `samples.${ind}.paramaters`) === 'string' && <div>{getIn(errors, `samples.${ind}.paramaters`)}</div>}
 
-                                                                                                                    <Select className='form_group' label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
-                                                                                                                        <option disabled value='00000000-0000-0000-0000-000000000000'>---Select Method----</option>
-                                                                                                                        {methodStore.methodList.map((med, i) => <option key={med.methodID} value={med.methodID}>{med.name}</option>)}
+                                                                                                                    <Select className='form_group' value='00000000-0000-0000-0000-000000000000' label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
+                                                                                                                        <option hidden value='00000000-0000-0000-0000-000000000000'>---Select Method----</option>
+                                                                                                                        {methodStore.sortMethodByDept(dept).map((med, i) => <option key={med.methodID} value={med.methodID}>{med.name}</option>)}
                                                                                                                     </Select>
                                                                                                                 </div>
                                                                                                             )
                                                                                                         })
                                                                                                     }
                                                                                                 </FormContainer>
-                                                                                                <FormContainer borderBot='bot' className='form_container' width='30%'>
+                                                                                                {/* <FormContainer borderBot='bot' className='form_container' width='30%'> */}
 
-                                                                                                    <Button className='form_button' position='relative' top='0' right='0' type='button' onClick={() => {
-                                                                                                        helperPara.push({ methodID: "", method: "" })
-                                                                                                    }}>+</Button>
-                                                                                                    <Button className='form_button' position='relative' top='0' right='10%' type='button' onClick={() => {
-                                                                                                        helperPara.pop();
-                                                                                                    }}>-</Button>
-                                                                                                </FormContainer>
+                                                                                                <Button className='form_button' position='relative' top='0' right='0' type='button' onClick={() => {
+                                                                                                    helperPara.push({ methodID: "", method: "" })
+                                                                                                }}>+</Button>
+                                                                                                <Button className='form_button' position='relative' top='0' right='10%' type='button' onClick={() => {
+                                                                                                    if (values.samples[ind].paramaters.length > 1) helperPara.pop();
+                                                                                                }}>-</Button>
+                                                                                                {/* </FormContainer> */}
                                                                                             </>
                                                                                         )
                                                                                     }
                                                                                 />
+
+                                                                            </FormContainerGrid>
+                                                                            <FormContainer className='form_container' direction='column'>
+
                                                                             </FormContainer>
                                                                         </div>
                                                                     ))
@@ -186,15 +204,18 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                             unit: "",
                                                             methodID: "",
                                                             method: "",
-
+                                                            resultDate: ""
                                                         }
                                                     ]
                                                 })
                                                 setValues(values)
                                             }}>Add Sample</Button>
                                             <Button top='50%' left='92%' type='button' onClick={() => {
-                                                values.samples.pop()
-                                                setValues(values)
+                                                if (values.samples.length > 1) {
+                                                    values.samples.pop()
+                                                    setValues(values)
+                                                }
+
                                             }}>Remove Sample
                                             </Button>
                                             <Button className='form_button' top='60%' left='92%'

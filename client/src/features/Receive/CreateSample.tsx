@@ -36,6 +36,7 @@ export const ControllFormButton = () => {
                             unit: "",
                             methodID: "",
                             method: "",
+                            resultDate: ""
                         }
                     ]
                 })

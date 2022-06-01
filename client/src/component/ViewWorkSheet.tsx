@@ -26,9 +26,9 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
     const { sampleStore, methodStore, commonStore, userStore } = useStore()
     const { id } = useParams<{ id: string }>();
     let [iniital, setInitial] = React.useState({} as WorkSheet)
-    const ref = React.useRef(WorkSheetStatusLimitAccess[userStore.user?.department || ''].startlimit)
+    const ref = React.useRef(WorkSheetStatusLimitAccess[userStore.user?.department || ''].endlimit)
     const checkStatus = (status: number | undefined, limit: number) => {
-        if (limit && status) return status > limit;
+        if (limit && status) return status >= limit;
         return false;
     }
     // const fistRender = React.useRef(0)
@@ -68,7 +68,6 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
     if (!iniital.workSheetNo) {
         return <Spinner isDisPlay={true}><h3>Loading .......</h3></Spinner>
     }
-
 
     return (
 
@@ -129,7 +128,6 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
                                                                                                     s.paramaters.map((p, indP) => (
 
                                                                                                         <Select className='form_group' remark={checkStatus(p.status, ref.current)} label={`Paramaters ${indP + 1}`} key={`samples.${ind}.paramaters.${indP}.methodID`} name={`samples.${ind}.paramaters.${indP}.methodID`} >
-
                                                                                                             <option disabled key={p.methodID} value={p.methodID}>{methodStore.methodRegistry.get(p.methodID)?.name}</option>
                                                                                                         </Select>
                                                                                                     ))

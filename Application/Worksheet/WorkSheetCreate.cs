@@ -42,16 +42,16 @@ namespace Application.WorkSheetCreate
                 .FirstOrDefault(t => t.WorkSheetID == request.WorkSheet.WorkSheetID);
 
                 var customer = _db.Customer.FirstOrDefault(t => t.CustomerId == request.WorkSheet.IssueTo);
+               
 
-
-                blankWorkSheet.IssueTo = customer;
+                if(blankWorkSheet.IssueTo == null) blankWorkSheet.IssueTo = customer;
                 _mapper.Map(request.WorkSheet, blankWorkSheet);
 
                 var validateRes = _validator.Validate(blankWorkSheet);
 
                 if (!validateRes.IsValid) return Result<Unit>.Fail(new ErrorrType() { Name = "2", Message = validateRes.ToString(",") });
 
-                _db.WorkSheet.Update(blankWorkSheet);
+               
 
                 var res = await _db.SaveChangesAsync(cancellationToken) > 0;
 

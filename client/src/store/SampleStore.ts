@@ -58,6 +58,8 @@ export class SampleStore {
         history.push(`/${data.workSheetNo}`);
     };
 
+
+
     UpdateSample = async (data: WorkSheet) => {
         await agent.worksheet.put(data);
         history.push("/");

@@ -63,7 +63,7 @@ namespace Application.Worksheet
 
                 if (res) return Result<Unit>.Success(Unit.Value);
 
-                return Result<Unit>.Fail(new ErrorrType() { Name = "3", Message = "Some thing went wrong" });
+                return Result<Unit>.Fail(new ErrorrType() { Name = "3", Message = "Something went wrong" });
 
 
 
