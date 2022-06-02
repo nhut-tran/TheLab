@@ -8,7 +8,8 @@ import { observer } from "mobx-react-lite";
 
 const Style = (comp: any, display?: string) => {
     return styled(comp)`
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    margin-left: 1rem ;
     position: relative;
     display: flex;
     flex-direction: ${display ? display : 'column'};
@@ -21,6 +22,7 @@ const Style = (comp: any, display?: string) => {
         color: ${props => props.remark ? '#FF0000' : "#963cff"};
     }
     & input {
+        width: 100%;
        // height: 10rem;
         display: inline-block;
         padding: 0.7rem 0.9rem;
@@ -36,11 +38,12 @@ const Style = (comp: any, display?: string) => {
     }
 
     & select {
+        width: 110%;
         height: 3rem;
         border: 1px solid #719ECE;
         border-radius: 4px;
         margin-right: 0.5rem;
-        width: 25rem;
+        
         color: ${props => props.remark ? '#FF0000' : ""};
     
         &:focus {
@@ -67,6 +70,7 @@ interface InputProp {
     className?: string,
     disabled?: boolean,
     remark?: boolean,
+
     handleChange?: (e: React.ChangeEvent<any>) => void,
     children?: React.ReactNode
 }

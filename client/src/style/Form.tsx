@@ -25,6 +25,7 @@ export const FormSection = styled(FormSectionC)`
     border: 1px solid #76766f;
     width: 100%;
     
+    
 `
 
 export const FormContainer = styled(FormCotainerC)`
@@ -32,7 +33,7 @@ export const FormContainer = styled(FormCotainerC)`
     position: relative;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     display: ${props => props.display || 'flex'};
     flex-direction: ${props => props.direction || 'row'};
     width: ${props => props.width || '100%'};
