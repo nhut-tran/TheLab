@@ -7,6 +7,7 @@ interface Props {
     display?: string,
     direction?: string
     children: ReactNode,
+    justify?: string,
     width?: string,
     borderBot?: string
 }
@@ -16,7 +17,7 @@ const F = ({ display, direction, className, children }: Props, ref: LegacyRef<HT
 }
 export const FormSectionC = forwardRef(F);
 
-const FormCotainerC = ({ display, direction, className, children }: Props) => <div className={className}>{children}</div>
+const FormCotainerC = ({ className, children }: Props) => <div className={className}>{children}</div>
 export const FormSection = styled(FormSectionC)`
     display: flex;
     align-items: center;
@@ -33,7 +34,7 @@ export const FormContainer = styled(FormCotainerC)`
     position: relative;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content:  ${props => props.justify || 'flex-start'};;
     display: ${props => props.display || 'flex'};
     flex-direction: ${props => props.direction || 'row'};
     width: ${props => props.width || '100%'};

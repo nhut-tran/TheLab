@@ -49,7 +49,6 @@ class CommonStore {
             ser[1]
         );
         this.setSearchData([res.data.value]);
-
         appStore.sampleStore.setWorkSheetValue(res.data.value);
     };
 
@@ -76,7 +75,6 @@ class CommonStore {
 
     getSearchValue = (WSN: string) => {
         const val = this.searchData.find((w) => w.workSheetNo === WSN);
-        console.log(toJS(val))
         if (val) appStore.sampleStore.workSheet = val;
     };
 

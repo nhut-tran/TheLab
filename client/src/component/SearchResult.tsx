@@ -17,7 +17,7 @@ interface Prop {
 
 const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) => {
 
-    const { userStore, commonStore } = useStore()
+    const { userStore } = useStore()
 
     return (
 
@@ -49,7 +49,7 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                     }
                 })
             }
-            {data.length > 0 && commonStore.metadata && commonStore.metadata.totalItem > 10 && <PageGination totalPage={10} />}
+            {data.length > 0 && <PageGination />}
         </WrapperForList>
 
     )

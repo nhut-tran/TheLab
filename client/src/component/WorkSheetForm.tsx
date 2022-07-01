@@ -78,43 +78,43 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
 
                         <Form>
 
-                            <FormSection direction='column' className='form_section'>
+                            <FormSection direction='column' className='form_section_info'>
                                 <h4 style={{ alignSelf: 'start' }}>General Information</h4>
                                 <FormContainer className='form_container'>
-                                    <FormContainer className='form_container' width="50%">
-                                        <Input type='text' className='form_group' disabled={true} label='Receive Date' name={`receiveDate`} />
-                                        <Input type='text' className='form_group' disabled={true} label='WorkSheetNO' name={`workSheetNo`} />
-                                        <Select className='form_group' label='Department' key={`Department`} handleChange={(e: React.ChangeEvent<any>) => { setDepartment(e.target.value) }} name={`selectedDept`} >
-                                            <option value="all">---Select Department----</option>
-                                            {departmentStore.departmentList.filter(e => (e.name.includes('Lab') && !e.name.includes('Manager'))).map((dep) => {
 
-                                                return (
-                                                    <option key={dep.departmentID} value={dep.departmentID}>{dep.name}</option>
-                                                )
-                                            })}
+                                    <Input type='text' className='form_group' disabled={true} label='Receive Date' name={`receiveDate`} />
+                                    <Input type='text' className='form_group' disabled={true} label='WorkSheetNO' name={`workSheetNo`} />
+                                    <Input type='text' className='form_group' label='Note' name={`note`} />
 
-                                        </Select>
-                                        <Input type='text' className='form_group' label='Note' name={`note`} />
-                                    </FormContainer>
-                                    <FormContainer className='form_container' width="50%">
-                                        <Select className='form_group' label='Customer' key={`customer`} name={`issueTo`} >
-                                            <option disabled value=''>---Select Customer----</option>
-                                            {customerStore.customerList.map((cus) => {
-                                                return (
-                                                    <option key={cus.customerId} value={cus.customerId}>{cus.name}</option>
-                                                )
-                                            })}
 
-                                        </Select>
+                                    <Select className='form_group' label='Customer' key={`customer`} name={`issueTo`} >
+                                        <option disabled value=''>---Select Customer----</option>
+                                        {customerStore.customerList.map((cus) => {
+                                            return (
+                                                <option key={cus.customerId} value={cus.customerId}>{cus.name}</option>
+                                            )
+                                        })}
 
-                                    </FormContainer>
+                                    </Select>
+                                    <Select className='form_group' label='Department' key={`Department`} handleChange={(e: React.ChangeEvent<any>) => { setDepartment(e.target.value) }} name={`selectedDept`} >
+                                        <option value="all">---Select Department----</option>
+                                        {departmentStore.departmentList.filter(e => (e.name.includes('Lab') && !e.name.includes('Manager'))).map((dep) => {
+
+                                            return (
+                                                <option key={dep.departmentID} value={dep.departmentID}>{dep.name}</option>
+                                            )
+                                        })}
+
+                                    </Select>
+
+
                                 </FormContainer>
                             </FormSection>
                             <FieldArray name='workSheet'
                                 render={() => (
                                     <>
                                         {
-                                            <FormSection className='form_section-nhh' direction='column'>
+                                            <FormSection className='form_section_detail' direction='column'>
                                                 {
                                                     <FieldArray name={`samples`} render={
                                                         (h) => (
@@ -122,26 +122,26 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                                 {
                                                                     values.samples.map((s, ind) => (
                                                                         <div className='form_container_sub' key={s.sampleID}>
-                                                                            <FormContainer className='form_container' direction='row'>
+                                                                            <FormContainer className='form_container_title' direction='row'>
                                                                                 <h4>Sample {ind + 1} {s.description ? s.description : ''}</h4>
 
                                                                             </FormContainer>
-                                                                            <FormContainer className='form_container_nhut' direction='row'>
-                                                                                <FormContainer className='form_container' direction='row' width="50%">
+                                                                            <FormContainer className='form_container_sample_info' direction='row'>
+                                                                                <FormContainer className='form_container_sample_detail' direction='row' width="50%">
                                                                                     {/* <Input type='text' className='form_group' value={s.sampleNo === 0 ? "Unknown" : s.sampleNo} disabled={true} label='SampleNO' name={`samples.${ind}.sampleNo`} /> */}
                                                                                     <Input type='text' className='form_group' label='Description' name={`samples.${ind}.description`} />
                                                                                     <Input className='form_group' label='Weight' name={`samples.${ind}.weight`} />
-
                                                                                     <Input className='form_group' label='Seal Numer' name={`samples.${ind}.sealNumber`} />
+
+                                                                                    <Input className='form_group' label='Note' name={`samples.${ind}.note`} />
                                                                                     <CheckBox className='form_group' label='Sampling' name={`samples.${ind}.sampling`} type='checkbox' display='' />
                                                                                     <CheckBox className='form_group' label='Urgent' name={`samples.${ind}.urgent`} type='checkbox' display='' />
-                                                                                    <Input className='form_group' label='Note' name={`samples.${ind}.note`} />
                                                                                     <FieldArray name={`samples.${ind}.paramaters`}
                                                                                         render={
                                                                                             (helperPara) => (
                                                                                                 <>
 
-                                                                                                    <FormContainer className="button_group" width="auto">
+                                                                                                    <FormContainer className="form_container_button_group" width="60%" justify="space-evenly">
                                                                                                         <Button className='form_button' position='relative' type='button' onClick={() => {
                                                                                                             helperPara.push({ methodID: "00000000-0000-0000-0000-000000000000", method: "" })
                                                                                                         }}>+</Button>
@@ -155,7 +155,7 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                                                         }
                                                                                     />
                                                                                 </FormContainer>
-                                                                                <FormContainer className='form_container' width="50%" direction="column">
+                                                                                <FormContainer className='form_container_parameter' width="50%" direction="column" justify="space-evenly">
                                                                                     <FieldArray name={`samples.${ind}.paramaters`}
                                                                                         render={
                                                                                             () => (
@@ -186,9 +186,6 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                                                                                         })
                                                                                                     }
 
-                                                                                                    {/* <FormContainer borderBot='bot' className='form_container' width='30%'> */}
-
-
 
                                                                                                 </>
 
@@ -214,7 +211,8 @@ const WorkSheetForm = observer(({ initialValue, handleSubmit }: Props) => {
                                         }
 
                                     </>
-                                )}
+                                )
+                                }
 
                             />
                             <AutoSave item="newsample" />

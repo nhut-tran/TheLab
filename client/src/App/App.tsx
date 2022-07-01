@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Header from './layout/Header';
 import '../style/index.css'
@@ -15,16 +15,14 @@ import ToasterContainer from '../features/ErrorHandle/ToasterContainer';
 
 
 const App = observer(function App() {
-  
-  const { commonStore, userStore } = useStore()
 
+  const { commonStore, userStore } = useStore()
   useEffect(() => {
 
     userStore.checkCurrentUser()
 
 
   }, [commonStore, userStore])
-
 
   if (!commonStore.appReady) return <BigSpiner isDisPlay />
 

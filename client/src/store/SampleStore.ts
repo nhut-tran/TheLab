@@ -58,8 +58,6 @@ export class SampleStore {
         history.push(`/${data.workSheetNo}`);
     };
 
-
-
     UpdateSample = async (data: WorkSheet) => {
         await agent.worksheet.put(data);
         history.push("/");
@@ -111,4 +109,17 @@ export class SampleStore {
     generayeWSPDF = async (wsn: string) => {
         await agent.worksheet.generateWSPDF(wsn);
     };
+
+    deleteWorkSheet = async (id: string) => {
+        const res = await agent.worksheet.del(id)
+        if (res.isSuccess) {
+            toastEventRes.emit("success", "Delete succuess");
+            history.push("/")
+            this.workSheet = {} as WorkSheet;
+
+        }
+
+    }
+
+
 }

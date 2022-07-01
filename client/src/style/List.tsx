@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 interface LinkProp {
-    strip: number,
+    strip?: number,
     to: string,
     disbaled?: boolean,
     children?: ReactNode,
+    selected?: boolean,
     onClick: () => void,
     className?: string
 }
@@ -19,11 +20,11 @@ export const StyleLink = styled(LinkC)`
     justify-content: center;
     align-items: center;
     font-size: inherit;
-    color : #242424;
+    color :  ${props => props.selected ? "#34c03b" : "#242424"};
     font-weight: 600;
     text-decoration: none;
     width: 100%;
-    background-color: ${props => props.strip % 2 === 0 ? "#cef7c14b" : "#fff"};
+    background-color: ${props => ((props.strip && props.strip % 2 === 0) ? "#cef7c14b" : "#fff")};
     border-bottom: 1px solid #e6e3e3cc;
     padding: 2rem 3rem;
 

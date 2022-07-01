@@ -31,11 +31,11 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
         if (limit && status) return status >= limit;
         return false;
     }
-    // const fistRender = React.useRef(0)
     React.useEffect(() => {
         methodStore.getMethod();
     }, [methodStore.methodList.length, methodStore])
     React.useLayoutEffect(() => {
+
         //if autosavename => use for save in localstorage
         if (autoSaveName && !sampleStore.workSheet.workSheetNo) {
 
@@ -50,11 +50,10 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
             }
         } else if (sampleStore.workSheet.workSheetNo) {
 
-
             setInitial({ ...toJS(sampleStore.workSheet) })
-
         } else {
             //fetch data if not avaliable
+
             commonStore.search({ Worksheet: id, WorkSheet_BySample: "" }).then(() => {
                 setInitial({ ...toJS(sampleStore.workSheet) })
             })
@@ -63,6 +62,7 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
         return () => {
 
         }
+
     }, [autoSaveName, sampleStore.workSheet])
 
     if (!iniital.workSheetNo) {
@@ -93,7 +93,6 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
                                 <FormContainer className='form_container'>
                                     <Input type='text' className='form_group' disabled={true} label='Receive Date' name={`receiveDate`} />
                                     <Input type='text' className='form_group' disabled={true} label='WorkSheetNO' name={`workSheetNo`} />
-
                                 </FormContainer>
                             </FormSection>
                             <FieldArray name='workSheet'

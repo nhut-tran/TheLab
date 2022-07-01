@@ -1,70 +1,40 @@
 import * as React from 'react'
-import { useLocation, useRouteMatch } from 'react-router'
+import { useRouteMatch } from 'react-router'
 import { useStore } from '../store/appStore'
 import { StyleLink } from '../style/List'
 
 interface Prop {
-    totalPage: number
+    totalPage: number,
+    currentPage: number
 }
-const PageGination = ({ totalPage }: Prop) => {
-    const { commonStore } = useStore()
-    const { url } = useRouteMatch()
+const PageGination = () => {
+    const { commonStore } = useStore();
 
-    const [currentPage, setCurrentPage] = React.useState(1)
-    const [skip, setSkip] = React.useState(1)
-    return (
-        <div style={{ display: 'flex', width: '100% ' }}>
-            <StyleLink strip={1} className='page_link' onClick={() => {
-                setCurrentPage((prev) => {
-                    if (prev >= 1) {
+    const { url } = useRouteMatch();
+    if (commonStore.metadata) {
+        const { currentPage, pageCount: totalPage } = commonStore.metadata as { currentPage: number, pageCount: number }
+        return (
+            <div style={{ display: 'flex', width: '100% ' }}>
+                <StyleLink className='page_link' onClick={() => {
+                    if (currentPage > 1)
+                        commonStore.getUnApproveWorkSheet(false, (currentPage - 1).toString())
+                }}
+                    to={'#'}>{'<<'}</StyleLink>
+                {Array.from(Array(totalPage).keys()).map(page => (
+                    <StyleLink selected={currentPage === (page + 1)} className='page_link' onClick={() => { commonStore.getUnApproveWorkSheet(false, (page + 1).toString()) }}
+                        to={url}>{page + 1}</StyleLink>
+                ))}
+                <StyleLink className='page_link' onClick={() => {
+                    if (currentPage < totalPage)
+                        commonStore.getUnApproveWorkSheet(false, (currentPage + 1).toString())
 
+                }}
+                    to={'#'}>{'>>'}</StyleLink>
+            </div>
+        )
+    }
 
-                        commonStore.getUnApproveWorkSheet(false, (prev - 1).toString())
-                        setSkip((prev) => {
-                            if (prev >= 2) {
-                                return prev - 1
-                            }
-                            return prev
-                        })
-                        return prev - 1
-                    }
-                    return prev
-                })
-
-            }}
-                to={'#'}>{'<<'}</StyleLink>
-            {Array.from(Array(6).keys()).map(page => (
-                <StyleLink strip={(page + skip) === (commonStore.metadata.currentPage) ? 0 : 1} className='page_link' onClick={() => { commonStore.getUnApproveWorkSheet(false, (page + skip).toString()) }}
-                    to={url}>{(page + skip) > commonStore.metadata.pageCount ? "" : page + skip}</StyleLink>
-            ))}
-            <StyleLink strip={1} className='page_link' onClick={() => {
-
-
-                setCurrentPage((prev) => {
-
-                    if (prev <= commonStore.metadata.pageCount) {
-
-
-                        commonStore.getUnApproveWorkSheet(false, (prev + 1).toString())
-
-                        if (prev + 5 <= commonStore.metadata.pageCount) {
-                            setSkip((prev) => {
-
-                                return prev + 1
-
-                            })
-                        }
-
-                        return prev + 1
-                    }
-                    return prev
-                })
-            }
-
-            }
-                to={'#'}>{'>>'}</StyleLink>
-        </div>
-    )
+    return null;
 }
 
 export default PageGination

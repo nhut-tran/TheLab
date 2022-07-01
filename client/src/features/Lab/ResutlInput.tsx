@@ -2,8 +2,8 @@ import { Button } from '../../App/structure/FormElement'
 import ControllFormButton from '../../component/ControlFormButton'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 import { Wrapper } from '../../style/Wrapper'
-
 import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSStatus'
+import { microResultValidate } from '../../utils/validation/resultValidation'
 
 
 
@@ -14,16 +14,25 @@ const ResultInput = () => {
             //allow for input if only in proccess status
             <ViewWorkSheet autoSaveName="result" limit={3}>
                 {process && <ControllFormButton>
-                    {({ submitForm }) => <Button className='form_button' top='60%' left='92%'
+                    {({ submitForm, values, setFieldError }) => <Button className='form_button' top='60%' left='92%'
                         onClick={() => {
+                            if (microResultValidate(values).result) {
+                                submitForm()
+                            } else {
 
-                            submitForm()
-                        }}
+                                microResultValidate(values).err.forEach((err) => {
+
+                                    setFieldError(err.position, err.message)
+                                })
+                            }
+                        }
+
+                        }
                         type="button">Save</Button>}
                 </ControllFormButton>}
             </ViewWorkSheet>
 
-        </Wrapper>
+        </Wrapper >
     )
 }
 

@@ -56,7 +56,7 @@ const request = {
         axios
             .put<ResponseData>(`/${entity}`, data)
             .then<ResponseData>((res) => res.data),
-    del: <ResponseData>(entity: string) =>
+    del: <ResponseData>(entity: string, id: string) =>
         axios
             .delete<ResponseData>(`/${entity}`)
             .then<ResponseData>((res) => res.data),
@@ -169,8 +169,8 @@ const agent = {
             return request.put<ResponseData<Method>>("Method", data);
         },
 
-        del() {
-            return request.del<ResponseData<Method>>("Method");
+        del(id: string) {
+            return request.del<ResponseData<Method>>("Method", id);
         },
     },
 
@@ -187,8 +187,8 @@ const agent = {
             return request.put<ResponseData<Sample>>("Sample", data);
         },
 
-        del() {
-            return request.del<ResponseData<Method>>("Sample");
+        del(id: string) {
+            return request.del<ResponseData<Method>>("Sample", id);
         },
     },
 
@@ -213,8 +213,8 @@ const agent = {
             return request.put<ResponseDataVoid>("WorkSheet", data);
         },
 
-        del() {
-            return request.del<ResponseData<WorkSheet>>("WorkSheet");
+        del(id: string) {
+            return request.del<ResponseData<WorkSheet>>(`WorkSheet/${id}`, id);
         },
 
         verify(data: string[]) {
@@ -288,8 +288,8 @@ const agent = {
             return request.put<ResponseData<Customer>>("Customer", data);
         },
 
-        del() {
-            return request.del<ResponseData<Customer>>("Customer");
+        del(id: string) {
+            return request.del<ResponseData<Customer>>("Customer", id);
         },
         sendEmail(wsn: string, emailType: "receipt" | "report") {
             return request.get<ResponseData<void>>(

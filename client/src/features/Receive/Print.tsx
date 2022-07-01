@@ -15,13 +15,17 @@ const Print = observer(() => {
     return (
         <Wrapper>
             <ViewWorkSheet viewOnly={true} />
-            <Button disabled={commonStore.isFetching} top='70%' left='92%'
+            <Button disabled={commonStore.isFetching} top='50%' left='92%'
                 onClick={() => sampleStore.generayeWSPDF(sampleStore.workSheet.workSheetNo)}
                 type='button'>Print
             </Button>
-            <Button disabled={commonStore.isFetching} top='80%' left='92%'
+            <Button disabled={commonStore.isFetching} top='60%' left='92%'
                 onClick={() => history.push(`/new/${id}`)}
                 type='button'>Update
+            </Button>
+            <Button disabled={commonStore.isFetching} top='70%' left='92%'
+                onClick={() => sampleStore.deleteWorkSheet(sampleStore.workSheet.workSheetID)}
+                type='button'>Delete
             </Button>
         </Wrapper>
     )

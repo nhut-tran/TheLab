@@ -11,6 +11,8 @@ import { useRef } from "react";
 import { WorkSheet } from "../../api/entity";
 import WorkSheetForm from "../../component/WorkSheetForm";
 import { Wrapper } from "../../style/Wrapper";
+import { Modal } from "../../App/structure/Modal";
+
 
 
 export const ControllFormButton = () => {
@@ -114,16 +116,10 @@ const CreateSample = observer(() => {
     }
     return (
         <Wrapper className='wrapper'>
-            {display && <div className='nhut' style={{ backgroundColor: "red", width: '500px', position: 'fixed', top: '50%', height: '300px', left: '40%', zIndex: 20000 }}>
-                <button style={{ zIndex: 100000 }} onClick={() => {
-                    setDisplay(false)
-                    saveStatus.current = true;
 
-                }}>yes</button>
-                <button style={{ zIndex: 100000 }} onClick={() => {
-                    setDisplay(false)
-                }}>No</button>
-            </div>}
+            {
+                display && <Modal className='modal' setDisplay={setDisplay} saveStatus={saveStatus} />
+            }
 
             <h1>New Sample</h1>
             <WorkSheetForm initialValue={iniital} handleSubmit={handleSubmit} />

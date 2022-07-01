@@ -38,7 +38,7 @@ const Style = (comp: any, display?: string) => {
     }
 
     & select {
-        width: 110%;
+        width: 100%;
         height: 3rem;
         border: 1px solid #719ECE;
         border-radius: 4px;
