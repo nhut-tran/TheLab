@@ -9,7 +9,6 @@ import PageGination from './Pagination'
 
 interface Prop {
     link: string,
-
     handleClick: (id: string) => void,
     handleCheck?: (value: string, addorsub: boolean) => void,
     data: WorkSheet[]
@@ -39,7 +38,7 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                         )
                     } else {
                         return (
-                            <StyleLink className='listItem' strip={ind} key={v.workSheetNo}
+                            <StyleLink className='listItem' key={v.workSheetNo}
                                 onClick={() => handleClick(v.workSheetNo)}
                                 to={`${link}/${v.workSheetNo}`}
                             >

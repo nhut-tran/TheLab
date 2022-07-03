@@ -13,7 +13,7 @@ const ListItemWithCheck = ({ handleCheck, status, handleClick, value, displayVal
 
     return (
         <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <StyleLink strip={index} onClick={() => handleClick(value)} to={`${link}/${displayValue}`}> {displayValue} </StyleLink>
+            <StyleLink onClick={() => handleClick(value)} to={`${link}/${displayValue}`}> {displayValue} </StyleLink>
             <input type='checkbox' disabled={status} checked={status ? status : undefined} onChange={(e) => {
                 handleCheck(value, e.target.checked)
             }} />

@@ -14,7 +14,7 @@ const List = ({ data, handleClick, link }: Prop) => {
     return (
         <WrapperForList width='100%'>
             {
-                data && data.map((v, index) => <StyleLink strip={index} key={v.workSheetNo} onClick={() => handleClick(v.workSheetNo)} to={`${link}/${v.workSheetNo}`}>{v.workSheetNo}</StyleLink>)
+                data && data.map((v, index) => <StyleLink key={v.workSheetNo} onClick={() => handleClick(v.workSheetNo)} to={`${link}/${v.workSheetNo}`}>{v.workSheetNo}</StyleLink>)
             }
         </WrapperForList>
     )

@@ -38,8 +38,8 @@ const SearchInput = observer(() => {
                     <FormContainer direction='column' className='form_container'>
                         <Input label='WorkSheet' name='Worksheet' className='form_group' />
                         <Input label='Sample' name='WorkSheet_BySample' className='form_group' />
-                        {<Button position='relative' type='submit'>Find WorkSheet</Button>} 
-                        {/* <Button onClick={() => agent.customer.sendEmail()} position='relative' type='button'>Send Email</Button> */}
+                        {<Button position='relative' type='submit'>Find WorkSheet</Button>}
+
                     </FormContainer>
                 </Form>
             </Formik>

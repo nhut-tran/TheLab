@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
+import { history } from '..';
 import agent from '../api/agent';
 import { Method } from '../api/entity';
 
@@ -31,6 +32,12 @@ export class MethodStore {
     sortMethodByDept = (deptID: string) => {
         if (!deptID) return this.methodList;
         return this.methodList.filter((med) => med.departmentID === deptID);
+    }
+    createMethod = async (data: Method) => {
+        const res = await agent.method.post(data);
+        if (res.isSuccess) {
+            history.push("/manage-method")
+        }
     }
 }
 

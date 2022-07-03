@@ -34,4 +34,27 @@ const LinksS = styled(LinkC)`
     }
     transition: all 0.3s;
 `;
+
+export const ButtonLink = styled(LinkC)`
+text-decoration: none;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 0.3rem 0.2rem;
+margin-left: auto;
+margin-right: auto;
+padding: 20px 30px;
+text-align: center;
+margin-bottom: 1rem;
+border-bottom: 2px solid #ffff;
+background-color: #00FFFF;
+color: #ffff;
+font-weight: 900;
+font-size: ${props => props.fontSize ? props.fontSize : '1.6rem'};
+&:hover {
+color: #ffff;
+background-color: #00FF00
+}
+transition: all 0.3s;
+`;
 export default LinksS

@@ -16,7 +16,7 @@ const Method = observer(() => {
         {
           methodStore.methodList.map((med, index) => {
             return (
-              <StyleLink onClick={() => { }} strip={index} key={med.methodID} to={`/method/${med.methodID}`} children={med.name} />
+              <StyleLink onClick={() => { }} key={med.methodID} to={`/method/${med.methodID}`} children={med.name} />
             )
           })
         }

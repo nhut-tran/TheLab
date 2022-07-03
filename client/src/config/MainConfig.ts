@@ -27,6 +27,8 @@ import SendEmail from "../component/SendEmail";
 import SendEmailReport from "../features/Report/SendEmailReport";
 import ReviewWorkSheet from "../component/ReviewWorkSheet";
 import WorkSheetForResult from "../component/WorkSheetForResult";
+import ManageMethod from "../features/Lab/ManageMethod";
+import CreateMethod from "../features/Lab/NewMethod";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -289,6 +291,44 @@ const mainConfig: MainRouteConfig[] = [
         ],
         fallBackComponent: NotFound,
     },
+    {
+        path: "/manage-method",
+        exact: true,
+
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
+                component: ManageMethod,
+            }
+
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/manage-method/new-method",
+        exact: true,
+
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab
+                    ),
+                ],
+                component: CreateMethod,
+            }
+
+        ],
+        fallBackComponent: NotFound,
+    },
 
     {
         path: "/:id",
@@ -312,6 +352,8 @@ const mainConfig: MainRouteConfig[] = [
         ],
         fallBackComponent: NotFound,
     },
+
+
 ];
 
 export default mainConfig;

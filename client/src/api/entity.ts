@@ -8,6 +8,7 @@ export interface Method {
     description: string;
     turnArroundDay: number;
     departmentID: string;
+    target: string
 }
 
 export interface Sample {
