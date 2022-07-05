@@ -12,6 +12,7 @@ import { WorkSheet } from "../../api/entity";
 import WorkSheetForm from "../../component/WorkSheetForm";
 import { Wrapper } from "../../style/Wrapper";
 import { Modal } from "../../App/structure/Modal";
+import { StyleSectionHeader } from "../../App/structure/SectionHeader";
 
 
 
@@ -116,12 +117,11 @@ const CreateSample = observer(() => {
     }
     return (
         <Wrapper className='wrapper'>
-
+            <StyleSectionHeader className='section-header' size="large" content='Create Sample' />
             {
                 display && <Modal className='modal' setDisplay={setDisplay} saveStatus={saveStatus} />
             }
 
-            <h1>New Sample</h1>
             <WorkSheetForm initialValue={iniital} handleSubmit={handleSubmit} />
 
         </Wrapper>

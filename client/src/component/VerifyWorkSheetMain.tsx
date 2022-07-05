@@ -1,4 +1,4 @@
-import { GridCenter, Wrapper } from '../style/Wrapper';
+import { Wrapper } from '../style/Wrapper';
 import { Button } from '../App/structure/FormElement';
 import { useStore } from '../store/appStore';
 import { observer } from 'mobx-react-lite';
@@ -7,6 +7,7 @@ import SearchInput from './SearchInput';
 import SearchResult from './SearchResult';
 import { useRouteMatch } from 'react-router';
 import { useSearchResultHanlde } from '../utils/useSearchListHandle';
+import { StyleSectionHeader } from '../App/structure/SectionHeader';
 
 
 
@@ -31,15 +32,15 @@ const VerifyMain = observer(() => {
 
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Verify WorkSheet' />
             <SearchInput />
-            <GridCenter top='10px'>
-                <Button position='relative'
-                    onClick={() => {
 
-                        commonStore.getUnApproveWorkSheet(false);
-                    }}
-                    type='button'>Get WorkSheet Verify</Button>
-            </GridCenter>
+            <Button marginTop='1rem' position='relative'
+                onClick={() => {
+
+                    commonStore.getUnApproveWorkSheet(false);
+                }}
+                type='button'>Get WorkSheet Verify</Button>
 
             <SearchResult link={url} data={commonStore.searchData}
                 handleClick={commonStore.getSearchValue}

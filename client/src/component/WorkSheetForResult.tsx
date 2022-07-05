@@ -7,6 +7,7 @@ import SearchInput from './SearchInput';
 import SearchResult from './SearchResult';
 import { useRouteMatch } from 'react-router';
 import { useSearchResultHanlde } from '../utils/useSearchListHandle';
+import { StyleSectionHeader } from '../App/structure/SectionHeader';
 
 
 
@@ -31,15 +32,16 @@ const WorkSheetForResult = observer(() => {
 
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Input Result' />
             <SearchInput />
-            <GridCenter top='10px'>
-                <Button position='relative'
-                    onClick={() => {
 
-                        commonStore.getWorkSheetForResult();
-                    }}
-                    type='button'>Get WorkSheet For Result</Button>
-            </GridCenter>
+            <Button marginTop='1rem' position='relative'
+                onClick={() => {
+
+                    commonStore.getWorkSheetForResult();
+                }}
+                type='button'>Get WorkSheet For Result</Button>
+
 
             <SearchResult link={url} data={commonStore.searchData}
                 handleClick={commonStore.getSearchValue}

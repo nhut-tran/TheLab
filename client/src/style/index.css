@@ -13,53 +13,20 @@ body {
   box-sizing: border-box;
   font-size: 1.6rem;
   margin: 0;
- 
+  color: rgba(0, 0, 0, 0.87);
+
 }
+
 :root {
-  --back_color: #37003c;
+  --back_color: rgba(0, 0, 0, 0.87);
 }
 
-
-/* .nhutdis {
-  
-  background-color:  #dc3545;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  position: fixed;
-  color: #fff;
-  z-index: 30000;
-  width: 30%;
-  height: 50px;
-  top:0px;
-  right: 0;
-  
-  transform-origin: top;
-  animation-name: moveToRight;
-  animation-duration: 0.5s;
-  animation-timing-function: cubic-bezier(.13,.82,1,-0.08)
-} */
-
-
-
-
-
- 
-
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
-
-/* tim: #37003c
-  pink ;#ff2882
-  linear-gradient(
-90deg
-,#963cff,#a64dae)
-#242424
-grey: #76766f
-#212529;
-*/
-
+/* --primary: #7467ef;
+--secondary: #ff9e43;
+--error: #f44336;
+    --bg-default: #fafafa;
+    --bg-paper: #fff;
+    --text-body: rgba(0, 0, 0, 0.87);
+    --text-muted: rgba(0, 0, 0, 0.54);
+    --text-hint: rgba(0, 0, 0, 0.38);
+    --font: Roboto,"Helvetica Neue",sans-serif; */

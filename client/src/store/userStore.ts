@@ -10,14 +10,23 @@ class UserStore {
 
     token: string | null = localStorage.getItem('token')
     refreshToken = localStorage.getItem('rftoken')
-    user: UserClient | undefined = undefined
+    user: UserClient = {
+        userName: "",
+        email: "",
+        department: "",
+        title: "",
+        token: {
+            refreshToken: "",
+            jwt: ""
+        }
+    }
 
     constructor() {
         makeAutoObservable(this)
     }
 
     isLogIn() {
-        return !!this.user
+        return !!(this.user.userName && this.user.email && this.user.token.jwt)
     }
 
 
@@ -78,10 +87,20 @@ class UserStore {
     logout = () => {
         return userAgent.logout().finally(() => {
 
-            this.user = undefined
+            this.user = {
+                userName: "",
+                email: "",
+                department: "",
+                title: "",
+                token: {
+                    refreshToken: "",
+                    jwt: ""
+                }
+            }
             localStorage.removeItem('token')
             localStorage.removeItem('rftoken')
-            history.push('/')
+
+
         })
     }
 

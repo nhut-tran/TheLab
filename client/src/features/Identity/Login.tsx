@@ -12,53 +12,53 @@ import { observer } from "mobx-react-lite";
 
 
 const Login = observer(() => {
+
     const { userStore, commonStore } = useStore()
-    console.log(commonStore.isFetching)
     return (
         <Wrapper>
-            <WrapperForForm width='100%'>
-                <Formik
-                    initialValues={{
-                        email: '',
-                        password: '',
-                    }}
 
-                    validationSchema={Yup.object({
-                        email: Yup.string().min(3)
-                            .required('Required'),
-                        password: Yup.string().required('Required'),
-                        // [`over18`]: Yup.boolean().validate,
+            <Formik
+                initialValues={{
+                    email: '',
+                    password: '',
+                }}
 
-                    })}
+                validationSchema={Yup.object({
+                    email: Yup.string().min(3)
+                        .required('Required'),
+                    password: Yup.string().required('Required'),
+                    // [`over18`]: Yup.boolean().validate,
 
-                    onSubmit={(val) => {
-                        console.log(val)
-                        userStore.login(val);
+                })}
 
-                    }}
-                >
-                    {
-                        ({ values, errors }) => {
+                onSubmit={(val) => {
+                    console.log(val)
+                    userStore.login(val);
 
-                            return (
-                                <Form>
-                                    <FormContainer direction='column' className='form_container'>
-                                        <Input label='Email' name='email' className='form_group' /><br></br>
-                                        <InputPassWord label='password' name='password' type='password' className='form_group' /><br></br>
-                                        <Button disabled={commonStore.isFetching} position='relative' type='submit'>Login</Button>
-                                        <Link to='/register'>Register</Link>
-                                    </FormContainer>
-                                </Form>
-                            )
-                        }
+                }}
+            >
+                {
+                    ({ values, errors }) => {
+
+                        return (
+                            <Form>
+                                <FormContainer direction='column' className='form_container'>
+                                    <Input label='Email' name='email' className='form_group' /><br></br>
+                                    <InputPassWord label='password' name='password' type='password' className='form_group' /><br></br>
+                                    <Button disabled={commonStore.isFetching} position='relative' type='submit'>Login</Button>
+                                    <Link to='/register'>Register</Link>
+                                </FormContainer>
+                            </Form>
+                        )
                     }
+                }
 
 
 
 
 
-                </Formik>
-            </WrapperForForm>
+            </Formik>
+
         </Wrapper >
     )
 

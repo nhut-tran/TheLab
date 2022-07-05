@@ -1,6 +1,6 @@
 import { forwardRef, LegacyRef, ReactNode } from "react";
 import styled from "styled-components";
-
+import { Form } from 'formik';
 
 interface Props {
     className: string,
@@ -52,3 +52,11 @@ export const FormContainerGrid = styled(FormCotainerC)`
 
 `
 
+export const StyleForm = styled(Form)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0;
+   
+`

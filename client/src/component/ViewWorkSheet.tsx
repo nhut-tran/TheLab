@@ -85,7 +85,7 @@ const ViewWorkSheet = observer(({ viewOnly, children, autoSaveName, limit }: Pro
                     return (
 
                         <Form>
-                            <h1>Result</h1>
+
                             <FormSection direction='column' className='form_section'>
 
                                 <h4 style={{ alignSelf: 'start' }}>General Information</h4>

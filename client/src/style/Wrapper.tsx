@@ -4,12 +4,12 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    grid-column: 3 / 11;
+    grid-column: 3 / 12;
     grid-row: 2 / 3;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
-    background-color: #f5f5f5cc ;
+   
     width: 100%;
    & > button {
     @media(max-width: 1200px) {

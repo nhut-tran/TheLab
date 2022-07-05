@@ -8,6 +8,7 @@ import SearchResult from './SearchResult';
 import { useRouteMatch } from 'react-router';
 
 import { useSearchResultHanlde } from '../utils/useSearchListHandle';
+import { StyleSectionHeader } from '../App/structure/SectionHeader';
 
 
 const VerifyResultMain = observer(() => {
@@ -21,7 +22,7 @@ const VerifyResultMain = observer(() => {
         setApproveList({ value: value, type: addorsub })
 
     }
-    console.log(commonStore.searchData)
+
     useEffect(() => {
         return () => {
             commonStore.resetSearchValue()
@@ -32,15 +33,16 @@ const VerifyResultMain = observer(() => {
 
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Verify Result' />
             <SearchInput />
-            <GridCenter top='10px'>
-                <Button position='relative'
-                    disabled={commonStore.isFetching}
-                    onClick={() => {
-                        commonStore.getUnApproveWorkSheet(true);
-                    }}
-                    type='button'>Get Result verify</Button>
-            </GridCenter>
+
+            <Button marginTop='1rem' position='relative'
+                disabled={commonStore.isFetching}
+                onClick={() => {
+                    commonStore.getUnApproveWorkSheet(true);
+                }}
+                type='button'>Get Result verify</Button>
+
 
             <SearchResult link={url} data={commonStore.searchData}
                 handleClick={commonStore.getSearchValue}

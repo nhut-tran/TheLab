@@ -5,37 +5,36 @@ import styled from 'styled-components'
 
 interface Props {
     className: string,
-    fontSize?: string,
     to: string
     children: ReactNode
+    onClick?: () => void
 }
 
-const LinkC = ({ className, to, children }: Props) => {
+const NavLinkC = ({ className, to, children }: Props) => {
     return <Link to={to} className={className} children={children} />
 }
-
-const LinksS = styled(LinkC)`
+export const BasicStyleLink = styled(NavLinkC)`
     text-decoration: none;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.3rem 0.2rem;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    text-align: center;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #ffff;
-    color: #00FFFF;
-    font-size: ${props => props.fontSize ? props.fontSize : '1.6rem'};
-    &:hover {
-    color: #00FF00;
-    font-weight: 400;
-    }
+    align-items: center;`
+
+const StyleNavLink = styled(BasicStyleLink)`
+    
+    padding: 2rem 1rem;
     transition: all 0.3s;
+    color: inherit;
+    width: 100%;
+    & span {
+        margin-right: 5px;
+    }
+    &:hover {
+        color: #FFFF;
+        background:rgba(0,0,0,.2)
+    }
+    transition: all 0.5s ease-in-out;
 `;
 
-export const ButtonLink = styled(LinkC)`
+export const ButtonLink = styled(StyleNavLink)`
 text-decoration: none;
 display: flex;
 justify-content: center;
@@ -50,11 +49,11 @@ border-bottom: 2px solid #ffff;
 background-color: #00FFFF;
 color: #ffff;
 font-weight: 900;
-font-size: ${props => props.fontSize ? props.fontSize : '1.6rem'};
 &:hover {
 color: #ffff;
 background-color: #00FF00
 }
 transition: all 0.3s;
 `;
-export default LinksS
+
+export default StyleNavLink

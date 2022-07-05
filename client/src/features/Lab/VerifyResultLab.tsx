@@ -1,5 +1,6 @@
 
 import { Button } from '../../App/structure/FormElement'
+import { StyleSectionHeader } from '../../App/structure/SectionHeader'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 
 import { useStore } from '../../store/appStore'
@@ -16,7 +17,7 @@ const VerifyResultLab = () => {
 
     return (
         <Wrapper>
-
+            <StyleSectionHeader className='section-header' size="large" content='Input Result' />
             <ViewWorkSheet viewOnly={true} />
             //if not in range of allow status not display control button
             //process means already having results waiting for verify, endlimit means already verify

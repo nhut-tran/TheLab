@@ -1,4 +1,5 @@
 import { Button } from '../../App/structure/FormElement'
+import { StyleSectionHeader } from '../../App/structure/SectionHeader'
 import ControllFormButton from '../../component/ControlFormButton'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 import { Wrapper } from '../../style/Wrapper'
@@ -11,6 +12,7 @@ const ResultInput = () => {
     const { process } = useAccessWorkSheetByStatusVerify();
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Input Result' />
             //allow for input if only in proccess status
             <ViewWorkSheet autoSaveName="result" limit={3}>
                 {process && <ControllFormButton>

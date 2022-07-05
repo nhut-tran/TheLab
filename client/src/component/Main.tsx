@@ -5,6 +5,7 @@ import Search from './Search';
 import { Wrapper } from '../style/Wrapper';
 import SearchResult from './SearchResult';
 import { useRouteMatch } from 'react-router-dom';
+import { StyleSectionHeader } from '../App/structure/SectionHeader';
 
 
 const Main = observer(() => {
@@ -17,6 +18,7 @@ const Main = observer(() => {
 
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Home' />
             <Search />
             <SearchResult data={commonStore.searchData} handleClick={commonStore.getSearchValue} link={`${url === '/' ? '' : url}`} />
         </Wrapper>

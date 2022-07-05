@@ -23,7 +23,6 @@ const Style = (comp: any, display?: string) => {
     }
     & input {
         width: 100%;
-       // height: 10rem;
         display: inline-block;
         padding: 0.7rem 0.9rem;
         border: 1.2px solid #719ECE;
@@ -81,9 +80,7 @@ export const Input = Style(({ label, className, handleChange, ...props }: InputP
     return (
         <div className={className}>
             <label htmlFor={label}>{label}</label>
-
             <input {...field} {...props} type={props.type} />
-
             {meta.touched && meta.error && <div className={`${className}_error`}>{meta.error}</div>}
         </div>
     )
@@ -176,6 +173,7 @@ export const Button = styled(ButtonC)`
     border:none;
     border-radius: 4px;
     padding: 0.8rem 1.5rem;
+    margin-top:  ${props => props.marginTop ? props.marginTop : 0};
     cursor: pointer;
     transition: all 0.3s;
     &:disabled {
@@ -185,6 +183,7 @@ export const Button = styled(ButtonC)`
     &:hover {
         background-color: white ;
         color:  ${props => props.disabled ? "#e6e2e2" : "#34c03b"};
+        border: 1px solid #34c03b
     }
     &:active {
         padding: 0.7rem 1.4rem;

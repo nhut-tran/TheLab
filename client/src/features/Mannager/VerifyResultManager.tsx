@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button } from '../../App/structure/FormElement'
+import { StyleSectionHeader } from '../../App/structure/SectionHeader'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
 
 import { useStore } from '../../store/appStore'
@@ -19,6 +20,7 @@ const VerifyResultManager = () => {
 
     return (
         <Wrapper>
+            <StyleSectionHeader className='section-header' size="large" content='Verify Result' />
             {<ViewWorkSheet viewOnly={true} />}
 
             {(startlimit || endlimit) && <Button disabled={commonStore.isFetching || checkDataButtonToggle} top='50%' left='92%'

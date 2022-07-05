@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { Button } from "../../App/structure/FormElement";
+import { StyleSectionHeader } from "../../App/structure/SectionHeader";
 import { useStore } from "../../store/appStore";
 import LinksS, { ButtonLink } from "../../style/Link";
 import { StyleLink } from "../../style/List";
@@ -19,7 +20,8 @@ const ManageMethod = observer(() => {
 
     return (
         <Wrapper>
-            <h1>Manage method</h1>
+
+            <StyleSectionHeader className='section-header' size="large" content='Manage Method' />
             <ButtonLink to={`${url}/new-method`} className={"new-method"}>New Method</ButtonLink>
             <Table className="methodTable">
 

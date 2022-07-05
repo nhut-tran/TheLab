@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from "../../style/Link";
-
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 const NavLinkManager = () => {
 
@@ -8,8 +8,8 @@ const NavLinkManager = () => {
 
         <>
 
-            <Link to={'/verify'} className="nav_link" children='Verify WorkSheet' />
-            <Link to={'/result'} className="nav_link" children='Result' />
+            <Link to={'/verify'} className="nav_link"><span>{<PageviewIcon />}</span>Verify WorkSheet</Link>
+
         </>
     )
 }
