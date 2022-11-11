@@ -8,7 +8,8 @@ export interface Method {
     description: string;
     turnArroundDay: number;
     departmentID: string;
-    target: string
+    target: string,
+    default: boolean
 }
 
 export interface Sample {
@@ -32,6 +33,7 @@ export interface MethodSampleAss {
 
     methodID: string,
     method: string,
+    department: string
     result: string,
     status?: number,
     unit: string,
@@ -97,27 +99,14 @@ export interface Customer {
 
 
 export interface NewSample {
-    issueTo: Customer,
-    workSheetNumber?: string,
-    workSheet: {
-        receiveDate: string,
-        samples: [
-            {
-                description: string,
-                weight: number,
-                note: string,
-                sealNumber: string,
-                sampling: boolean,
-                paramaters: [
-                    {
-                        methodID: string,
-                        method: string,
-
-                    }
-                ]
-            }
-        ]
-    }
+    workSheetID: string,
+    workSheetNo: string,
+    note?: string
+    issueTo: string,
+    status: number,
+    receiveDate: string,
+    resultDate?: string,
+    samples: Sample[]
 
 }
 

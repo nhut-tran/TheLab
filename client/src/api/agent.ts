@@ -39,7 +39,7 @@ export interface ResponseDataVoid {
     value: {};
 }
 
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = "https://the-lab.azurewebsites.net/api/";
 axios.defaults.withCredentials = true;
 
 const request = {
@@ -193,9 +193,9 @@ const agent = {
     },
 
     worksheet: {
-        get(sampleNum: number) {
+        get(numSample: number) {
             return request.get<ResponseDataSingle<WorkSheet>>(
-                `WorkSheet/blank/${sampleNum}`
+                `WorkSheet/blank/${numSample}`
             );
         },
 
@@ -206,7 +206,7 @@ const agent = {
         },
 
         post(data = {}) {
-            return request.post<ResponseDataVoid>("WorkSheet", data);
+            return request.post<ResponseDataVoid>("WorkSheet", data)
         },
 
         put(data = {}) {

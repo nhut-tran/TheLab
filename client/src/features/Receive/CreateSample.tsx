@@ -1,11 +1,8 @@
 import { useLayoutEffect, useState } from "react";
-import { Button } from "../../App/structure/FormElement";
-import { useFormikContext } from "formik";
 import { observer } from 'mobx-react-lite'
 import { useStore } from "../../store/appStore";
 import { Spinner } from "../../style/Spinner";
-import { toJS } from "mobx";
-import { useRouteMatch } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 import { history } from "../..";
 import { useRef } from "react";
 import { WorkSheet } from "../../api/entity";
@@ -16,54 +13,10 @@ import { StyleSectionHeader } from "../../App/structure/SectionHeader";
 
 
 
-export const ControllFormButton = () => {
-    const { values, submitForm, setValues } = useFormikContext<WorkSheet>()
-
-    return (
-        <>
-            <Button top='40%' left='92%' type='button' onClick={() => {
-                values.samples.push({
-                    sampleID: 0,
-                    sampleNo: 0,
-                    workSheetID: values.workSheetID,
-                    status: 0,
-                    description: '',
-                    weight: 0,
-                    note: '',
-                    sealNumber: '',
-                    sampling: false,
-                    urgent: false,
-                    paramaters: [
-                        {
-                            result: "",
-                            unit: "",
-                            methodID: "",
-                            method: "",
-                            resultDate: ""
-                        }
-                    ]
-                })
-                setValues(values)
-            }}>Add Sample</Button>
-            <Button top='50%' left='92%' type='button' onClick={() => {
-                values.samples.pop()
-                setValues(values)
-            }}>Remove Sample
-            </Button>
-            <Button className='form_button' top='60%' left='92%'
-                onClick={() => {
-                    submitForm()
-                }}
-                type="button">Save</Button>
-        </>
-    )
-}
-
 const CreateSample = observer(() => {
-
-    const matchEdit = useRouteMatch('/new/:id')
-    let [iniital, setInitial] = useState({} as WorkSheet)
     const { sampleStore, commonStore } = useStore();
+    const matchEdit = useRouteMatch('/new/:id')
+    const { id } = useParams<{ id: string }>()
     const saveStatus = useRef(false);
     const [display, setDisplay] = useState(false)
     const handleSubmit = (val: WorkSheet) => {
@@ -72,10 +25,12 @@ const CreateSample = observer(() => {
 
             sampleStore.UpdateSample(val)
         } else {
+
             sampleStore.CreateSample(val)
         }
     }
     useLayoutEffect(() => {
+
         let unBlock = history.block(() => {
 
             if (saveStatus.current) {
@@ -92,37 +47,45 @@ const CreateSample = observer(() => {
             history.goBack()
         }
         return () => {
-            localStorage.removeItem('newsample')
             unBlock()
         }
 
     }, [display])
 
-
     useLayoutEffect(() => {
-        let savedSample = localStorage.getItem('newsample');
+        //fectch data when data not avaliable: user reload page
+        if (!sampleStore.workSheet.workSheetNo) {
+            sampleStore.getWorkSheet(id)
 
-        if (sampleStore.workSheet.workSheetNo) {
-            setInitial({ ...toJS(sampleStore.workSheet) })
+        }
+        window.onbeforeunload = function () {
+            return "save before leave";
+        };
+        return () => {
+            window.onbeforeunload = function () {
 
-        } else if (savedSample) {
-
-            setInitial(JSON.parse(savedSample))
+            }
         }
     }, [])
 
 
-    if (!iniital.workSheetNo) {
-        return <Spinner isDisPlay={commonStore.isFetching}><h3>Loading .......</h3></Spinner>
+
+    if (!sampleStore.workSheet.workSheetNo) {
+        return (
+            <Wrapper className='wrapper'>
+                <Spinner isDisPlay={commonStore.isFetching}><h3>Loading .......</h3></Spinner>
+            </Wrapper>
+        )
     }
+
     return (
         <Wrapper className='wrapper'>
+
             <StyleSectionHeader className='section-header' size="large" content='Create Sample' />
             {
                 display && <Modal className='modal' setDisplay={setDisplay} saveStatus={saveStatus} />
             }
-
-            <WorkSheetForm initialValue={iniital} handleSubmit={handleSubmit} />
+            <WorkSheetForm handleSubmit={handleSubmit} />
 
         </Wrapper>
     )

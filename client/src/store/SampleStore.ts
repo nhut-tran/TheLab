@@ -1,9 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "..";
 import agent from "../api/agent";
-import { Sample, WorkSheet } from "../api/entity";
+import { appStore } from "./appStore"
+import { MethodSampleAss, Sample, WorkSheet } from "../api/entity";
 import toastEventRes from "../utils/toaster/Toaster";
-import { appStore } from "./appStore";
+
 
 export class SampleStore {
     SampleRegistry = new Map<string, Sample>();
@@ -31,9 +32,8 @@ export class SampleStore {
         });
     };
 
-    getBlankWorkSheet = async (sampleNum: number) => {
-        const data = await agent.worksheet.get(sampleNum);
-
+    getBlankWorkSheet = async (numSample: number) => {
+        const data = await agent.worksheet.get(numSample);
         runInAction(() => {
             this.workSheet = data.value;
             history.push(`/new/${this.workSheet.workSheetNo}`);
@@ -52,10 +52,15 @@ export class SampleStore {
     };
 
     CreateSample = async (data: WorkSheet) => {
+
         await agent.worksheet.post(data);
+
+
         toastEventRes.emit("success", "Create succuess");
         this.workSheet = data;
         history.push(`/${data.workSheetNo}`);
+
+
     };
 
     UpdateSample = async (data: WorkSheet) => {

@@ -14,14 +14,19 @@ const SpinnerC = ({ className = 'spinner', isDisPlay, children }: SpinnerProps) 
     return (
 
         <div className={className}>
-            <Loading className='loading-icon' fill='' /></div>
+            <Loading className='loading-icon' fill='' />
+            Please wait...
+        </div>
     )
 }
 
 export const Spinner = styled(SpinnerC)`
-    display: flex;
-    justify-content: center;  
+    width: 100%;
     z-index: 1000;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     transition: all  0.1s;
     & {
         .loading-icon{

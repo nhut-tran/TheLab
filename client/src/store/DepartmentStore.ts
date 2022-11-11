@@ -22,6 +22,9 @@ export class DepartmentStore {
                 this.departmentRegistry.set(dep.departmentID, dep);
             })
         });
-       
+
+    }
+    getLab = () => {
+        return this.departmentList.filter(d => (d.name.includes("Lab") && !d.name.includes("Manager")))
     }
 }

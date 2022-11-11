@@ -22,7 +22,7 @@ const Print = observer(() => {
                 type='button'>Print
             </Button>
             <Button disabled={commonStore.isFetching} top='60%' left='92%'
-                onClick={() => history.push(`/new/${id}`)}
+                onClick={() => history.push(`/update/${id}`)}
                 type='button'>Update
             </Button>
             <Button disabled={commonStore.isFetching} top='70%' left='92%'

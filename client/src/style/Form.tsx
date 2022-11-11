@@ -9,7 +9,7 @@ interface Props {
     children: ReactNode,
     justify?: string,
     width?: string,
-    borderBot?: string
+    last?: boolean
 }
 const F = ({ display, direction, className, children }: Props, ref: LegacyRef<HTMLDivElement>) => {
 
@@ -23,9 +23,12 @@ export const FormSection = styled(FormSectionC)`
     align-items: center;
     display: ${props => props.display || 'flex'};
     flex-direction: ${props => props.direction || 'row'};
-    border: 1px solid #76766f;
+    border-bottom: ${props => props.last ? 'none' : '1px solid #76766f'};
     width: 100%;
-    
+    & h4 {
+        width: 100%;
+        border-top: 1px solid #8a8a8a50;
+    }
     
 `
 
@@ -41,7 +44,8 @@ export const FormContainer = styled(FormCotainerC)`
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 1rem;
-    border-bottom: ${props => props.borderBot ? '2px solid #e6e3e3cc' : ''};
+
+  
    
 `
 

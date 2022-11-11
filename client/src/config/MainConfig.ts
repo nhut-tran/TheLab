@@ -118,6 +118,18 @@ const mainConfig: MainRouteConfig[] = [
         fallBackComponent: NotFound,
     },
     {
+        path: "/update/:id",
+        exact: true,
+        componentList: [
+
+            {
+                requirement: [new DepartmentRequirement(Department.Receive)],
+                component: CreateSample,
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
         path: "/verify",
         exact: true,
         componentList: [

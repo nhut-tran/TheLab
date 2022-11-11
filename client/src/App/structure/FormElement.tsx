@@ -37,14 +37,12 @@ const Style = (comp: any, display?: string) => {
     }
 
     & select {
-        width: 100%;
+        width: 20rem;
         height: 3rem;
         border: 1px solid #719ECE;
         border-radius: 4px;
         margin-right: 0.5rem;
-        
         color: ${props => props.remark ? '#FF0000' : ""};
-    
         &:focus {
          border-color: #719ECE;
          box-shadow: 0 0 0.5rem #719ECE;

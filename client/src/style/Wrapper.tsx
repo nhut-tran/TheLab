@@ -31,6 +31,34 @@ export const WrapperForList = styled.div<{ width: string }>`
     width: ${props => props.width ? props.width : '500rem'};
 `
 
+export const WrapperControlForm = styled.div`
+    display: flex;
+    position: relative;
+    margin-left: 3% ;
+    margin-right: 7% ;
+    
+    & form .control-button {
+        display: flex ;
+        flex-direction: column;
+        background-color: #222A45;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        height:100vh ;
+        justify-content: center;
+        align-items: center;
+        width: 4%;
+        z-index: 4000
+    }
+    & .worksheet-form {
+        display: flex;
+        flex-basis: 100%;
+        flex-direction: column;
+        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 6%), 0px 6px 10px 0px rgb(0 0 0 / 4%), 0px 1px 18px 0px rgb(0 0 0 / 4%)
+    }
+    
+`
+
 
 export const WrapperForForm = styled.div<{ width: string }>`
     display: flex;
