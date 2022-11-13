@@ -29,6 +29,8 @@ import ReviewWorkSheet from "../component/ReviewWorkSheet";
 import WorkSheetForResult from "../component/WorkSheetForResult";
 import ManageMethod from "../features/Lab/ManageMethod";
 import CreateMethod from "../features/Lab/NewMethod";
+import DashBoard from "../features/Dashboard/Dashboard";
+import Intro from "../features/Intro/Intro";
 
 interface UrlMatchComponent {
     requirement: AuthRequirement[];
@@ -59,6 +61,37 @@ const mainConfig: MainRouteConfig[] = [
                     ),
                 ],
                 component: Main,
+            },
+        ],
+        fallBackComponent: Login,
+    },
+    {
+        path: "/intro",
+        exact: true,
+        componentList: [
+            {
+                requirement: [new NotLoginRequirement()],
+                component: Intro
+            },
+        ],
+        fallBackComponent: NotFound,
+    },
+    {
+        path: "/dashboard",
+        exact: true,
+        componentList: [
+            {
+                requirement: [
+                    new DepartmentRequirement(
+                        Department.MiLab,
+                        Department.IgLab,
+                        Department.OgLab,
+                        Department.Receive,
+                        Department.Report,
+                        Department.Manager
+                    ),
+                ],
+                component: DashBoard,
             },
         ],
         fallBackComponent: Login,

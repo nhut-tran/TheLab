@@ -46,7 +46,7 @@ const Login = observer(() => {
                                     <Input label='Email' name='email' className='form_group' /><br></br>
                                     <InputPassWord label='Password' name='password' type='password' className='form_group' /><br></br>
                                     <Button disabled={commonStore.isFetching} position='relative' type='submit'>Login</Button>
-                                    <Link to='/register'>How to use</Link>
+                                    <Link to='/intro'>How to use</Link>
                                 </FormContainer>
                             </Form>
                         )

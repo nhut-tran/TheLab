@@ -125,7 +125,7 @@ const Header = observer(function Header() {
         <>
 
             <StyleHeader>
-                <BasicStyleLink className="widget" to="/nav"><WidgetsIcon color="info" fontSize="inherit" /></BasicStyleLink>
+                <BasicStyleLink className="widget" to="/dashboard"><WidgetsIcon color="info" fontSize="inherit" /></BasicStyleLink>
 
                 <h4 id="user_name" onClick={handleOpen}> {userStore.isLogIn() ? userStore.user.userName.substring(0, 2) : <UserIcon color="info" />}
                     {open && <StyleHeaderMenu onMouseLeave={hanldeCloseOnMoveLeave} >
@@ -139,7 +139,7 @@ const Header = observer(function Header() {
                                     }} ><StyleHeaderLink className="header-menu-item" to="">Log out</StyleHeaderLink></li>
                                 </>
                                 :
-                                <>  <li onClick={handleClose}><StyleHeaderLink className="header-menu-item" to="/">Contact Support</StyleHeaderLink></li>
+                                <>  <li onClick={handleClose}><StyleHeaderLink className="header-menu-item" to="/intro">How to use guide</StyleHeaderLink></li>
                                     <li onClick={handleClose} ><StyleHeaderLink className="header-menu-item" to="/login">Log In</StyleHeaderLink></li>
                                 </>
                         }
