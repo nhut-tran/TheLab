@@ -3,13 +3,14 @@
 # dependencies
 **/obj
 **/node_modules
+*.sql
 /.vscode
-/.vs
+.vs
 /client/.vs
 /.pnp
 .pnp.js
 /obj
-/API/**/appsettings.json
+/API/*.json
 /API/.local-chromium/
 # testing
 /coverage
