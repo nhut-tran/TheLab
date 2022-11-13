@@ -24,10 +24,10 @@ Main process (from here WS refer to WorkSheet)
 
 ## Tech stack
 + Backend:
-  -Asp.net core
-  -EF core
-  -PostgreSQL
+  - Asp.net core
+  - EF core
+  - PostgreSQL
 + Frontend:
-  -React.js
-  -Mobx
-  -Styled component
+  - React.js
+  - Mobx
+  - Styled component
