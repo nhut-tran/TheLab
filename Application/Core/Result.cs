@@ -15,7 +15,7 @@ namespace Application.Core
         private string _entity;
         public bool IsSuccess { get; set; }
         public ErrorrType Error { get; set; }
-        public static Metadata Metadata { get; set; }
+        public Metadata Metadata { get; set; }
         public string Entity
         {
 
@@ -79,7 +79,7 @@ namespace Application.Core
             {
                 TotalItem = value.Count,
                 ItemPerpage = 10,
-                PageCount = (int)Math.Ceiling((double)(value.Count / 10)),
+                PageCount = (int)Math.Ceiling((decimal)value.Count / 10),
                 CurrentPage = page
             };
             var val = value.Skip((metada.CurrentPage - 1) * metada.ItemPerpage).Take(metada.ItemPerpage).ToList();
@@ -94,68 +94,9 @@ namespace Application.Core
             return new ResultList<T> { IsSuccess = false, Error = err };
         }
 
+        
     }
-
-
-
-    // public class Result<T, E>
-    // {
-
-    //     private string _entity;
-
-    //     public string Entity
-    //     {
-
-    //         set
-    //         {
-    //             var t = value;
-
-    //             if (typeof(E).IsGenericType && typeof(E).GetGenericTypeDefinition() == typeof(List<>))
-    //             {
-    //                 t = typeof(E).GetGenericArguments()[0].Name;
-    //             }
-
-
-    //             if (t.Contains("Dto")) t = t.Replace("Dto", "");
-
-    //             _entity = t;
-    //         }
-    //         get { return _entity; }
-    //     }
-
-    //     public bool IsSuccess { get; set; }
-    //     public ErrorrType Error { get; set; }
-    //     public static Metadata Metadata { get; set; }
-
-    //     public List<T> Value { get; set; }
-
-    //     private static List<T> SetPage(List<T> data, int page)
-    //     {
-    //         Metadata = new Metadata()
-    //         {
-    //             TotalItem = data.Count,
-    //             ItemPerpage = 10,
-    //             PageCount = (int)Math.Ceiling((double)(data.Count / 10)),
-    //             CurrentPage = page
-    //         };
-    //         return data.Skip((Metadata.CurrentPage - 1) * Metadata.ItemPerpage).Take(Metadata.ItemPerpage).ToList();
-    //     }
-    //     public static Result<T, E> Success(List<T> value, int page)
-    //     {
-    //         var a = SetPage(value, page);
-
-    //         return new Result<T, E> { IsSuccess = true, Value = a, Entity = typeof(T).Name };
-
-    //     }
-
-    //     public static Result<T> Fail(ErrorrType err)
-    //     {
-
-    //         return new Result<T> { IsSuccess = false, Error = err, Entity = typeof(E).Name };
-    //     }
-
-    // }
-
+    
 
 
 }

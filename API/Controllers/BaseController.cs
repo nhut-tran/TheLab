@@ -22,6 +22,7 @@ namespace API.Controllers
 
         protected IActionResult HandleRequestResult<T>(IResult<T> result)
         {
+       
             if (!result.IsSuccess)
             {
                 if (result.Error.Name == "NOTFOUND")

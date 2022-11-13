@@ -17,6 +17,7 @@ namespace Application.Worksheet
         public class Command : IRequest<Result<WorkSheetDto>>
         {
             public int NumberOfSample { get; set; }
+            
         }
 
         public class Handler : IRequestHandler<Command, Result<WorkSheetDto>>
@@ -39,14 +40,22 @@ namespace Application.Worksheet
 
                 for (int i = 0; i < request.NumberOfSample; i++)
                 {
-                    var sample = new Sample();
-                    var method = _db.Method.FirstOrDefault(t => t.MethodID == Guid.Empty);
-                    var sampleAss = new SampleMethodAssigment()
-                    {
-                        Method = method
-                    };
-                    sample.Paramaters.Add(sampleAss);
+                        
+                    
+                        var sample = new Sample();
+                        var methodDefault = _db.Method.FirstOrDefault(m => m.Default);
+                    
+                        var sampleAss = new SampleMethodAssigment()
+                        {
+                            Method = methodDefault
+                        };
+                        sample.Paramaters.Add(sampleAss);
+                  
+                     
+      
                     blankWorkSheet.Samples.Add(sample);
+                    
+                    
                 }
 
                 _db.WorkSheet.Add(blankWorkSheet);

@@ -14,6 +14,7 @@ namespace Domain
         public string Target { get; set; }
         public int TurnArroundDay { get; set; }
         public string DepartmentID { get; set; }
+        public bool Default { get; set; }
         public ICollection<SampleMethodAssigment> SampleMethodAssigments { get; set; }
 
 

@@ -9,6 +9,7 @@ using Application.MethodCreate;
 using Application.MethodUpdate;
 
 using Domain;
+using Application.Core;
 
 namespace API.Controllers
 {
@@ -34,7 +35,7 @@ namespace API.Controllers
             return HandleRequestResult(await Mediator.Send(new MethodDetail.Query() { MethodID = id }));
         }
         [HttpPost]
-        public async Task<IActionResult> CreateMethod(Method method)
+        public async Task<IActionResult> CreateMethod(MethodDto method)
         {
             return HandleRequestResult(await Mediator.Send(new MethodCreate.Command() { Method = method }));
 

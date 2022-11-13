@@ -85,7 +85,7 @@ namespace Application.Worksheet
                 workSheets.ForEach(w => w.RemoveSampleEmpty());
 
                 var mapWorkSheet = _mapper.Map<List<WorkSheetDto>>(workSheets);
-
+              
                 return ResultList<WorkSheetDto>.Success(mapWorkSheet, request.Page);
 
             }

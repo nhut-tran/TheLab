@@ -98,8 +98,8 @@ namespace Persistence
 
         private void SeeMedthod()
         {
-            var blankMethod = _db.Method.FirstOrDefault(m => m.MethodID == default && m.Name == "blank" && m.Description == "blank" && m.Unit == "blank");
-            var dept = _db.Department.FirstOrDefault(m => m.DepartmentID == "Re");
+            var blankMethod = _db.Method.FirstOrDefault(m => m.MethodID == default);
+            var dept = _db.Department.FirstOrDefault(m => m.DepartmentID == "Mi");
             if (dept == null)
             {
 
@@ -111,9 +111,9 @@ namespace Persistence
                             ""HeaderName""
                             )
                         VALUES(
-                            'Re',
-                            'Receive',
-                            'AAA'
+                            'Mi',
+                            'Microbiology',
+                            'header'
                         );
                 ";
 
@@ -132,11 +132,11 @@ namespace Persistence
                             )
                         VALUES(
                             '00000000-0000-0000-0000-000000000000',
-                            'blank',
-                            'blank',
-                            'blank',
+                            'Select Method',
+                            '----',
+                            '----',
                             0,
-                            'Re'
+                            'Mi'
                         );
                 ";
 

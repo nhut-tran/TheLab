@@ -16,6 +16,7 @@ using Microsoft.Net.Http.Headers;
 using Application.Service;
 using Application.Service.GenerateWorkSheet;
 using Application.Service.EmailService;
+using API.DTOs;
 
 namespace API.Controllers
 {
@@ -56,10 +57,10 @@ namespace API.Controllers
             return reportStream;
         }
         // create blank WorkSheet
-        [HttpGet("blank/{numSample}")]
-        public async Task<IActionResult> CreateBlankWorkSheet(int numSample)
+        [HttpGet("blank/{nummberOfSample}")]
+        public async Task<IActionResult> CreateBlankWorkSheet(int nummberOfSample)
         {
-            return HandleRequestResult(await Mediator.Send(new WorkSheetCreateBlank.Command() { NumberOfSample = numSample }));
+            return HandleRequestResult(await Mediator.Send(new WorkSheetCreateBlank.Command() { NumberOfSample = nummberOfSample}));
         }
         // create fill data to blank WorkSheet
         [Authorize("SampleReceive")]
@@ -235,7 +236,7 @@ namespace API.Controllers
 
         }
 
-
+       
     }
 
 

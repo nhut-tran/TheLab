@@ -4,18 +4,18 @@
 **/obj
 **/node_modules
 /.vscode
-**/public
+/.vs
+/client/.vs
 /.pnp
 .pnp.js
 /obj
-/API/appsettings.json
+/API/**/appsettings.json
 /API/.local-chromium/
 # testing
 /coverage
 /API/obj
 # production
 /build
-
 # misc
 .DS_Store
 .env.local

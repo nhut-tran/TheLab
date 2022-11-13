@@ -9,10 +9,10 @@ namespace Application.Interface
 
         bool IsSuccess { get; set; }
         ErrorrType Error { get; set; }
-        static Metadata Metadata { get; set; }
+        Metadata Metadata { get; set; }
         string Entity { get; set; }
 
-
+        
 
     }
 }

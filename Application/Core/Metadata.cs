@@ -9,8 +9,8 @@ namespace Application.Core
     {
         public int TotalItem { get; set; }
         public int ItemPerpage { get; set; }
-        public int PageCount { get; set; }
-        public int CurrentPage { get; set; }
+       public int PageCount { get; set; }
+       public int CurrentPage { get; set; }
 
 
     }

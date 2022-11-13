@@ -10,10 +10,10 @@ namespace Application.Core
     {
         public MapperProfile()
         {
-            CreateMap<Domain.Method, Domain.Method>();
+            CreateMap<MethodDto, Domain.Method>()
+                .ForMember(t => t.MethodID, o => o.Ignore());
+            CreateMap<Domain.Method, MethodDto>();
             CreateMap<Domain.WorkSheet, List<WorkSheetDto>>();
-
-
 
             CreateMap<Sample, SampleDto>()
             .ForMember(t => t.Description, o => o.NullSubstitute(""))
