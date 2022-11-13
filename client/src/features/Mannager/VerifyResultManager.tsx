@@ -2,10 +2,10 @@ import { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button } from '../../App/structure/FormElement'
 import { StyleSectionHeader } from '../../App/structure/SectionHeader'
+import { ControlManagerVerifyWorkSheet } from '../../component/ControllButtonNewSample'
 import ViewWorkSheet from '../../component/ViewWorkSheet'
-
 import { useStore } from '../../store/appStore'
-import { Wrapper } from '../../style/Wrapper'
+import { Wrapper, WrapperControlForm } from '../../style/Wrapper'
 import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSStatus'
 
 
@@ -21,43 +21,37 @@ const VerifyResultManager = () => {
     return (
         <Wrapper>
             <StyleSectionHeader className='section-header' size="large" content='Verify Result' />
-            {<ViewWorkSheet viewOnly={true} />}
+            <WrapperControlForm>
+                <ViewWorkSheet viewOnly={true} />
+                <ControlManagerVerifyWorkSheet
+                    isDisplayVerify={startlimit || endlimit}
+                    isCheckNewData={checkDataButtonToggle}
+                    isVerify={startlimit}
+                    onClickVerify={() => startlimit ?
+                        sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) :
+                        sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
+                    onClickCheckNewData={() => {
+                        commonStore.getUnApproveWorkSheet(false).then(() => {
+                            const ws = commonStore.searchData.find(e => e.workSheetNo == id);
+                            if (ws)
+                                sampleStore.setWorkSheetValue(ws);
+                            setCheckDataButtonToggle(false);
+                            //if five second after update data not verify => have to check again
+                            setTimeout(() => {
+                                setCheckDataButtonToggle(true);
+                            }, 5000);
+                        })
+                    }}
+                    onClickAllparamater={() => {
+                        !buttonToggle ? commonStore.search({ Worksheet: sampleStore.workSheet.workSheetNo, WorkSheet_BySample: "" })
+                            : sampleStore.setWorkSheetValue(ref.current)
 
-            {(startlimit || endlimit) && <Button disabled={commonStore.isFetching || checkDataButtonToggle} top='50%' left='92%'
-                onClick={() => startlimit ?
-                    sampleStore.verifyWorkSheet([sampleStore.workSheet.workSheetNo]) :
-                    sampleStore.unVerifyWorkSheet(sampleStore.workSheet.workSheetNo)}
-                type='button'>{startlimit ? "Verify" : "UnVerify"}
-            </Button>
-
-            }
-            <Button disabled={commonStore.isFetching} top='60%' left='92%'
-                onClick={() => {
-                    !buttonToggle ? commonStore.search({ Worksheet: sampleStore.workSheet.workSheetNo, WorkSheet_BySample: "" })
-                        : sampleStore.setWorkSheetValue(ref.current)
-
-                    setButtonToggle((prev) => {
-                        return !prev;
-                    });
-                }}
-                type='button'> {!buttonToggle ? "All parameters" : "Hide verified parameter"}
-            </Button>
-            {checkDataButtonToggle && <Button disabled={commonStore.isFetching} top='80%' left='92%'
-                onClick={() => {
-
-                    commonStore.getUnApproveWorkSheet(false).then(() => {
-                        const ws = commonStore.searchData.find(e => e.workSheetNo == id);
-                        if (ws)
-                            sampleStore.setWorkSheetValue(ws);
-                        setCheckDataButtonToggle(false);
-                        //if five second after update data not verify => have to check again
-                        setTimeout(() => {
-                            setCheckDataButtonToggle(true);
-                        }, 5000);
-                    })
-                }}
-                type='button'>Check new data
-            </Button>}
+                        setButtonToggle((prev) => {
+                            return !prev;
+                        });
+                    }}
+                />
+            </WrapperControlForm>
         </Wrapper>
     )
 

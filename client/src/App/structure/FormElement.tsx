@@ -53,7 +53,15 @@ const Style = (comp: any, display?: string) => {
         font-size: 1rem;
         color: #ff2882;
         position: absolute;
-        bottom: -50%;
+        bottom: -30%;
+        width: 100%;
+    }
+    &.form_group_error--password {
+        font-size: 1rem;
+        color: #ff2882;
+        position: absolute;
+        bottom: -45%;
+        width: 100%;
     }
 `
 
@@ -93,7 +101,7 @@ export const InputPassWord = Style(({ label, className, handleChange, ...props }
             <ShowPassword show={show} setShow={() => {
                 setShow((prev) => !prev)
             }} />
-            {meta.touched && meta.error && <div className={`${className}_error`}>{meta.error}</div>}
+            {meta.touched && meta.error && <div className={`${className}_error--password`}>{meta.error}</div>}
         </div>
     )
 })

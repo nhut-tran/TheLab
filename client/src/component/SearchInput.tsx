@@ -27,7 +27,7 @@ const SearchInput = observer(() => {
                         WorkSheet_BySample: ''
                     }
                     val.Worksheet.length > 0 ? errObject.Worksheet = 'Invalid WorkSheetNo'
-                        : errObject.WorkSheet_BySample = 'Please enter sampleNo or WorsheetNo'
+                        : errObject.WorkSheet_BySample = 'SampleNo or WorsheetNo is required'
                     setErrors(errObject)
                 }
 
@@ -36,7 +36,7 @@ const SearchInput = observer(() => {
             <StyleForm>
                 <Input label='WorkSheet' name='Worksheet' className='form_group' />
                 <Input label='Sample' name='WorkSheet_BySample' className='form_group' />
-                <Button position='relative' type='submit'>Find WorkSheet</Button>
+                <Button position='relative' type='submit' marginTop="10px" >Find WorkSheet</Button>
             </StyleForm>
         </Formik>
 

@@ -2,10 +2,36 @@ import ControllFormButton from "./ControlFormButton"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import SaveIcon from '@mui/icons-material/Save';
+import VerifyIcon from '@mui/icons-material/CheckCircleOutline';
+import UnverifyIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
+import PrintIcon from '@mui/icons-material/Print';
+import AllListIcon from '@mui/icons-material/FormatListBulleted';
+import GetDataIcon from '@mui/icons-material/GetApp';
 import styled from "styled-components";
+import { microResultValidate } from "../utils/validation/resultValidation";
 
 interface Props {
     onClick: () => void,
+
+}
+interface VerifyButtonProps {
+    onClick: () => void,
+    isVerify: boolean
+}
+interface PrintButtonProps {
+    onClickPrint: () => void,
+    onClickUpdate: () => void,
+    onClickDelete: () => void
+}
+interface ManagerVerifyButtonProps {
+    onClickVerify: () => void,
+    onClickAllparamater: () => void,
+    onClickCheckNewData: () => void,
+    isVerify: boolean,
+    isCheckNewData: boolean
+    isDisplayVerify: boolean
 
 }
 
@@ -78,6 +104,88 @@ const SaveSample = ({ onClick }: Props) => {
     )
 }
 
+const VerifyWorkSheet = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Verify" onClick={onClick}><span><VerifyIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+const UnVerifyWorkSheet = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="UnVerify" onClick={onClick}><span><UnverifyIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+
+const SaveResultInput = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Save" onClick={onClick}><span><SaveIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+
+const PrintWorkkSheet = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Save" onClick={onClick}><span><PrintIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+const Update = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Update" onClick={onClick}><span><UpdateIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+const Delete = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Delete" onClick={onClick}><span><DeleteIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+const AllParamater = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="All Paramater" onClick={onClick}><span><AllListIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+const GetNewData = ({ onClick }: Props) => {
+    return (
+        <StyleControllButtonIcon name="Check new data" onClick={onClick}><span><GetDataIcon fontSize="inherit" /></span></StyleControllButtonIcon>
+    )
+}
+export const ControlVerifyButton = ({ onClick, isVerify }: VerifyButtonProps) => {
+    return (
+        <div className="control-button">
+            {isVerify ? <VerifyWorkSheet onClick={onClick} />
+                : <UnVerifyWorkSheet onClick={onClick} />}
+        </div>
+    )
+}
+
+export const ControlSaveResultInput = ({ onClick }: Props) => {
+    return (
+        <div className="control-button">
+            <SaveResultInput onClick={onClick} />
+        </div>
+    )
+}
+
+export const ControlPrintWorkSheet = ({ onClickPrint, onClickDelete, onClickUpdate }: PrintButtonProps) => {
+    return (
+        <div className="control-button">
+            <PrintWorkkSheet onClick={onClickPrint} />
+            <Update onClick={onClickUpdate} />
+            <Delete onClick={onClickDelete} />
+        </div>
+    )
+}
+export const ControlManagerVerifyWorkSheet = ({ onClickCheckNewData, onClickAllparamater, onClickVerify,
+    isVerify, isCheckNewData, isDisplayVerify }: ManagerVerifyButtonProps) => {
+    console.log(isDisplayVerify, 'aa')
+    return (
+        <div className="control-button">
+            {isDisplayVerify && <>{isVerify ? <VerifyWorkSheet onClick={onClickVerify} /> : <UnVerifyWorkSheet onClick={onClickVerify} />}</>}
+            <AllParamater onClick={onClickAllparamater} />
+            {isCheckNewData && <GetNewData onClick={onClickCheckNewData} />}
+        </div>
+    )
+}
+
+
+
 const ControllButtonNewSample = () =>
 (<ControllFormButton>
 
@@ -124,6 +232,29 @@ const ControllButtonNewSample = () =>
                     }} />
 
 
+            </div>
+        )
+    }}
+
+</ControllFormButton>)
+
+export const ControllButtonInputResult = () =>
+(<ControllFormButton>
+
+    {({ submitForm, values, setFieldError }) => {
+
+        return (
+            <div className="control-button">
+                <SaveSample
+                    onClick={() => {
+                        if (microResultValidate(values).result) {
+                            submitForm()
+                        } else {
+                            microResultValidate(values).err.forEach((err) => {
+                                setFieldError(err.position, err.message)
+                            })
+                        }
+                    }} />
             </div>
         )
     }}

@@ -37,7 +37,7 @@ export const WrapperControlForm = styled.div`
     margin-left: 3% ;
     margin-right: 7% ;
     
-    & form .control-button {
+    & .control-button {
         display: flex ;
         flex-direction: column;
         background-color: #222A45;

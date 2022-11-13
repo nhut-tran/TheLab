@@ -11,9 +11,9 @@ const TableC = ({ className, children }: Prop) => {
     </table>
 }
 export const Table = styled(TableC)`
+    margin-top: 50px;
     border-collapse: collapse;
     width: 100% ;
-    
     & td {
         border: 1px solid #ddd;
         padding: 15px 8px;
@@ -21,13 +21,17 @@ export const Table = styled(TableC)`
     }
     & th {
         padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  
-  color: white;
+        padding-bottom: 12px;
+        text-align: center;
+        color: white;
+        border: 1px solid #34c03b;
+        border-right: 1px solid #ddd;
         background-color: #34c03b
     }
-
+    & th:last-child {
+        border-right: 1px solid #34c03b;
+    }
+    
    & tr:nth-child(even){background-color: #f2f2f2;}
 
    & tr:hover {background-color: #ddd;}

@@ -67,8 +67,8 @@ const StyleHeaderMenu = styled.ul`
     list-style: none;
     width: 20rem;
     background-color: #FFFF;
-    color:rgba(255, 255, 255, 0.87);
-    min-height: 200px;
+    color:rgba(255, 255, 255, 0.95);
+    min-height: 100px;
     border-radius: 3px;
     position: absolute;
     top: 90%;
@@ -132,7 +132,7 @@ const Header = observer(function Header() {
                         {
                             userStore.isLogIn() ?
                                 <>
-                                    <li onClick={handleClose}><StyleHeaderLink className="header-menu-item" to="/">My Profile</StyleHeaderLink></li>
+                                    {/* <li onClick={handleClose}><StyleHeaderLink className="header-menu-item" to="/">My Profile</StyleHeaderLink></li> */}
                                     <li onClick={(e) => {
                                         handleClose(e);
                                         userStore.logout();

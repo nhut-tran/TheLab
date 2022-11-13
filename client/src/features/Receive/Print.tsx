@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import { history } from '../..';
 import { Button } from '../../App/structure/FormElement';
 import { StyleSectionHeader } from '../../App/structure/SectionHeader';
+import { ControlPrintWorkSheet } from '../../component/ControllButtonNewSample';
 import ViewWorkSheet from '../../component/ViewWorkSheet';
 import { useStore } from '../../store/appStore';
-import { Wrapper } from '../../style/Wrapper';
+import { Wrapper, WrapperControlForm } from '../../style/Wrapper';
 
 
 
@@ -16,19 +17,14 @@ const Print = observer(() => {
     return (
         <Wrapper>
             <StyleSectionHeader className='section-header' size="large" content='Print Worksheet' />
-            <ViewWorkSheet viewOnly={true} />
-            <Button disabled={commonStore.isFetching} top='50%' left='92%'
-                onClick={() => sampleStore.generayeWSPDF(sampleStore.workSheet.workSheetNo)}
-                type='button'>Print
-            </Button>
-            <Button disabled={commonStore.isFetching} top='60%' left='92%'
-                onClick={() => history.push(`/update/${id}`)}
-                type='button'>Update
-            </Button>
-            <Button disabled={commonStore.isFetching} top='70%' left='92%'
-                onClick={() => sampleStore.deleteWorkSheet(sampleStore.workSheet.workSheetID)}
-                type='button'>Delete
-            </Button>
+            <WrapperControlForm>
+                <ViewWorkSheet viewOnly={true} />
+                <ControlPrintWorkSheet
+                    onClickPrint={() => sampleStore.generayeWSPDF(sampleStore.workSheet.workSheetNo)}
+                    onClickUpdate={() => history.push(`/update/${id}`)}
+                    onClickDelete={() => sampleStore.deleteWorkSheet(sampleStore.workSheet.workSheetID)}
+                />
+            </WrapperControlForm>
         </Wrapper>
     )
 })

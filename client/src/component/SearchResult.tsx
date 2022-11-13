@@ -2,11 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { WorkSheet } from '../api/entity'
 import { useStore } from '../store/appStore'
 import { StyleLink } from '../style/List'
-import { WrapperForList } from '../style/Wrapper'
-import { WorkSheetStatusLimitAccess } from '../config/WorkSheetStatus'
-import ListItemWithCheck from './ListItemWithCheck'
-import PageGination from './Pagination'
-import { ButtonLink } from '../style/Link'
 import { Table } from '../style/Table'
 import { useRouteMatch } from 'react-router-dom'
 
@@ -18,8 +13,6 @@ interface Prop {
 }
 
 const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) => {
-
-    const { userStore } = useStore()
     const { url } = useRouteMatch()
     return (
         <div>
@@ -33,7 +26,6 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                         <th>Receive Date</th>
                         <th>Turn Around day</th>
                         <th>Status</th>
-                        <th>Department</th>
                     </tr>
                     {
 
@@ -41,15 +33,13 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                             return (
                                 <tr>
                                     <td><StyleLink
-                                        to={`${url}/${w.workSheetNo}`}
+                                        to={`${url === '/' ? "" : url}/${w.workSheetNo}`}
                                         onClick={() => { }}
                                     >{w.workSheetNo}</StyleLink></td>
                                     <td>{w.issueTo}</td>
                                     <td>{w.receiveDate}</td>
                                     <td>{w.resultDate}</td>
                                     <td>{w.status}</td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                             )
                         })
