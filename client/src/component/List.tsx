@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { WorkSheet } from '../api/entity'
 import { StyleLink } from '../style/List'
 import { WrapperForList } from '../style/Wrapper'

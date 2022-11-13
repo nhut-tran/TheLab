@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { Wrapper } from '../style/Wrapper'
 import ViewWorkSheet from './ViewWorkSheet'
 

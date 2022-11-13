@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useStore } from '../../store/appStore'
 import { useAccessWorkSheetByStatusVerify } from '../../utils/useLimitAccessWSStatus'
 import ViewWorkSheet from '../../component/ViewWorkSheet'

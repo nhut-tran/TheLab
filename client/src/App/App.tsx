@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Header from './layout/Header';
 import '../style/index.css'

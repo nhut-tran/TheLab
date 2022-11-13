@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Link from "../../style/Link";
 
 import GetIcon from '@mui/icons-material/CompareArrowsTwoTone';

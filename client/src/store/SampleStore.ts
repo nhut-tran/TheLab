@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "..";
 import agent from "../api/agent";
 import { appStore } from "./appStore"
-import { MethodSampleAss, Sample, WorkSheet } from "../api/entity";
+import { Sample, WorkSheet } from "../api/entity";
 import toastEventRes from "../utils/toaster/Toaster";
 
 

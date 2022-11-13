@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useStore } from '../../store/appStore';
 import { observer } from 'mobx-react-lite';
 import { Wrapper, WrapperForList } from '../../style/Wrapper';

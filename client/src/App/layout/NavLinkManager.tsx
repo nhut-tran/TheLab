@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Link from "../../style/Link";
 import PageviewIcon from '@mui/icons-material/Pageview';
 

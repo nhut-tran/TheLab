@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import * as React from 'react'
 import { ReactNode } from "react";
 import { ReactComponent as Loading } from '../utils/spinner.svg'
 import { ReactComponent as BigLoading } from '../utils/bspinner.svg'

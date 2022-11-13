@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Link from "../../style/Link";
 import ArticleIcon from '@mui/icons-material/Article';
 import EmailIcon from '@mui/icons-material/MarkEmailRead';

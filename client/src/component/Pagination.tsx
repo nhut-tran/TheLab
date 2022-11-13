@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useRouteMatch } from 'react-router'
 import { useStore } from '../store/appStore'
 import { StyleLink } from '../style/List'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '../../App/structure/FormElement';
 import styled from 'styled-components';
 interface Props {

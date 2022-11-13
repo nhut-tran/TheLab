@@ -1,9 +1,7 @@
-import { type } from "os"
-
 type event = "fail" | "success"
 
-type Listener= {
-    [key in event] : ((arg: string) => void) []
+type Listener = {
+    [key in event]: ((arg: string) => void)[]
 }
 
 export type Message = {
@@ -17,7 +15,7 @@ interface Toast {
     on: (type: event, listener: (arg: string) => void) => void
     emit: (type: event, m: string) => void
     unRegister: () => void,
-   
+
 }
 
 
@@ -40,7 +38,7 @@ const toastEventRes: Toast = {
             this.listener[type].forEach((lis) => {
                 lis(m)
             })
-        } 
+        }
     },
 
     unRegister: function () {
@@ -50,7 +48,7 @@ const toastEventRes: Toast = {
         }
 
     },
-    
+
 }
 
 

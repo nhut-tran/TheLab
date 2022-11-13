@@ -11,7 +11,7 @@ interface Props {
     width?: string,
     last?: boolean
 }
-const F = ({ display, direction, className, children }: Props, ref: LegacyRef<HTMLDivElement>) => {
+const F = ({ className, children }: Props, ref: LegacyRef<HTMLDivElement>) => {
 
     return <div ref={ref} className={className}>{children}</div>
 }
