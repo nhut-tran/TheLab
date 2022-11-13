@@ -1,8 +1,8 @@
-Application for Sample Management of Microbiology lab
+## Application for Sample Management of Microbiology lab
 
-Entity of this app:
+Entity model of this app:
 
-WorkSheet > Samples > Paramaters (Method Assignment Sample)
+WorkSheets > Samples > Paramaters (Method Assignment Sample)
 
 WorkSheet content infomation of group of samples of a customer. Base on worksheet lab will perform testing activiites.
 Sample content infomation of sample like: paramater, method
@@ -21,3 +21,13 @@ Main process (from here WS refer to WorkSheet)
 
 \*\* Sample receive ==> Create WorkSheet => Lab process => Enter result => result approve
 => export report => email to customer
+
+## Tech stack
++ Backend:
+  Asp.net core
+  EF core
+  PostgreSQL
++ Frontend:
+  React.js
+  Mobx
+  Styled component
