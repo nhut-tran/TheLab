@@ -14,7 +14,7 @@ const VerifyResultLab = () => {
     const { sampleStore } = useStore();
 
     const { process, endlimit } = useAccessWorkSheetByStatusVerify();
-
+    console.log((process || endlimit))
     return (
         <Wrapper>
             <StyleSectionHeader className='section-header' size="large" content='Input Result' />

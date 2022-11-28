@@ -47,7 +47,7 @@ interface ParamatersByDepartment {
     department: string
 }
 //https://the-lab.azurewebsites.net/api/
-axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.baseURL = "https://the-lab.azurewebsites.net/api/";
 axios.defaults.withCredentials = true;
 
 const request = {

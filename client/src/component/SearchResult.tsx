@@ -34,7 +34,7 @@ const SearchResult = observer(({ link, data, handleClick, handleCheck }: Prop) =
                                 <tr>
                                     <td><StyleLink
                                         to={`${url === '/' ? "" : url}/${w.workSheetNo}`}
-                                        onClick={() => { }}
+                                        onClick={() => { handleClick(w.workSheetNo) }}
                                     >{w.workSheetNo}</StyleLink></td>
                                     <td>{w.issueTo}</td>
                                     <td>{w.receiveDate}</td>
