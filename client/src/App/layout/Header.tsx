@@ -132,7 +132,6 @@ const Header = observer(function Header() {
                         {
                             userStore.isLogIn() ?
                                 <>
-                                    {/* <li onClick={handleClose}><StyleHeaderLink className="header-menu-item" to="/">My Profile</StyleHeaderLink></li> */}
                                     <li onClick={(e) => {
                                         handleClose(e);
                                         userStore.logout();

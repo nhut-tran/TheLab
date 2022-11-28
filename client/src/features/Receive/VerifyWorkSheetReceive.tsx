@@ -9,7 +9,7 @@ import { ControlVerifyButton } from '../../component/ControllButtonNewSample'
 const VerifyWorkSheetReceive = () => {
 
     const { startlimit, endlimit } = useAccessWorkSheetByStatusVerify()
-    const { sampleStore, commonStore } = useStore();
+    const { sampleStore } = useStore();
 
     return (
         <Wrapper className="wrapper">

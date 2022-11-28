@@ -18,6 +18,7 @@ export const BasicStyleLink = styled(NavLinkC)`
     display: flex;
     align-items: center;`
 
+
 const StyleNavLink = styled(BasicStyleLink)`
     
     padding: 2rem 1rem;

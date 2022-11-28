@@ -38,8 +38,16 @@ export interface ResponseDataVoid {
     entity: string;
     value: {};
 }
-
-axios.defaults.baseURL = "https://the-lab.azurewebsites.net/api/";
+interface ParamatersByDay {
+    total: number,
+    day: number;
+}
+interface ParamatersByDepartment {
+    total: number,
+    department: string
+}
+//https://the-lab.azurewebsites.net/api/
+axios.defaults.baseURL = "http://localhost:5000/api/";
 axios.defaults.withCredentials = true;
 
 const request = {
@@ -323,6 +331,14 @@ const agent = {
             );
         },
     },
+    statistic: {
+        getTotalParamaterByDate(month: number) {
+            return axios.get<ResponseData<ParamatersByDay>>(`statistic/by-date/${month}`);
+        },
+        getTotalParamaterByDepartment(month: number) {
+            return axios.get<ResponseData<ParamatersByDepartment>>(`statistic/by-department/${month}`);
+        }
+    }
 };
 
 export default agent;

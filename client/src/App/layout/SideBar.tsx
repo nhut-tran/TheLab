@@ -10,7 +10,6 @@ interface SideBarProps {
 const SideBarC = observer(({ className }: SideBarProps) => {
 
     const { userStore } = useStore();
-    console.log('run', userStore.isLogIn())
     let Component = navLinkConfig["default"]
     if (userStore.isLogIn()) {
         Component = navLinkConfig[userStore.user.department]
