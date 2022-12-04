@@ -185,8 +185,10 @@ export const ControlManagerVerifyWorkSheet = ({ onClickCheckNewData, onClickAllp
 }
 
 
-
-const ControllButtonNewSample = () =>
+interface DeptProp {
+    department: string
+}
+const ControllButtonNewSample = ({ department }: DeptProp) =>
 (<ControllFormButton>
 
     {({ values, setValues, submitForm }) => {
@@ -209,7 +211,7 @@ const ControllButtonNewSample = () =>
                             {
                                 methodID: "",
                                 method: '',
-                                department: '',
+                                department,
                                 result: "",
                                 status: 0,
                                 unit: "default",

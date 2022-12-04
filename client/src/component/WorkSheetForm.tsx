@@ -13,6 +13,7 @@ import { toJS } from "mobx";
 
 
 
+
 interface Props {
 
     handleSubmit: (val: WorkSheet) => void
@@ -29,7 +30,6 @@ const WorkSheetForm = observer(({ handleSubmit }: Props) => {
         return departmentStore.getLab();
     }, [departmentStore.departmentList])
     const sortMethodByDept = useMemo(() => {
-
         if (!department) return refMethodList.current;
         return refMethodList.current.filter((med) => med.departmentID === department);
     }, [department])
@@ -78,9 +78,25 @@ const WorkSheetForm = observer(({ handleSubmit }: Props) => {
 
                 })
             }
-            onSubmit={(val) => {
-                console.log(val)
-                handleSubmit(val)
+            onSubmit={(val, { setErrors }) => {
+                let index = -1;
+                val.samples.forEach((s, i) => {
+                    const params = s.paramaters.map(p => p.methodID);
+                    console.log(index)
+                    if (new Set(params).size === params.length) {
+
+                        index = i;
+                    }
+                })
+                // console.log(index)
+                if (index > -1) {
+                    setErrors({
+                        samples: "duplictate params"
+                    })
+                } else {
+                    handleSubmit(val)
+                }
+
 
             }}>
             {({ values, errors }) => {
@@ -141,6 +157,7 @@ const WorkSheetForm = observer(({ handleSubmit }: Props) => {
                                                                                     helperPara.push({
 
                                                                                         methodID: `${refDefaultMethodId.current}`,
+                                                                                        department
 
                                                                                     })
                                                                                 }}>+</Button>
@@ -163,10 +180,12 @@ const WorkSheetForm = observer(({ handleSubmit }: Props) => {
 
                                                                                         <option hidden >---Select Method----</option>
 
-                                                                                        {sortMethodByDept.map((med, i) => {
-                                                                                            if (p.methodID !== `${refDefaultMethodId.current}`) {
-                                                                                                return <option key={p.methodID} value={p.methodID}>{refMethodList.current.find((m) => m.methodID === p.methodID)?.name}</option>
+                                                                                        {sortMethodByDept.map((med) => {
+                                                                                            console.log(med.name)
+                                                                                            if (p.department !== med.departmentID) {
+                                                                                                return <option key={p.methodID} value={p.methodID} >{refMethodList.current.find((m) => m.methodID === p.methodID)?.name}</option>
                                                                                             }
+
                                                                                             return <option key={med.methodID} value={med.methodID}>{med.name}</option>
                                                                                         })}
                                                                                     </Select>
@@ -188,7 +207,7 @@ const WorkSheetForm = observer(({ handleSubmit }: Props) => {
                             />
 
                             <AutoSave item="newsample" />
-                            <ControllButtonNewSample />
+                            <ControllButtonNewSample department={department} />
                         </Form>
                     </WrapperControlForm>
 
